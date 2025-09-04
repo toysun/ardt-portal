@@ -1,0 +1,156 @@
+<html>
+<head>
+  <!-- AR.js by @jerome_etienne - github: https://github.com/jeromeetienne/ar.js - info: https://medium.com/arjs/augmented-reality-in-10-lines-of-html-4e193ea9fdbf -->
+  <script src="https://aframe.io/releases/1.0.3/aframe.min.js"></script>
+  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/aframe/build/aframe-ar.js"></script>
+  <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.8.4/dist/aframe-extras.min.js"></script>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+  <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+  <!--script src="./aframe-extras.loaders.min.js"></script-->
+
+
+  <link rel="stylesheet" href="./av_style.css">
+  <link rel="stylesheet" href="./AudioPlayer.css">
+  <link rel="stylesheet" type="text/css" href="./toggle.css">
+  <link rel="stylesheet" type="text/css" href="./button.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <script>
+AFRAME.registerComponent('vidhandler', {
+  // ...
+  init: function () {
+      let playing = true;
+      let video = document.querySelector("#vid");
+      this.el.addEventListener('click', () => {
+        if (!playing) {
+          video.play();
+        } else {
+          video.pause();
+          video.currentTime = 0;
+        }
+        playing = !playing;
+      });
+    }
+  })
+</script>
+  </head>
+  <body style="margin : 0px; overflow: hidden;">
+<div class="toggle-wrapper">
+  <div class= "toggle-button" id = "toggle-button">MENU</div>
+  <div class="toggle-menu" id = "toggle-menu">
+    <ul>
+      <li><a href="http://www.audioguide.kr">Home</a></li>
+    </ul>
+  </div>
+</div>
+
+<button class="AudioButton" id="MyAudioBtn"><i class="fa fa-shopping-cart"></i></button>
+
+    <div id="MyAudio" class="AudioModal">
+      <div class="Audio-content">
+        <span class="AudioClose">&times;</span>
+        <div id="player"></div>
+        <h2>스마트폰 오디오가이드 SmartGuide</h2>
+        <div class="box">
+          <img src="./bluetooth-phone" alt="스마트폰 오디오가이드 SmartGuide">
+        </div>
+        <br>
+        <div>
+	   <p>스마트폰 오디오가이드 SmartGuide</p>
+	   <br>
+	   <p>안녕하세요. 스마트가이드는 언텍트 시대에 맞게 각자의 스마트폰으로 전시안내를 오디오/비디오/AR 기반으로 손쉽게 듣고/보고/체험 할 수 있는 서비스 솔루션 입니다.</p>
+               <p>QR / 마커 / 이미지 트래킹과 비콘(블루트스), GPS 등 센서기반 트래킹과 페이스/모션인식 방식의 체험형 컨텐츠 마케팅/교육/협업을 가능하게 합니다.</p>
+	   <br>
+	  <form>
+<input style="width: 300px; padding: 20px; cursor: pointer; box-shadow: 6px 6px 5px; #999; -webkit-box-shadow: 6px 6px 5px #999; -moz-box-shadow: 6px 6px 5px #999; font-weight: bold; background: Navy; color: #ffffff; border-radius: 10px; border: 1px solid #999; font-size: 150%;" type="button" value="자세히보기" onclick="window.location.href='http://www.audioguide.kr'" />
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+  <a-scene cursor="rayOrigin: mouse" raycaster="objects: .clickable" embedded artoolkit="sourceType: webcam; detectionMode: mono; maxDetectionRate: 30; canvasWidth: 240; canvasHeight: 180" debuguienabled: false;>
+
+    <a-assets>
+      <video id="vid" src="./suzisoft_english_movie.mp4" style="display:none" preload="none" loop="false" crossorigin="anonymous" playsinline webkit-playsinline></video>
+     <img id="bluetooth-headphone" src="./bluetooth-headphone.png">
+     <img id="bluetooth-phone" src="./bluetooth-phone.png">
+     <img id="ag" src="./ag.png">
+     <img id="tts" src="./tts.png">
+      </a-assets>
+    
+   <a-entity geometry="primitive: plane" position="0 1.6 -2" scale="1.5 1.2 1.5" rotation="0 0 0" color="#4CC3D9" onclick="playvideo()" class="clickable" event-set__enter="_event: mousedown" depth="10" height="20" width="50" material="transparent:true;opacity: 1.4;src:#vid" vidhandler></a-entity>
+    <a-text value="스마트폰 오디오가이드 
+SmartGuide"
+ color="#FFFFFF" shader="msdf" font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumpenscript/NanumPenScript-Regular.json" scale="0.2 0.2 0.2" position="0 1.2 -2"></a-text>
+
+ <a-entity rotation="0 0 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 10000">
+        <a-image position="2 1.6 -4" src="bluetooth-headphone"></a-image>
+</a-entity>
+    <a-text value="스마트폰 오디오가이드 
+SmartGuide"
+ color="#FFFFFF" shader="msdf" font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumpenscript/NanumPenScript-Regular.json" scale="0.2 0.2 0.2" position="0 1.2 -2"></a-text>
+
+
+ <a-entity rotation="0 0 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 10000">
+        <a-image position="-2 1.6 -2" src="bluetooth-phone"></a-image>
+</a-entity>
+    <a-text value="스마트폰 오디오가이드 
+SmartGuide"
+ color="#FFFFFF" shader="msdf" font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumpenscript/NanumPenScript-Regular.json" scale="0.2 0.2 0.2" position="0 1.2 -2"></a-text>
+
+   <a-entity geometry="primitive: box" position="4 1.6 -2" scale="1.7 1.5 1.5" rotation="0 45 0" color="#4CC3D9" onclick="playvideo()" class="clickable" event-set__enter="_event: mousedown" depth="10" height="10" width="40" material="transparent:true;opacity: 0.7;src:#vid" vidhandler></a-entity>
+    <a-text value="웹 접근성 지원 솔루션"
+ color="#FFFFFF" shader="msdf" font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumpenscript/NanumPenScript-Regular.json" scale="0.2 0.2 0.2" position="4 1.2 2"></a-text>
+ <a-entity rotation="0 0 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 10000">
+<a-image position="2.2 1.6 -2" src="ag"></a-image>
+</a-entity>
+   <a-entity geometry="primitive: cylinder" position="8 1.6 2" scale="1.5 1.5 1.5" radius="3" height="15.5" rotation="0 45 15" color="#4CC3D9" onclick="playvideo()" class="clickable" event-set__enter="_event: mousedown" material="transparent:true;opacity: 0.7;src:#vid" vidhandler></a-entity>
+    <a-text value="비콘 블루투스 위치 솔루션"
+ color="#FFFFFF" shader="msdf" font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumpenscript/NanumPenScript-Regular.json" scale="0.2 0.2 0.2" position="8 1.2 2"></a-text>
+
+<a-image position="-2 1.6 -2" src="tts"></a-image>
+
+   <a-entity geometry="primitive: sphere" position="-4 1.6 -2" radius="3" rotation="0 360 0" color="#4CC3D9" onclick="playvideo()" class="clickable" event-set__enter="_event: mousedown" depth="10" height="10" width="40" material="transparent:true;opacity: 0.7;src:#vid" vidhandler></a-entity>
+    <a-text value="스마트폰 오디오가이드 
+SmartGuide"
+ color="#FFFFFF" shader="msdf" font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumpenscript/NanumPenScript-Regular.json" scale="0.2 0.2 0.2" position="-4 1.2 -2"></a-text>
+
+   <a-entity geometry="primitive: cylinder" position="-8 1.6 2" scale="1.5 1.5 1.5" radius="3" height="15.5" rotation="0 45 15" color="#4CC3D9" onclick="playvideo()" class="clickable" event-set__enter="_event: mousedown" material="transparent:true;opacity: 0.7;src:#vid' vidhandler></a-entity>
+    <a-text value="Online TTS 솔루션"
+ color="#FFFFFF" shader="msdf" font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumpenscript/NanumPenScript-Regular.json" scale="0.2 0.2 0.2" position="-8 1.2 2"></a-text>
+
+ 
+  <a-camera-static></a-camera-static>
+
+</a-scene>
+<div class="footer">
+     <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left">
+           <div class="onebleft">
+              <button onclick="vid.play()" class="btn btnskips">Play</button>
+           </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-right">
+           <div class="onebright">
+              <button onclick="vid.pause()" class="btn btnskips">Pause</button>
+           </div>
+        </div>
+      </div>
+  </div>
+ <!--script type="text/javascript" src="./AudioPlayer.js"></script-->
+ <script type="text/javascript" src="./audio_modal.js"></script>
+<script src="toggle.js"></script>
+</body>
+
+<script>    
+    function playvideo() {
+        window.addEventListener('click', function () {
+           var videoEl_1 = document.querySelector('#video');
+           videoEl_1.play();
+         });
+    }
+</script>
+</html>

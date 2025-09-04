@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta
+      name="viewport"
+      content="user-sclable=no, initial-scale=1, maximum-scale=1, minimum-scale-1, width=device-width"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="google" value="notranslate" />
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <!--script src="https://aframe.io/releases/0.9.0/aframe.js"></script-->
+    <script src="https://unpkg.com/aframe-event-set-component@4.0.1/dist/aframe-event-set-component.min.js"></script>
+
+<script src="https://unpkg.com/aframe-environment-component/dist/aframe-environment-component.min.js"></script>
+  </head>
+  <body>
+    <a-scene cursor="fuse: false; rayOrigin: mouse" embedded arjs>
+      <a-assets>
+          <audio id="rainforest" src="//cdn.rawgit.com/michaelnebeling/src/master/rainforest_ambience-GlorySunz-1938133500.mp3" crossorigin="anonymous"></audio>
+
+    <audio id="button1" src="//cdn.rawgit.com/michaelnebeling/src/master/button-1.mp3" crossorigin="anonymous"></audio>
+    <audio id="button2" src="//cdn.rawgit.com/michaelnebeling/src/master/button-2.mp3" crossorigin="anonymous"></audio>
+    <audio id="button3" src="//cdn.rawgit.com/michaelnebeling/src/master/button-3.mp3" crossorigin="anonymous"></audio>
+    <audio id="button4" src="//cdn.rawgit.com/michaelnebeling/src/master/button-4.mp3" crossorigin="anonymous"></audio>
+
+    <!-- mixins -->
+
+    <a-mixin id="collider" class="collider" opacity="0.99" event-set__mousedown="material.opacity: 1.0" event-set__mouseenter="material.opacity: 0.9" event-set__mouseleave="material.opacity: 0.99" event-set__mouseup="material.opacity: 0.99"></a-mixin>
+
+        <img
+          id="button"
+          src="https://cdn.glitch.me/cb8cb838-9f19-470f-9aca-6e773483a84f/play-trans.png?v=1639616719156"
+        />
+        <img
+          id="cancel"
+          src="https://cdn.glitch.me/cb8cb838-9f19-470f-9aca-6e773483a84f/nipa-map.png?v=1639621518518"
+        />
+        <a-asset-item
+          id="colacan"
+          src="https://cdn.glitch.com/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288%2Fcola-can.glb?v=1618191024953"
+        ></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 2 0" wasd-controls-enabled="false">
+        <!--a-cursor color="blue"></a-cursor-->
+      </a-camera>
+
+      <!--a-sky color="#FFF"></a-sky-->
+ <a-text value="Click to begin" position="0 2 -3" align="center"></a-text>
+
+  <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E" shadow mixin="collider" class="collider" sound="src: #button1; on: click; poolSize: 3" sound__mouseenter="src: #button3; on: mouseenter; poolSize: 2"></a-sphere>
+
+  <a-box position="-1 0.5 -3" rotation="0 45 0" width="1" height="1" depth="1" color="#4CC3D9" shadow mixin="collider" class="collider" sound="src: #button1; on: click; poolSize: 3" sound__mouseenter="src: #button3; on: mouseenter; poolSize: 2"></a-box>
+
+  <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D" shadow mixin="collider" class="collider" sound="src: #button1; on: click; poolSize: 3" sound__mouseenter="src: #button3; on: mouseenter; poolSize: 2"></a-cylinder>
+
+  <!--
+Let's replace the plane and sky with the A-Frame environment component
+
+  <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4" shadow></a-plane>
+  <a-sky color="skyblue"></a-sky> 
+-->
+
+  <!-- camera & hand controls -->
+  <a-entity id="camera-rig">
+    <a-entity camera id="head" position="0 1.6 0" wasd-controls look-controls>
+    </a-entity>
+    <a-entity laser-controls="hand: right" raycaster="objects: .collider; showLine: true" line="color: white; opacity: 0.8" teleport-controls="cameraRig: #camera-rig; teleportOrigin: #head; collisionEntities: .environmentGround .environmentDressing; button: grip" sound="src: #button4; on: teleported"></a-entity>
+  </a-entity>
+
+      <!--a-plane
+        id="plane1"
+        height="2"
+        width="20"
+        
+        position="0 0 -9"
+        transparent="true"
+        opacity="0"
+        visible="false"
+      >
+
+        <a-image id="cancel_tc" src="#cancel" position="0 3 0" scale="3 3 3"></a-image>
+        <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#colacan"
+        id="feel4"
+        position="-2 -0.4 -12.7"
+        rotation="0 180 0"
+        scale="1 1 1"
+        animation-mixer="loop: true"
+        shadow="receive: true"
+      >
+      </a-entity>
+      </a-plane>
+
+      <a-image
+        id="button_click"
+        slidehandler1
+        src="#button"
+        height="1"
+        width="1"
+        position="0 1.6 -7"
+      ></a-image-->
+    </a-scene>
+    <script>
+    document.addEventListener("click", function () {
+  document.querySelector("a-text").setAttribute("visible", false);
+});
+
+function playing(index) {
+  console.log("now playing", index);
+  document.querySelector("#player").setAttribute("visible", true);
+}
+    </script>
+  </body>
+  <script>
+    AFRAME.registerComponent("slidehandler1", {
+      init: function () {
+        var pln = document.querySelector("#plane1");
+        this.el.addEventListener("click", () => {
+          pln.setAttribute("visible", true);
+          pln.setAttribute("position",{x:0,y:5,z:-9});
+          pln.setAttribute(
+            "animation",
+            "property: position; dur: 1000; from: 0 0 -9; to: 0 5 -9"
+          );
+        });
+      },
+    });
+  </script>
+</html>

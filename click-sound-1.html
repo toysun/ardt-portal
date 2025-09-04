@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<!-- Selection in desktop.
+   Click, mouseenter and mouseleave on objects with the corresponding
+   animations, activated with the desktop mouse.
+   Thanks to 'cursor="rayOrigin:mouse"' in the scene.
+-->
+
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <!--meta name="viewport" content="width=device-width, initial-scale=1"--> 
+    <meta aframe-injected name="mobile-web-app-capable" content="yes" />
+   
+    
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+  </head>
+  <body>
+    <a-scene
+      loading-screen="enabled: false"
+      arjs="sourceType: webcam; trackingMethod: best;"
+      cursor="fuse: false; rayOrigin: mouse"
+      raycaster="objects: [clickhandler];"
+      cursor-modifier
+      vr-mode-ui="enabled: false;"
+    >
+      <a-assets>
+        <!-- sound -->
+
+        <audio
+          id="rainforest"
+          src="//cdn.rawgit.com/michaelnebeling/src/master/rainforest_ambience-GlorySunz-1938133500.mp3"
+          crossorigin="anonymous"
+        ></audio>
+        <audio
+          id="button0"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/drum-sound-short.mp3?v=1692924044706"
+          crossorigin="anonymous"
+        ></audio>
+        <audio
+          id="button1"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/bell-sound-short.mp3?v=1692927977574"
+          crossorigin="anonymous"
+        ></audio>
+        <audio
+          id="button2"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/drum-sound-short-strong.mp3?v=1692943387890"
+          crossorigin="anonymous"
+        ></audio>
+        <audio
+          id="button3"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/moktak-sound-short.mp3?v=1692925441526"
+          crossorigin="anonymous"
+        ></audio>
+        <audio
+          id="button4"
+          src="//cdn.rawgit.com/michaelnebeling/src/master/button-4.mp3"
+          crossorigin="anonymous"
+        ></audio>
+
+        <!-- mixins -->
+
+        <a-mixin
+          id="collider"
+          class="collider"
+          opacity="0.99"
+          event-set__mousedown="material.opacity: 1.0"
+          event-set__mouseenter="material.opacity: 0.9"
+          event-set__mouseleave="material.opacity: 0.99"
+          event-set__mouseup="material.opacity: 0.99"
+        ></a-mixin>
+      </a-assets>
+      <a-entity
+        camera
+        position="0 1.6 0"
+        look-controls-enabled="false"
+        orbit-controls="target: 0 1.6 -0.5; initialPosition: -5 5 20"
+      ></a-entity>
+      <a-text value="START CLICK" position="0 2 -3" align="center"></a-text>
+      <a-circle
+        position="-1.2 1.5 -5"
+        radius="0.8"
+        scale="2 1.5 2"
+        color="#FFFFFF"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/daebook-1.png?v=1693023340526"
+        shadow
+        animation="startEvents: click; property: scale;
+          from: 2 1.5 2; to: 1 0.7 1; dur: 1000"
+        animation__1="startEvents: click; property: scale;
+          from: 1 0.7 1; to: 2 1.5 2; dur: 1000"
+        shadow1
+        mixin="collider"
+        class="collider"
+        sound="src: #button0; on: click; poolSize: 3"
+        sound__mouseenter="src: #button0; on: mouseenter; poolSize: 2"
+      >
+      </a-circle>
+
+      <a-circle
+        position="1.2 1.5 -5"
+        radius="0.7"
+        scale="2 1.5 2"
+        color="#FFFFFF"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/daebook-1.png?v=1693023340526"
+        shadow
+        animation="startEvents: click; property: scale;
+          from: 2 1.5 2; to: 1 0.7 1; dur: 1000"
+                animation__1="startEvents: click; property: scale;
+          from: 1 0.7 1; to: 2 1.5 2; dur: 1000"
+        shadow1 
+        mixin="collider"
+        class="collider"
+        sound="src: #button2; on: click; poolSize: 3"
+        sound__mouseenter="src: #button2; on: mouseenter; poolSize: 2"
+      >
+      </a-circle>
+      <a-circle
+        position="0 -0.2 -5"
+        radius="0.8"
+        scale="2 1.5 2"
+        color="#FFFFFF"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/dong-jong-f.png?v=1693023741035"
+        shadow
+        animation="startEvents: click; property: scale;
+          from: 2 1.5 2; to: 1 0.7 1; dur: 1000"
+        animation__1="startEvents: click; property: scale;
+          from: 1 0.7 1; to: 2 1.5 2; dur: 1000"
+        shadow1
+        mixin="collider"
+        class="collider"
+        sound="src: #button1; on: click; poolSize: 3"
+        sound__mouseenter="src: #button1; on: mouseenter; poolSize: 2"
+      >
+      </a-circle>
+      <a-circle
+        position="0 3 -5"
+        radius="0.8"
+        scale="2 1.5 2"
+        color="#FFFFFF"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/moktak-f.png?v=1693023684508"
+        shadow
+        animation="startEvents: click; property: scale;
+          from: 2 1.5 2; to: 1 0.7 1; dur: 1000"
+                animation__1="startEvents: click; property: scale;
+          from: 1 0.7 1; to: 2 1.5 2; dur: 1000"
+        shadow1
+        mixin="collider"
+        class="collider"
+        sound="src: #button3; on: click; poolSize: 3"
+        sound__mouseenter="src: #button3; on: mouseenter; poolSize: 2"
+      >
+      </a-circle>
+      <!--a-box
+        position="-1 0.5 -3"
+        rotation="0 45 0"
+        color="#4CC3D9"
+        shadow
+        animation="startEvents: click; property: position;
+          from: -1 1.5 -3; to: -1 0.5 -3 dur: 1000"
+        shadow1
+        mixin="collider"
+        class="collider"
+        sound="src: #button1; on: click; poolSize: 3"
+        sound__mouseenter="src: #button1; on: mouseenter; poolSize: 2"
+      >
+      </a-box>
+      <a-sphere
+        position="0 1.25 -5"
+        radius="1.25"
+        color="#EF2D5E"
+        shadow
+        animation="startEvents: click; property: scale;
+          from: 2 2 2; to: 1 1 1; dur: 1000"
+        shadow1
+        mixin="collider"
+        class="collider"
+        sound="src: #button0; on: click; poolSize: 3"
+        sound__mouseenter="src: #button0; on: mouseenter; poolSize: 2"
+      >
+      </a-sphere>
+      <a-cylinder
+        position="1 0.75 -3"
+        radius="0.5"
+        height="1.5"
+        color="#FFC65D"
+        shadow
+        animation__enter="startEvents: mouseenter; property: scale;
+          to: 2 2 2; dur: 1000"
+        animation__leave="startEvents: mouseleave; property: scale;
+          to: 1 1 1; dur: 1000"
+        shadow1
+        mixin="collider"
+        class="collider"
+        sound="src: #button2; on: click; poolSize: 3"
+        sound__mouseenter="src: #button2; on: mouseenter; poolSize: 2"
+      >
+      </a-cylinder>
+      <a-plane
+        position="0 0 -4"
+        rotation="-90 0 0"
+        width="4"
+        height="4"
+        color="#7BC8A4"
+        shadow
+      ></a-plane-->
+      <!--a-sky color="#ECECEC"></a-sky-->
+
+      <a-entity cursor="rayOrigin:mouse"></a-entity>
+    </a-scene>
+    <script>
+      document.addEventListener("click", function () {
+        document.querySelector("a-text").setAttribute("visible", false);
+      });
+
+      function playing(index) {
+        console.log("now playing", index);
+        document.querySelector("#player").setAttribute("visible", true);
+      }
+    </script>
+    <!--script>
+      var move2 = document.querySelector("#move2");
+      var ballanim = document.querySelector("#ballanim");
+      var acy = document.querySelector("a-cylinder");
+      var mybox = document.querySelector("#mybox");
+
+      move2.addEventListener("animationend", function () {
+        console.log("end1");
+        acy.emit("startcyl");
+        // mybox.emit('startbox');
+      });
+      console.log(ballanim);
+      acy.addEventListener("startcyl", function () {
+        console.log("end2");
+        mybox.emit("startbox");
+      });
+    </script-->
+  </body>
+</html>

@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.1/dist/mindar-image-aframe.prod.js"></script>
+    <!-- import ONNXRuntime Web from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+    <!-- import ONNXRuntime Web from CDN -->
+    <script src="u2net-component.js"></script>
+  </head>
+  <body>
+        <video id="webcam" autoplay playsinline></video>
+    <a-scene
+      u2net="uiText: Loading cool experience...; nnModel: https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/u2netp_default.onnx?v=1689779242896"
+      mindar-image="imageTargetSrc: https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/tirano-targets.mind?v=1697694827778;"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+    >
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-plane
+          id="u2netPlane"
+          width="3"
+          height="3"
+          scale="0 0 0"
+          material=""
+          animation__1="property: rotation; to: 90 0; delay: 300; dur: 10000; easing: linear; loop: true"
+        >
+          <img id="capturedImage" src=" " />
+          <!--a-gltf-model
+            rotation="0 0 0 "
+            position="0 -0.25 0"
+            scale="0.2 0.2 0.2"
+            src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/unused_blue_vans_shoe.glb?v=1689642869022"
+            animation-mixer
+          ></a-gltf-model-->
+      
+        
+            <a-entity scale=".1 .1 .1"></a-entity>
+      <a-entity scr="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/MatI_Ride_FengHuang_01a_baseColor.png?v=1697444886326" position="0 0 0"></a-entity>
+      <a-entity scr="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/MatI_Ride_FengHuang_01a_emissive.png?v=1697444887002" position="0 0 0"></a-entity>
+      <a-entity scr="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/MatI_Ride_FengHuang_01b_baseColor.png?v=1697444887995" position="0 0 0"></a-entity>
+      <a-entity scr="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/MatI_Ride_FengHuang_01b_emissive.png?v=1697444884147" position="0 0 0"></a-entity>
+      <a-entity id="scene" scale="0.005 0.005 0.005" position="0 0 0" gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/scene.gltf?v=1697443748553" animation-mixer></a-entity>
+        
+        </a-plane>
+        <!--a-entity
+          geometry="primitive: sphere"
+          position="-4 1.6 -2"
+          radius="3"
+          rotation="0 360 0"
+          color="#4CC3D9"
+          onclick="playvideo()"
+          class="clickable"
+          event-set__enter="_event: mousedown"
+          depth="10"
+          height="10"
+          width="40"
+          material="transparent:true;opacity: 0.7;src:#vid"
+          vidhandler
+        ></a-entity-->
+
+        <!--a-box id="u2netPlane" depth="1" height="1" width="1" scale="0 0 0" material=""
+                 animation__1="property: rotation; to: 0 360 10; delay: 300; dur: 10000; easing: linear; loop: true">
+          <img id="capturedImage" src="" />
+        </a-box>
+        <!--a-circle id="u2netPlane" radius="5" scale="0 0 0" material=""
+                 animation__1="property: rotation; to: 0 360 10; delay: 300; dur: 10000; easing: linear; loop: true">
+          <img id="capturedImage" src="" />
+        </a-circle-->
+      </a-entity>
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    </a-scene>
+  </body>
+</html>

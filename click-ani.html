@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta
+      name="viewport"
+      content="user-sclable=no, initial-scale=1, maximum-scale=1, minimum-scale-1, width=device-width"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="google" value="notranslate" />
+    <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <!--script src="https://aframe.io/releases/0.9.0/aframe.js"></script-->
+  </head>
+  <body>
+    <a-scene cursor="fuse: false; rayOrigin: mouse" embedded arjs>
+      <a-assets>
+        <img
+          id="button"
+          src="https://cdn.glitch.me/cb8cb838-9f19-470f-9aca-6e773483a84f/play-trans.png?v=1639616719156"
+        />
+        <img
+          id="cancel"
+          src="https://cdn.glitch.me/cb8cb838-9f19-470f-9aca-6e773483a84f/nipa-map.png?v=1639621518518"
+        />
+        <a-asset-item
+          id="colacan"
+          src="https://cdn.glitch.com/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288%2Fcola-can.glb?v=1618191024953"
+        ></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 2 0" wasd-controls-enabled="false">
+        <!--a-cursor color="blue"></a-cursor-->
+      </a-camera>
+
+      <!--a-sky color="#FFF"></a-sky-->
+      <a-plane src="#cancel" height="10" width="10" scale="1 1 1" rotation="-90 0 0" position="0 1.6 0">
+              <img id="forest"
+          src="https://cdn.glitch.com/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288%2Fnegz.png?v=1617066079950"
+        />
+      </a-plane>
+      <a-plane
+        id="plane1"
+        height="2"
+        width="20"
+        
+        position="0 0 -9"
+        transparent="true"
+        opacity="0"
+        visible="false"
+      >
+
+        <a-image id="cancel_tc" src="#cancel" position="0 3 0" scale="3 3 3"></a-image>
+        <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#colacan"
+        id="feel4"
+        position="-2 -0.4 -12.7"
+        rotation="0 180 0"
+        scale="1 1 1"
+        animation-mixer="loop: true"
+        shadow="receive: true"
+      >
+      </a-entity>
+      </a-plane>
+
+      <a-image
+        id="button_click"
+        slidehandler1
+        src="#button"
+        height="1"
+        width="1"
+        position="0 1.6 -7"
+      ></a-image>
+    </a-scene>
+  </body>
+  <script>
+    AFRAME.registerComponent("slidehandler1", {
+      init: function () {
+        var pln = document.querySelector("#plane1");
+        this.el.addEventListener("click", () => {
+          pln.setAttribute("visible", true);
+          pln.setAttribute("position",{x:0,y:5,z:-9});
+          pln.setAttribute(
+            "animation",
+            "property: position; dur: 1000; from: 0 0 -9; to: 0 5 -9"
+          );
+        });
+      },
+    });
+  </script>
+</html>

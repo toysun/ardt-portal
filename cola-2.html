@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport"
+      content="user-sclable=no, initial-scale=1, maximum-scale=1, minimum-scale-1, width=device-width"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <!--script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/aframe/examples/vendor/aframe/build/aframe.min.js"></script-->
+    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <!--script src="https://unpkg.com/aframe-orbit-controls@1.0.0/dist/aframe-orbit-controls.min.js"></script-->
+    <script src="https://unpkg.com/aframe-orbit-controls@1.2.0/dist/aframe-orbit-controls.min.js"></script>
+    <!--script src="https://unpkg.com/aframe-room-component/dist/aframe-room-component.min.js"></script-->
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <!--script src="https://unpkg.com/aframe-supercraft-loader@1.1.3/dist/aframe-supercraft-loader.js"></script-->
+    <!--script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/aframe/build/aframe-ar.js"></script-->
+    <!--script src="/aframe-web-portals.umd.js"></script-->
+    <script>
+      AFRAME.registerComponent("arjs-portal-door", {
+        schema: {
+          url: {
+            // Url of the content - may be video or image
+            type: "string",
+          },
+          doorWidth: {
+            // width of the door
+            type: "number",
+            default: 1,
+          },
+          doorHeight: {
+            // height of the door
+            type: "number",
+            default: 2,
+          },
+        },
+        init: function () {
+          var _this = this;
+
+          var doorWidth = this.data.doorWidth;
+          var doorHeight = this.data.doorHeight;
+          var imageURL = this.data.url;
+
+          var portalDoor = new THREEx.Portal360(
+            imageURL,
+            doorWidth,
+            doorHeight
+          );
+          this._portalDoor = portalDoor;
+
+          this.el.object3D.add(portalDoor.object3d);
+        },
+        tick: function () {
+          this._portalDoor.update();
+        },
+      });
+
+      AFRAME.registerPrimitive(
+        "a-portal-door",
+        AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
+          defaultComponents: {
+            "arjs-portal-door": {},
+          },
+          mappings: {
+            url: "arjs-portal-door.url",
+          },
+        })
+      );
+    </script>
+    <script>
+      var THREEx = THREEx || {};
+
+      THREEx.Portal360 = function (videoImageURL, doorWidth, doorHeight) {
+        var doorCenter = new THREE.Group();
+        doorCenter.position.y = doorHeight / 2;
+        this.object3d = doorCenter;
+
+        //////////////////////////////////////////////////////////////////////////////
+        //		build texture360
+        //////////////////////////////////////////////////////////////////////////////
+        var isVideo = videoImageURL.match(/.(mp4|webm|ogv)/i) ? true : false;
+        if (isVideo) {
+          var video = document.createElement("video");
+          video.width = 640;
+          video.height = 360;
+          video.loop = true;
+          video.muted = true;
+          video.src = videoImageURL;
+          video.crossOrigin = "anonymous";
+          video.setAttribute("webkit-playsinline", "webkit-playsinline");
+          video.play();
+
+          var texture360 = new THREE.VideoTexture(video);
+          texture360.minFilter = THREE.LinearFilter;
+          texture360.format = THREE.RGBFormat;
+          texture360.flipY = false;
+        } else {
+          var texture360 = new THREE.TextureLoader().load(videoImageURL);
+          texture360.minFilter = THREE.NearestFilter;
+          texture360.format = THREE.RGBFormat;
+          texture360.flipY = false;
+        }
+
+        //////////////////////////////////////////////////////////////////////////////
+        //		build mesh
+        //////////////////////////////////////////////////////////////////////////////
+
+        // create insideMesh which is visible IIF inside the portal
+        var insideMesh = this._buildInsideMesh(
+          texture360,
+          doorWidth,
+          doorHeight
+        );
+        doorCenter.add(insideMesh);
+        this.insideMesh = insideMesh;
+
+        // create outsideMesh which is visible IIF outside the portal
+        var outsideMesh = this._buildOutsideMesh(
+          texture360,
+          doorWidth,
+          doorHeight
+        );
+        doorCenter.add(outsideMesh);
+        this.outsideMesh = outsideMesh;
+
+        // create frameMesh for the frame of the portal
+        var frameMesh = this._buildRectangularFrame(
+          doorWidth / 100,
+          doorWidth,
+          doorHeight
+        );
+        doorCenter.add(frameMesh);
+      };
+      //////////////////////////////////////////////////////////////////////////////
+      //		Code Separator
+      //////////////////////////////////////////////////////////////////////////////
+      THREEx.Portal360.buildTransparentMaterial = function () {
+        // if there is a cached version, return it
+        if (THREEx.Portal360.buildTransparentMaterial.material) {
+          return THREEx.Portal360.buildTransparentMaterial.material;
+        }
+        var material = new THREE.MeshBasicMaterial({
+          colorWrite: false, // only write to z-buf
+        });
+        // an alternative to reach the same visual - this one seems way slower tho. My guess is it is hitting a slow-path in gpu
+        // var material   = new THREE.MeshBasicMaterial();
+        // material.color.set('black')
+        // material.opacity   = 0;
+        // material.blending  = THREE.NoBlending;
+
+        // cache the material
+        THREEx.Portal360.buildTransparentMaterial.material = material;
+
+        return material;
+      };
+
+      //////////////////////////////////////////////////////////////////////////////
+      //		Build various cache
+      //////////////////////////////////////////////////////////////////////////////
+      THREEx.Portal360.buildSquareCache = function () {
+        var container = new THREE.Group();
+        // add outter cube - invisibility cloak
+        var geometry = new THREE.PlaneGeometry(50, 50);
+        var material = THREEx.Portal360.buildTransparentMaterial();
+
+        var mesh = new THREE.Mesh(geometry, material);
+        mesh.position.x = geometry.parameters.width / 2 + 0.5;
+        mesh.position.y = -geometry.parameters.height / 2 + 0.5;
+        container.add(mesh);
+
+        var mesh = new THREE.Mesh(geometry, material);
+        mesh.position.x = -geometry.parameters.width / 2 + 0.5;
+        mesh.position.y = -geometry.parameters.height / 2 - 0.5;
+        container.add(mesh);
+
+        var mesh = new THREE.Mesh(geometry, material);
+        mesh.position.x = -geometry.parameters.width / 2 - 0.5;
+        mesh.position.y = geometry.parameters.height / 2 - 0.5;
+        container.add(mesh);
+
+        var mesh = new THREE.Mesh(geometry, material);
+        mesh.position.x = +geometry.parameters.width / 2 - 0.5;
+        mesh.position.y = geometry.parameters.height / 2 + 0.5;
+        container.add(mesh);
+
+        return container;
+      };
+
+      //////////////////////////////////////////////////////////////////////////////
+      //		build meshes
+      //////////////////////////////////////////////////////////////////////////////
+
+      /**
+       * create insideMesh which is visible IIF inside the portal
+       */
+      THREEx.Portal360.prototype._buildInsideMesh = function (
+        texture360,
+        doorWidth,
+        doorHeight
+      ) {
+        var doorInsideCenter = new THREE.Group();
+
+        // var squareCache = THREEx.Portal360.buildSquareCache()
+        // squareCache.scale.y = doorWidth
+        // squareCache.scale.y = doorHeight
+        // doorInsideCenter.add( squareCache )
+
+        var geometry = new THREE.PlaneGeometry(doorWidth, doorHeight);
+        var material = THREEx.Portal360.buildTransparentMaterial();
+        // var material = new THREE.MeshNormalMaterial()
+        var mesh = new THREE.Mesh(geometry, material);
+        mesh.rotation.y = Math.PI;
+        // mesh.position.z = 0.03
+        doorInsideCenter.add(mesh);
+
+        //////////////////////////////////////////////////////////////////////////////
+        //		add 360 sphere
+        //////////////////////////////////////////////////////////////////////////////
+        // add 360 texture
+        // TODO put that in a this.data
+        var radius360Sphere = 100;
+        // var radius360Sphere = 1
+
+        var geometry = new THREE.SphereGeometry(
+          radius360Sphere,
+          16,
+          16
+        ).rotateZ(Math.PI);
+        var material = new THREE.MeshBasicMaterial({
+          map: texture360,
+          // opacity: 0.9,
+          side: THREE.DoubleSide,
+        });
+        var material = new THREE.MeshNormalMaterial();
+        var sphere360Mesh = new THREE.Mesh(geometry, material);
+        sphere360Mesh.position.z = 0.5;
+        sphere360Mesh.rotation.y = Math.PI;
+        doorInsideCenter.add(sphere360Mesh);
+
+        return doorInsideCenter;
+      };
+
+      /**
+       * create outsideMesh which is visible IIF outside the portal
+       */
+
+      THREEx.Portal360.prototype._buildOutsideMesh = function (
+        texture360,
+        doorWidth,
+        doorHeight
+      ) {
+        var doorOutsideCenter = new THREE.Group();
+
+        //////////////////////////////////////////////////////////////////////////////
+        //		add squareCache
+        //////////////////////////////////////////////////////////////////////////////
+        var squareCache = THREEx.Portal360.buildSquareCache();
+        squareCache.scale.y = doorWidth;
+        squareCache.scale.y = doorHeight;
+        doorOutsideCenter.add(squareCache);
+
+        //////////////////////////////////////////////////////////////////////////////
+        //		add 360 sphere
+        //////////////////////////////////////////////////////////////////////////////
+        // add 360 texture
+        var radius360Sphere = 100;
+        // var radius360Sphere = 1
+
+        // build half sphere geometry
+        var geometry = new THREE.SphereGeometry(
+          radius360Sphere,
+          160,
+          160,
+          Math.PI,
+          Math.PI,
+          0,
+          Math.PI
+        ).rotateZ(Math.PI);
+        // fix UVs
+        geometry.faceVertexUvs[0].forEach(function (faceUvs) {
+          faceUvs.forEach(function (uv) {
+            uv.x /= 2;
+          });
+        });
+        geometry.uvsNeedUpdate = true;
+        var material = new THREE.MeshBasicMaterial({
+          map: texture360,
+          //opacity: 0.9,
+          side: THREE.BackSide,
+        });
+        // var geometry = new THREE.SphereGeometry( radius360Sphere, 16, 16);
+        var material = new THREE.MeshNormalMaterial();
+        var sphere360Mesh = new THREE.Mesh(geometry, material);
+        sphere360Mesh.position.z = -0.1;
+        doorOutsideCenter.add(sphere360Mesh);
+
+        return doorOutsideCenter;
+      };
+
+      /**
+       * create frameMesh for the frame of the portal
+       */
+      THREEx.Portal360.prototype._buildRectangularFrame = function (
+        radius,
+        width,
+        height
+      ) {
+        var container = new THREE.Group();
+        var material = new THREE.MeshNormalMaterial();
+        var material = new THREE.MeshPhongMaterial({
+          color: "silver",
+          emissive: "white",
+        });
+
+        var geometryBeamVertical = new THREE.CylinderGeometry(
+          radius,
+          radius,
+          height - radius
+        );
+
+        // mesh right
+        var meshRight = new THREE.Mesh(geometryBeamVertical, material);
+        meshRight.position.x = width / 2;
+        container.add(meshRight);
+
+        // mesh right
+        var meshLeft = new THREE.Mesh(geometryBeamVertical, material);
+        meshLeft.position.x = -width / 2;
+        container.add(meshLeft);
+
+        var geometryBeamHorizontal = new THREE.CylinderGeometry(
+          radius,
+          radius,
+          width - radius
+        ).rotateZ(Math.PI / 2);
+
+        // mesh top
+        var meshTop = new THREE.Mesh(geometryBeamHorizontal, material);
+        meshTop.position.y = height / 2;
+        container.add(meshTop);
+
+        // mesh bottom
+        var meshBottom = new THREE.Mesh(geometryBeamHorizontal, material);
+        meshBottom.position.y = -height / 2;
+        container.add(meshBottom);
+
+        return container;
+      };
+
+      //////////////////////////////////////////////////////////////////////////////
+      //		update function
+      //////////////////////////////////////////////////////////////////////////////
+
+      THREEx.Portal360.prototype.update = function () {
+        // determine if the user is isOutsidePortal
+        var localPosition = new THREE.Vector3();
+        this.object3d.worldToLocal(localPosition);
+        var isOutsidePortal = localPosition.z >= -5 ? true : false;
+
+        // handle mesh visibility based on isOutsidePortal
+        if (isOutsidePortal) {
+          this.outsideMesh.visible = true;
+          this.insideMesh.visible = true;
+        } else {
+          this.outsideMesh.visible = false;
+          this.insideMesh.visible = false;
+        }
+      };
+    </script>
+    <!--scipt src="rig.js"></scipt>
+    <script src="rotator.js"></script-->
+  <!--link src="/style.css"></link>
+  <link src="/button.css"></link-->
+        <style>
+      .tab-start {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(255, 000, 000, 0.5);
+        z-index: 999999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .tab-start div {
+        text-align: center;
+        font-size: 1.25em;
+        color: white;
+      }
+          .logoWrapper {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 100%;
+  z-index: -1; /* needs to be in the background so that it doesn't overlay the title (from html) */
+}
+
+.logoImage {
+  width: 29%; /* 104px */
+  height: 10%; /*  40px */
+  visibility: visible; /* needs to be added, so that the image is always visible. Otherwise it could flicker during click-events or even be hidden (on iOS (Vers.13.5.1, Safari)) */
+}
+    </style>
+  </head>
+  <body style="margin: 0px; overflow: hidden">
+    <!-- Create a anchor to attach your augmented reality -->
+    
+     <div id="start_area" class="tab-start" align="center">
+       
+      <input 
+        id="start_btn"     
+        type="image"
+        src="https://cdn.glitch.global/b45d0030-c5b5-4455-a690-beebb0186252/tab-to-start-ko-ho.png?v=1663114807518"
+        style="positon: relative; z-index: 999999; display: flex; top: 0; left: 0;
+        justify-content: center; align-items: center; height: 150px; width: 50%"/>
+   
+    </div>      
+    <div class="logoWrapper">
+      <input
+        id="logo"
+        type="image"
+        class="logoImage"
+        src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/Coca-Cola_logo.svg?v=1663195090214"
+      />
+    </div>
+    <a-scene
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: true"       
+      cursor="fuse: false; rayOrigin: mouse"
+      raycaster="objects: [clickhandler];"
+      cursor-modifier
+      embedded
+      arjs="trackingMethod: best;"
+    >
+      <a-assets>
+        <img
+          id="button"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/tab-to-start.png?v=1663167152467"
+        />
+        <audio
+          src="https://cdn.glitch.global/5346c682-92f0-420c-9033-895f6fd67740/aladin.mp3?v=1663072751650"
+          type="audio/mp3"
+          id="aud"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+          webkit-playsinline
+          playsinline
+        ></audio>
+        <a-asset-item
+          id="firework"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/firework.glb?v=1663132402330"
+        ></a-asset-item>
+        <a-asset-item
+          id="santa"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/santa_claus_dancing_modern_santa_new_year_2021.glb?v=1662961633283"
+        ></a-asset-item>
+        <a-asset-item
+          id="blackhole"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/black_hole.glb?v=1662961968981"
+        ></a-asset-item>
+        <a-asset-item
+          id="ufo"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/flying_saucer.glb?v=1662942417104"
+        ></a-asset-item>
+        <a-asset-item
+          id="lazor-portal"
+          src="https://cdn.glitch.com/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288%2Flazor-portal.glb?v=1618149396871"
+        ></a-asset-item>
+        <a-asset-item
+          id="Giant"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/iron_giant_anim.glb?v=1663131385566"
+        ></a-asset-item>
+        <a-asset-item
+          id="cola-vending"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/the_vending_machine.glb?v=1663132515692"
+        ></a-asset-item>
+        <a-asset-item
+          id="cola-can"
+          src="https://cdn.glitch.com/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288%2Fcola-can.glb?v=1618191024953"
+        ></a-asset-item>
+                <a-asset-item
+          id="confetti"
+          src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/confettiv2.glb?v=1668304368875"
+        ></a-asset-item>
+        <a-asset-item
+          id="confetti2"
+          src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/confetti_fbx.glb?v=1668304614536"
+        ></a-asset-item>
+      </a-assets>
+     
+      <!--a-image
+        id="button_click"
+        slidehandler1
+        src="#button"
+        height="1"
+        width="3"
+        position="0 1.6 35"
+      ></a-image-->
+      <a-entity
+        sound="src: #aud"
+        visible ="false"
+        position="0 1.6 35"
+        play-sound-on-event="mode: toggle-stop; event: click"
+        geometry="primitive: sphere"
+      >
+      </a-entity>
+      
+    
+      <a-entity
+        id="player"
+        position="0 3.6 35"
+        camera
+        wasd-controls="acceleration: 15;"
+        look-controls
+        material="opacity: 0.0; transparent: true;"
+        animation="property: position; from: 0 3.6 35; to: 0 1.6 -20; dur: 50000; easing: easeInOutQuad; dir: alternate; loop: true"
+      >
+        
+      <a-cursor position="0 1 -0.05" scale=".04 .04 1" material="opacity: 0.0; transparent: true;"></a-cursor>
+        <!--For Collision Detection-->
+        <a-cylinder radius="0.75"></a-cylinder>
+      </a-entity>
+      
+      <a-plane
+        id="plane1"
+        height="2"
+        width="20"
+        position="0 0 -9"
+        transparent="true"
+        opacity="0"
+        visible="false"
+      >
+  
+      <!-- portal 360 with an image -->
+      <!-- <a-portal-door url='images/360_topaz.png' position='0 0 0' scale='1 1 1' rotation='0 90 0'><a-portal-door> -->
+
+      <!-- portal 360 with an video -->
+      <!--<a-portal-door url='videos/pano.webm' position='0 0 0' scale='2 2 2' rotation='0 90 0'><a-portal-door>-->
+      <a-portal-door
+        hit-testing-enabled="true"
+        url="https://cdn.glitch.com/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288%2F360_topaz.png?v=1617066095563"
+        position="0 -1.2 -2.5"
+        scale="3 3 3"
+        rotation="0 0 0"
+      >
+      </a-portal-door>
+      <!--Portal-->
+
+      <a-sky
+        src="https://cdn.glitch.com/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288%2Funiverse-360.jpg?v=1618151714517"
+      ></a-sky>
+      <a-box
+        scale="20 0.1 40"
+        position="0 -0.5 -4.5"
+        color="#8083A2"
+        src="https://cdn.glitch.com/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288%2Fgame1-texture.jpg?v=1618150540316"
+        shadow="receive: true"
+      ></a-box>
+      <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#lazor-portal"
+        id="feel1"
+        position="0 -0.5 -2.7"
+        rotation="180 90 180"
+        scale=".6 .82 .6"
+        animation-mixer="loop: true"
+        shadow="receive: true"
+      >
+      </a-entity>
+      <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#Giant"
+        id="feel2"
+        position="-4 -0.4 9"
+        rotation="0 15 0"
+        scale="10 10 10"
+        animation-mixer="loop: true"
+        shadow="receive: true"
+      >
+      </a-entity>
+      <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#blackhole"
+        id="feel7"
+        position="0 1 -45"
+        rotation="0 180 0"
+        scale=".3 .3 .3"
+        animation-mixer="loop: true"
+        shadow="receive: true"
+      >
+      </a-entity>
+      <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#firework"
+        id="feel8"
+        position="0 1 -45"
+        rotation="0 180 0"
+        scale=".3 .3 .3"
+        animation-mixer="loop: true"
+        shadow="receive: true"
+      >
+      </a-entity>
+      <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#ufo"
+        id="feel5"
+        position="1 -0.4 -9"
+        rotation="0 180 0"
+        scale=".8 .8 .8"
+        animation-mixer
+        shadow="receive: true"
+      >
+      </a-entity>
+      <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#santa"
+        id="feel6"
+        position="0 -0.4 -25"
+        rotation="0 0 0"
+        scale="1.5 1.5 1.5"
+        animation-mixer
+        shadow="receive: true"
+      >
+      </a-entity>
+
+      <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#cola-vending"
+        id="feel3"
+        position="4 -0.4 8.7"
+        rotation="0 -45 0"
+        scale=".04 .04 .04"
+        animation-mixer="loop: true"
+        shadow="receive: true"
+      >
+      </a-entity>
+
+      <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#cola-can"
+        id="feel4"
+        position="-4 -0.4 -12.7"
+        rotation="0 180 0"
+        scale="1 1 1"
+        animation-mixer="loop: true"
+        shadow="receive: true"
+      >
+      </a-entity>
+              <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#confetti1"
+        id="feel9"
+        position="4 -0.4 -10.7"
+        rotation="0 45 0"
+        scale="1 1 1"
+        animation-mixer="loop: true"
+        shadow="receive: true"
+      >
+      </a-entity>
+
+      <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="#confetti2"
+        id="feel10"
+        position="-4 -0.4 -12.7"
+        rotation="0 180 0"
+        scale="1 1 1"
+        animation-mixer="loop: true"
+        shadow="receive: true"
+      >
+      </a-entity>
+
+
+      <a-entity light="type: ambient; intensity: 0.55;"></a-entity>
+      <a-light
+        type="directional"
+        light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+        id="light"
+        target="booth"
+        position="-1.8 4 10"
+      >
+      </a-light>
+                </a-plane>
+      <!--a-entity light="type:directional; castShadow:true; intensity: 0.65;" position="1 1 1"></a-entity-->
+
+      <!--a-sky src="https://cdn.glitch.com/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288%2F360_topaz.png?v=1617066095563"></a-sky-->
+
+      <!--a-entity id="player" camera="active: true" look-controls wasd-controls position="0 1.6 0"></a-entity-->
+      <!-- Define a static camera -->
+      <!--a-camera></a-camera-->
+      <!--a-camera-static /-->
+    </a-scene>
+    <script>
+      document.getElementById("start_btn").addEventListener("click", function() {
+      
+        var Start_Area = document.getElementById("start_area");
+        var PlayBtn = document.getElementById("start_btn");
+        var pln = document.querySelector("#plane1");
+        this.aud = document.querySelector("#aud");
+       
+        
+          pln.setAttribute("visible", true);
+         // pln.setAttribute("position",{x:0,y:5,z:-9});
+          pln.setAttribute(
+            "animation",
+            "property: scale; dur: 1000; from: 0 0 0; to: 1 1 1"
+          );
+          this.aud.play();        
+
+          Start_Area.parentNode.removeChild(Start_Area);
+    });
+  </script>
+  </body>
+   
+</html>

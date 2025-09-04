@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta
+      name="viewport"
+      content="user-sclable=no, initial-scale=1, maximum-scale=1, minimum-scale-1, width=device-width"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="google" value="notranslate" />
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <!--script src="https://aframe.io/releases/0.9.0/aframe.js"></script-->
+  </head>
+  <body>
+    <a-scene cursor="fuse: false; rayOrigin: mouse" embedded arjs>
+      <a-assets>
+        <img
+          id="button"
+          src="https://cdn.glitch.me/cb8cb838-9f19-470f-9aca-6e773483a84f/play-trans.png?v=1639616719156"
+        />
+        <img
+          id="cancel"
+          src="https://cdn.glitch.me/cb8cb838-9f19-470f-9aca-6e773483a84f/nipa-map.png?v=1639621518518"
+        />
+        <a-asset-item
+          id="colacan"
+          src="https://cdn.glitch.com/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288%2Fcola-can.glb?v=1618191024953"
+        ></a-asset-item>
+        
+      </a-assets>
+
+      <a-camera position="0 2 0" wasd-controls-enabled="false">
+        <!--a-cursor color="blue"></a-cursor-->
+      </a-camera>
+
+      <!--a-sky color="#FFF"></a-sky-->
+
+      <a-plane
+        id="plane1"
+        height="2"
+        width="20"
+        position="0 0 -9"
+        transparent="true"
+        opacity="0"
+        visible="false"
+      >
+        <!--a-text
+          value="Some Random Text."
+          align="center"
+          color="white"
+          width="10"
+          position="0 0 2"
+        ></a-text-->
+        <a-image
+          id="cancel_tc"
+          src="#cancel"
+          position="0 3 0"
+          scale="3 3 3"
+        ></a-image>
+        <a-entity
+          navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+          gltf-model="#colacan"
+          id="feel4"
+          position="-2 -0.4 -12.7"
+          rotation="0 180 0"
+          scale="1 1 1"
+          animation-mixer="loop: true"
+          shadow="receive: true"
+        >
+        </a-entity>
+      </a-plane>
+      <a-troika-text
+        position="0 2 -1"
+        font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/%ED%96%89%EB%B3%B5%EA%B3%A0%ED%9D%A5B.ttf?v=1658800506733"
+        color="#99F"
+        value="구슬이 서말이라도 꿰어야 보배"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+      ></a-troika-text>
+      <a-image
+        id="button_click"
+        slidehandler1
+        src="#button"
+        height="1"
+        width="1"
+        position="0 1.6 -7"
+      ></a-image>
+      <a-sound
+        geometry="primitive:box"
+        position="0 0 1"
+        autoplay="false"
+        audiohandler
+      ></a-sound>
+    </a-scene>
+  </body>
+  <script>
+    AFRAME.registerComponent("slidehandler1", {
+      init: function () {
+        var pln = document.querySelector("#plane1");
+        this.el.addEventListener("click", () => {
+          pln.setAttribute("visible", true);
+          //pln.setAttribute("position",{x:0,y:5,z:-9});
+          pln.setAttribute(
+            "animation",
+            "property: scale; dur: 1000; from: 0 0 0; to: 1 1 1"
+          );
+        });
+      },
+    });
+  </script>
+  <script>
+    AFRAME.registerComponent("audiohandler", {
+      init: function () {
+        let playing = false;
+        let audio = this.el.components.sound;
+        this.el.setAttribute(
+          "src",
+          "https://upload.wikimedia.org/wikipedia/commons/b/bd/Bizet_-_Carmen_-_Toreador_Song_%28French%2C_Musopen%29.ogg"
+        );
+
+        this.el.addEventListener("click", () => {
+          if (!playing) {
+            audio.playSound();
+          } else {
+            audio.stopSound();
+          }
+          playing = !playing;
+        });
+      },
+    });
+  </script>
+</html>

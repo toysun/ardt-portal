@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<!-- Selection in desktop.
+   Click, mouseenter and mouseleave on objects with the corresponding
+   animations, activated with the desktop mouse.
+   Thanks to 'cursor="rayOrigin:mouse"' in the scene.
+-->
+
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <!--meta name="viewport" content="width=device-width, initial-scale=1"--> 
+    <meta aframe-injected name="mobile-web-app-capable" content="yes" />
+   
+    
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+      <style>
+      body {
+        margin: 0;
+      }
+      .tab-start {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(120, 120, 120, 0.9);
+        z-index: 999999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .tab-start div {
+        text-align: center;
+        font-size: 1.25em;
+        color: white;
+      }
+      .example-container {
+        overflow: hidden;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      .options-panel {
+        position: fixed;
+        left: 60%;
+        top: 10;
+        z-index: 2;
+      }
+      .options-panel img {
+        border: solid 2px;
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        cursor: pointer;     
+        background-color: white;
+      }
+      .options-panel img.selected {
+        border-color: green;
+        background-color: gold;
+      }
+      .ChangeButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/camera-rotate.png?v=1694390587914");
+        background-size: cover;
+        background-position: center;
+                border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 3%;
+        left: 80%;
+        width: 40px;
+        height: 40px;
+                /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .logoWrapper {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        width: 100%;
+        z-index: -1; /* needs to be in the background so that it doesn't overlay the title (from html) */
+      }
+
+      .logoImage {
+        width: 29%; /* 104px */
+        height: 10%; /*  40px */
+        visibility: visible; /* needs to be added, so that the image is always visible. Otherwise it could flicker during click-events or even be hidden (on iOS (Vers.13.5.1, Safari)) */
+      }
+      .HomeButton {
+        background-color: White;
+        background-image: url("https://ardocent.com/aframe/wonder/image/home.png");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 5%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .HomeButton:hover {
+        background-color: Gold;
+      }
+      
+      #angel {
+        display: none;
+      }
+      #devil {
+        display: none;
+      }
+      .ReloadButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/camera-flip.png?v=1666830382378");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 90%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .ReloadButton:hover {
+        background-color: Gold;
+      }
+
+    </style>
+  </head>
+  <body>
+              <div id="start_area" class="tab-start" align="center">     
+      <input 
+        id="start_btn"     
+        type="image"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/%EB%B2%95%EA%B3%A0-start.png?v=1694498227618"
+        style="positon: relative; z-index: 999999; display: flex; top: 0; left: 0;
+        justify-content: center; align-items: center; height: 450px; width: 50%"/>
+   
+    </div>  
+    <div class="logoWrapper">
+      <input
+        id="logo"
+        type="image"
+        class="logoImage"
+        src="https://cdn.glitch.global/06d05559-0ed0-41b1-938c-c5b9769f244e/mok-a-logo-white-full.png?v=1684124469622"
+      />
+    </div>
+    <a-scene
+      loading-screen="enabled: false"
+      arjs="sourceType: webcam; trackingMethod: best;"
+      cursor="fuse: false; rayOrigin: mouse"
+      raycaster="objects: [clickhandler];"
+      cursor-modifier
+      vr-mode-ui="enabled: false;"
+    >
+      <a-assets>
+        <!-- sound -->
+                  <audio
+             src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/SpaceLaserShot%20PE1095407.mp3?v=1684294410059"
+             type="audio/mp3"
+             id="aud"
+             response-type="arraybuffer"
+             crossorigin="anonymous"
+             webkit-playsinline
+             playsinline
+          ></audio>
+        <audio
+          id="rainforest"
+          src="//cdn.rawgit.com/michaelnebeling/src/master/rainforest_ambience-GlorySunz-1938133500.mp3"
+          crossorigin="anonymous"
+        ></audio>
+        <audio
+          id="button0"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/drum-sound-short.mp3?v=1692924044706"
+          crossorigin="anonymous"
+        ></audio>
+        <audio
+          id="button1"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/bell-sound-short.mp3?v=1692927977574"
+          crossorigin="anonymous"
+        ></audio>
+        <audio
+          id="button2"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/drum-sound-short-strong.mp3?v=1692943387890"
+          crossorigin="anonymous"
+        ></audio>
+        <audio
+          id="button3"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/moktak-sound-short.mp3?v=1692925441526"
+          crossorigin="anonymous"
+        ></audio>
+        <audio
+          id="button4"
+          src="//cdn.rawgit.com/michaelnebeling/src/master/button-4.mp3"
+          crossorigin="anonymous"
+        ></audio>
+
+        <!-- mixins -->
+
+        <a-mixin
+          id="collider"
+          class="collider"
+          opacity="0.99"
+          event-set__mousedown="material.opacity: 1.0"
+          event-set__mouseenter="material.opacity: 0.9"
+          event-set__mouseleave="material.opacity: 0.99"
+          event-set__mouseup="material.opacity: 0.99"
+        ></a-mixin>
+                <img
+          id="glow"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/light.png?v=1694386595898"
+        />
+      </a-assets>
+      <a-entity
+        camera
+        position="0 1.6 0"
+        look-controls-enabled="false"
+        orbit-controls="target: 0 1.6 -0.5; initialPosition: -5 5 20"
+      ></a-entity>
+      <!--a-text value="START CLICK" position="0 2 -3" align="center"></a-text-->
+      <a-circle
+        position="0 3 -5"
+        radius="0.8"
+        scale="2 1.5 2"
+        color="#FFFFFF"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/daebook-1.png?v=1693023340526"
+        shadow
+        animation="startEvents: click; property: scale;
+          from: 2 1.5 2; to: 1 0.7 1; dur: 1000"
+        animation__1="startEvents: click; property: scale;
+          from: 1 0.7 1; to: 2 1.5 2; dur: 1000"
+        shadow1
+        mixin="collider"
+        class="collider"
+        sound="src: #button0; on: click; poolSize: 3"
+        sound__mouseenter="src: #button0; on: mouseenter; poolSize: 2"
+      >
+      </a-circle>
+                  <a-entity
+        id="glowPulse1"
+        position="0 3.5 -10"
+        scale="1.3 1 1"
+        animation__spin="property: rotation; from: 0 0 0; to: 20 20 20; dur: 4000; loop: true; easing: linear;"
+      >
+        <a-image
+          width="10"
+          height="8"
+          src="#glow"
+          look-at="#player"
+          color="white"
+          material="transparent: true; opacity: 1.0; alphaTest: 0.01;"
+          animation__pulse="property: material.opacity; from: 2.0; to: 0.5; dur: 5000; loop: true; dir: alternate; easing: linear;"
+        ></a-image>
+      </a-entity>
+
+      <a-circle
+        position="0 0.6 -5"
+        radius="0.7"
+        scale="2 1.5 2"
+        color="#FFFFFF"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/daebook-1.png?v=1693023340526"
+        shadow
+        animation="startEvents: click; property: scale;
+          from: 2 1.5 2; to: 1 0.7 1; dur: 1000"
+                animation__1="startEvents: click; property: scale;
+          from: 1 0.7 1; to: 2 1.5 2; dur: 1000"
+        shadow1 
+        mixin="collider"
+        class="collider"
+        sound="src: #button2; on: click; poolSize: 3"
+        sound__mouseenter="src: #button2; on: mouseenter; poolSize: 2"
+      >
+      </a-circle>
+            <a-entity
+        id="glowPulse"
+        position="0 -0.5 -10"
+        scale="1.3 1 1"
+        animation__spin="property: rotation; from: 0 0 0; to: 20 20 20; dur: 4000; loop: true; easing: linear;"
+                      
+      >
+        <a-image
+          width="10"
+          height="8"
+          src="#glow"
+          look-at="#player"
+          color="white"
+          material="transparent: true; opacity: 1.0; alphaTest: 0.01;"
+          animation__pulse="property: material.opacity; from: 2.0; to: 0.5; dur: 5000; loop: true; dir: alternate; easing: linear;"
+        ></a-image>
+      </a-entity>
+      <!--a-circle
+        position="0 -0.2 -5"
+        radius="0.8"
+        scale="2 1.5 2"
+        color="#FFFFFF"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/dong-jong-f.png?v=1693023741035"
+        shadow
+        animation="startEvents: click; property: scale;
+          from: 2 1.5 2; to: 1 0.7 1; dur: 1000"
+        animation__1="startEvents: click; property: scale;
+          from: 1 0.7 1; to: 2 1.5 2; dur: 1000"
+        shadow1
+        mixin="collider"
+        class="collider"
+        sound="src: #button1; on: click; poolSize: 3"
+        sound__mouseenter="src: #button1; on: mouseenter; poolSize: 2"
+      >
+      </a-circle>
+      <a-circle
+        position="0 3 -5"
+        radius="0.8"
+        scale="2 1.5 2"
+        color="#FFFFFF"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/moktak-f.png?v=1693023684508"
+        shadow
+        animation="startEvents: click; property: scale;
+          from: 2 1.5 2; to: 1 0.7 1; dur: 1000"
+                animation__1="startEvents: click; property: scale;
+          from: 1 0.7 1; to: 2 1.5 2; dur: 1000"
+        shadow1
+        mixin="collider"
+        class="collider"
+        sound="src: #button3; on: click; poolSize: 3"
+        sound__mouseenter="src: #button3; on: mouseenter; poolSize: 2"
+      >
+      </a-circle-->
+      <!--a-box
+        position="-1 0.5 -3"
+        rotation="0 45 0"
+        color="#4CC3D9"
+        shadow
+        animation="startEvents: click; property: position;
+          from: -1 1.5 -3; to: -1 0.5 -3 dur: 1000"
+        shadow1
+        mixin="collider"
+        class="collider"
+        sound="src: #button1; on: click; poolSize: 3"
+        sound__mouseenter="src: #button1; on: mouseenter; poolSize: 2"
+      >
+      </a-box>
+      <a-sphere
+        position="0 1.25 -5"
+        radius="1.25"
+        color="#EF2D5E"
+        shadow
+        animation="startEvents: click; property: scale;
+          from: 2 2 2; to: 1 1 1; dur: 1000"
+        shadow1
+        mixin="collider"
+        class="collider"
+        sound="src: #button0; on: click; poolSize: 3"
+        sound__mouseenter="src: #button0; on: mouseenter; poolSize: 2"
+      >
+      </a-sphere>
+      <a-cylinder
+        position="1 0.75 -3"
+        radius="0.5"
+        height="1.5"
+        color="#FFC65D"
+        shadow
+        animation__enter="startEvents: mouseenter; property: scale;
+          to: 2 2 2; dur: 1000"
+        animation__leave="startEvents: mouseleave; property: scale;
+          to: 1 1 1; dur: 1000"
+        shadow1
+        mixin="collider"
+        class="collider"
+        sound="src: #button2; on: click; poolSize: 3"
+        sound__mouseenter="src: #button2; on: mouseenter; poolSize: 2"
+      >
+      </a-cylinder>
+      <a-plane
+        position="0 0 -4"
+        rotation="-90 0 0"
+        width="4"
+        height="4"
+        color="#7BC8A4"
+        shadow
+      ></a-plane-->
+      <!--a-sky color="#ECECEC"></a-sky-->
+
+      <a-entity cursor="rayOrigin:mouse"></a-entity>
+    </a-scene>
+    <!--script>
+      document.addEventListener("click", function () {
+        document.querySelector("a-text").setAttribute("visible", false);
+      });
+
+      function playing(index) {
+        console.log("now playing", index);
+        document.querySelector("#player").setAttribute("visible", true);
+      }
+    </script-->
+    <!--script>
+      var move2 = document.querySelector("#move2");
+      var ballanim = document.querySelector("#ballanim");
+      var acy = document.querySelector("a-cylinder");
+      var mybox = document.querySelector("#mybox");
+
+      move2.addEventListener("animationend", function () {
+        console.log("end1");
+        acy.emit("startcyl");
+        // mybox.emit('startbox');
+      });
+      console.log(ballanim);
+      acy.addEventListener("startcyl", function () {
+        console.log("end2");
+        mybox.emit("startbox");
+      });
+    </script-->
+          <script>
+     document.getElementById("start_btn").addEventListener("click", function() {
+      
+        var Start_Area = document.getElementById("start_area");
+        var PlayBtn = document.getElementById("start_btn");
+//        var pln = document.querySelector("#plane1");
+        this.aud = document.querySelector("#aud");
+       
+       
+ //       pln.setAttribute("visible", true);
+         // pln.setAttribute("position",{x:0,y:5,z:-9});
+ /* 
+       pln.setAttribute(
+            "animation",
+            "property: scale; dur: 1000; from: 0 0 0; to: 1 1 1"
+        );
+  */      
+        this.aud.play();        
+          
+        Start_Area.parentNode.removeChild(Start_Area);
+   /*     
+        const rand = Math.floor(Math.random() * 2);
+        const randlist = ["angel", "devil"];
+        const rand_btn = randlist[rand];
+     
+        document.getElementById(rand_btn).click();       
+   */     
+      });
+  </script>
+  </body>
+</html>

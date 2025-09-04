@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.1/dist/mindar-image-aframe.prod.js"></script>
+    <!-- import ONNXRuntime Web from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+    <!-- import ONNXRuntime Web from CDN -->
+    <script src="u2net-component.js"></script>
+  </head>
+  <body style="margin: 0px; overflow: hidden">
+    <a-scene
+      u2net="uiText: Loading cool experience...; nnModel: https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/u2netp_default.onnx?v=1689779242896"
+      mindar-image="imageTargetSrc: https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/targets-woman2.mind?v=1689780851932; filterMinCF:0.1; filterBeta: 10; warmupTolerance: 1; missTolerance: 1;"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+       arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+    >
+      <a-entity mindar-image-target="targetIndex: 0">
+        <!--a-plane id="u2netPlane" width="2" height="2" scale="0 0 0" material=""
+                 animation="property: rotation; to: 90 0 0; delay: 3000; dur: 10000; easing: linear; loop: true"
+                 animation__1="property: position; to: -0.5 0.1 0; delay: 13000; dur: 10000; easing: linear; loop: true">
+          <img id="capturedImage" src="" />
+        </a-plane-->
+          <a-entity scale=".1 .1 .1"></a-entity>
+      <a-entity id="capturedImage" src=""></a-entity>
+      <a-entity id="u2netPlane" scale="0 0 0" position="0 0 0" gltf-model="./img/scene.gltf"; animation-mixer></a-entity>
+      
+                <a-entity geometry="primitive: plane;  height: 2; width: 2" id="u2netPlane" scale="0 0 0" material=""
+                          animation="property: rotation; to: 90 0 0; delay: 8000; dur: 1000; easing: linear; loop: false"
+                          animation__1="property: rotation; to: 0 0 10; delay: 12000; dur: 1000; easing: linear; loop: true"
+                          animation__2="property: position; to: -0.5 0 -0.5 ; delay: 12000; dur: 20000; easing: linear; loop: true"
+                          
+                 >
+          <img id="capturedImage" src=""/>
+        </a-entity>
+      </a-entity>
+       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      <!--a-entity camera position="0 0 0" look-controls="enabled: false"></a-entity-->
+      <!--a-camera position="0 0 0" look-controls="enabled: false"></a-camera-->
+    </a-scene>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.1/dist/mindar-image-aframe.prod.js"></script>
+    <!-- import ONNXRuntime Web from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+    <!-- import ONNXRuntime Web from CDN -->
+    <script src="u2net-component.js"></script>
+  </head>
+  <body>
+    <a-scene
+      u2net="uiText: Loading cool experience...; nnModel: https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/u2netp_default.onnx?v=1689779242896"
+      mindar-image="imageTargetSrc: https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/mickey-head.mind?v=1689813687967;"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+    >
+      <a-entity mindar-image-target="targetIndex: 0">
+        <!--a-plane id="u2netPlane" width="3" height="3" scale="0 0 0" material=""
+                 animation__1="property: rotation; to: 0 360 10; delay: 300; dur: 10000; easing: linear; loop: true"></a-plane-->
+           <!--img id="capturedImage" src="" /-->
+        
+      <a-entity id="u2netPlane" scale="0 0 0" gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/mickey.glb?v=1689815250874" material="" animation-mixer>
+      <img id="capturedImage" src=""/>
+      </a-entity>
+          <a-entity geometry="primitive: sphere" position="0 0 0" radius="3" rotation="0 360 0" color="#4CC3D9" onclick="playvideo()" class="clickable" event-set__enter="_event: mousedown" depth="10" height="10" width="40" material="transparent:true;opacity: 0.7;src:#vid" vidhandler></a-entity>
+      </a-entity>
+      
+            <a-entity light="type: ambient; intensity: 5.55;"></a-entity>
+      <a-light
+        type="directional"
+        light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+        id="light"
+        target="booth"
+        position="-1.8 4 10"
+      >
+      </a-light>
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    </a-scene>
+  </body>
+</html>
