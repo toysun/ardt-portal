@@ -1,0 +1,683 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="
+https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.2/dist/aframe-physics-system.min.js
+"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--script src="https://unpkg.com/aframe-click-drag-component">
+//https://github.com/jesstelford/aframe-click-drag-component
+</script> 
+  <script>
+    registerClickDrag(aframe); 
+  </script-->
+           <style>
+      .tab-start {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(255, 000, 000, 0.5);
+        z-index: 999999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .tab-start div {
+        text-align: center;
+        font-size: 1.25em;
+        color: white;
+      }
+          .logoWrapper {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 100%;
+  z-index: -1; /* needs to be in the background so that it doesn't overlay the title (from html) */
+}
+
+.logoImage {
+  width: 29%; /* 104px */
+  height: 10%; /*  40px */
+  visibility: visible; /* needs to be added, so that the image is always visible. Otherwise it could flicker during click-events or even be hidden (on iOS (Vers.13.5.1, Safari)) */
+}
+           .SoundReplayButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/sound-replay-btn.png?v=1667821099814");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: none;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 80%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+
+      .SoundPauseButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/sound-pause-btn.png?v=1667821093376");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: none;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 80%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+                .HomeButton {
+        background-color: White;
+        background-image: url("https://ardocent.com/aframe/wonder/image/home.png");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 5%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .HomeButton:hover {
+        background-color: Gold;
+      }
+             body {
+  font: normal 14px/100% "Andale Mono", AndaleMono, monospace;
+  width: 300px;
+  margin: 0 auto;
+  display:flex;
+  align-items:center;
+  height:100vh;
+}
+ .Click-here {      
+        background-image: linear-gradient(190deg, #f83600 0%, #fee140 100%);
+        color: #fff;
+        text-align: center;
+        font-size:16px;
+        padding: 18px 0;
+        border: none;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 5px;
+        position: fixed;
+        top: 63%;
+        left: 15%;
+        width: 180px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+ }
+             
+/*             
+.Click-here {
+  cursor: pointer;
+  background-image: linear-gradient(190deg, #f83600 0%, #fee140 100%);
+  color: #fff;
+  width: 180px;
+  text-align: center;
+  font-size:16px;
+  padding: 18px 0;
+  margin: 0 auto;
+  transition:background-image 3s ease-in-out;
+}
+*/
+.Click-here:hover{
+  transition:background-image 3s ease-in-out;
+  background-image: linear-gradient(90deg, #fee140 0%, #f83600 100%);
+}
+.custom-model-main {
+  text-align: center;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0; /* z-index: 1050; */
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+  opacity: 0;
+  -webkit-transition: opacity 0.15s linear, z-index 0.15;
+  -o-transition: opacity 0.15s linear, z-index 0.15;
+  transition: opacity 0.15s linear, z-index 0.15;
+  z-index: -1;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.model-open {
+  z-index: 99999;
+  opacity: 1;
+  overflow: hidden;
+}
+.custom-model-inner {
+  -webkit-transform: translate(0, -25%);
+  -ms-transform: translate(0, -25%);
+  transform: translate(0, -25%);
+  -webkit-transition: -webkit-transform 0.3s ease-out;
+  -o-transition: -o-transform 0.3s ease-out;
+  transition: -webkit-transform 0.3s ease-out;
+  -o-transition: transform 0.3s ease-out;
+  transition: transform 0.3s ease-out;
+  transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;
+  display: inline-block;
+  vertical-align: middle;
+  width: 600px;
+  margin: 30px auto;
+  max-width: 97%;
+}
+.custom-model-wrap {
+  display: block;
+  width: 100%;
+  position: relative;
+  background-color: #fff;
+  border: 1px solid #999;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  background-clip: padding-box;
+  outline: 0;
+  text-align: left;
+  padding: 20px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  max-height: calc(100vh - 70px);
+	overflow-y: auto;
+}
+.model-open .custom-model-inner {
+  -webkit-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  transform: translate(0, 0);
+  position: relative;
+  z-index: 999;
+}
+.model-open .bg-overlay {
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 99;
+}
+.bg-overlay {
+  background: rgba(0, 0, 0, 0);
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  -webkit-transition: background 0.15s linear;
+  -o-transition: background 0.15s linear;
+  transition: background 0.15s linear;
+}
+.close-btn {
+  position: absolute;
+  right: 0;
+  top: -30px;
+  cursor: pointer;
+  z-index: 99;
+  font-size: 30px;
+  color: #fff;
+}
+
+@media screen and (min-width:800px){
+	.custom-model-main:before {
+	  content: "";
+	  display: inline-block;
+	  height: auto;
+	  vertical-align: middle;
+	  margin-right: -0px;
+	  height: 100%;
+	}
+}
+@media screen and (max-width:799px){
+  .custom-model-inner{margin-top: 45px;}
+}
+
+    </style>
+    <style>
+    
+    li{list-style:none;}
+
+
+p{
+	text-align:left;
+	margin:50px 0;
+	color:#FF5733;
+	}
+.bb{
+	font:28px/0.9 "NanumPenWeb","나눔 손글씨 펜","Nanum Pen Script"; }
+
+
+
+	ul{margin-left:0%;}
+	ul li { margin:10px;
+			padding-top:40px;
+			width:100px;
+			height:60px;
+			border-radius:10px;
+			background-color:#FF5733;
+			float:left;
+			text-align:center;
+			color:#ffffff;
+			cursor:pointer;
+			}
+
+	span{
+			position:absolute;
+			display:block;
+			}
+
+	ul li .img_x{ position:absolute;
+					left:0px;
+					top:0px;
+					opacity:0;}
+
+	#btn_o:hover .img_x{opacity:1;
+							left:0;
+							transition:all .4s ease-in .3s;
+							-webkit-transition:all .4s ease-in .3s;
+							-moz-transition:all .4s ease-in .3s;
+							-o-transition:all .4s ease-in .3s;}
+
+
+	ul li .img_o{ position:absolute;
+					right:-700px;
+					top:150px;
+					opacity:0;}
+
+	#btn_x:hover .img_o{opacity:1;
+							right:-100px;
+							transition:all .4s ease-in .3s;
+							-webkit-transition:all .4s ease-in .3s;
+							-moz-transition:all .4s ease-in .3s;
+							-o-transition:all .4s ease-in .3s;}
+    
+    </style>
+  </head>
+  <body>
+        <div class="logoWrapper">
+      <input
+        id="logo"
+        type="image"
+        class="logoImage"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/67-672771_vans-logo-logo.png?v=1689643912142"
+      />
+    </div>
+        <button
+      class="SoundPauseButton"
+      id="audpausebtn"
+      onclick="AudPause();"
+    ></button>
+    <button
+      class="SoundReplayButton"
+      id="audreplaybtn"
+      onclick="AudReplay();"
+    ></button>
+        <button
+      class="HomeButton"
+      id="home-btn"
+      onclick="window.open('https://gif1-ardocent.glitch.me/gundam-head.html','_self');"
+    ></button>
+    <div class="Click-here">Click Here</div>        
+<!--div class="custom-model-main">
+    <div class="custom-model-inner">        
+    <div class="close-btn">×</div>
+        <div class="custom-model-wrap">
+            <div class="pop-up-content-wrap">
+               Content Here
+            </div>
+        </div>  
+    </div>  
+    <div class="bg-overlay"></div>
+</div--> 
+<div class="custom-model-main">
+  <div class="custom-model-inner">        
+    <div class="close-btn">×</div>
+        <div class="custom-model-wrap">
+           <div id="wrap" class="pop-up-content-wrap">
+		<p class="bb"><font size="5" color="#FF5733"><b>꿀재미의 성별은 여자다.</b></font></p>
+             <p><font size="2" color="#6495ED"><b>(자신이 생각하는 답에 '마우스오버'시 정답확인 / '클릭'시 추가메세지를 확인할수있습니다.)</b></font></p>
+
+		<ul>
+      <li id="btn_o" onclick="alert('땡! 꿀재미는 예쁜 여자친구 캐릭터도 함께 만들어졌던, 남자 캐릭터 입니다! ')" ><font size="10">O</font>
+			</li>
+			<li id="btn_x" onclick="alert('정답입니다! ')"><font size="10">X</font>
+			</li>
+		</ul>
+	       </div> 
+   </div>  
+    </div>  
+    <div class="bg-overlay"></div>
+</div> 
+    
+    
+    
+    
+    
+    <a-scene
+      vr-mode-ui="enabled: false"
+      loading-screen="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+      arjs
+      physics
+    >
+            <a-entity
+          scale="8 8 8"
+          position="-1 45 -15"
+          click-drag
+          rotation="0 90 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/vans.glb?v=1689642564986"
+          dynamic-body
+                animation-mixer
+           animation="property: rotation; to: 0 360 0; delay: 3000; dur: 30000; easing: linear; loop: true"   
+                  > 
+      </a-entity>
+            <a-entity
+          scale="8 8 8"
+          position="1.85 40 -19"
+          click-drag
+          rotation="-4.5 -25 -2"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/vans.glb?v=1689642564986"
+          dynamic-body
+          animation-mixer
+          animation="property: rotation; to: 0 360 0; delay: 3000; dur: 30000; easing: linear; loop: true"  
+                  > 
+      </a-entity>
+            <a-entity
+          scale="0.6 0.6 0.6"
+          position="-1 31 -35"
+          click-drag
+          rotation="0 45 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/vans_old_skool_green.glb?v=1689643042689"
+          dynamic-body
+                      animation-mixer
+                  > 
+      </a-entity>
+      <a-entity
+          scale="8 8 8"
+          position="-1 25 -10"
+          click-drag
+          rotation="0 90 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/vans.glb?v=1689642564986"
+          dynamic-body
+                animation-mixer
+           animation="property: rotation; to: 0 360 0; delay: 3000; dur: 30000; easing: linear; loop: true"   
+                  > 
+      </a-entity>
+            <a-entity
+          scale="8 8 8"
+          position="1.85 20 -3"
+          click-drag
+          rotation="-4.5 -25 -2"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/vans.glb?v=1689642564986"
+          dynamic-body
+          animation-mixer
+          animation="property: rotation; to: 0 360 0; delay: 3000; dur: 30000; easing: linear; loop: true"  
+                  > 
+      </a-entity>
+            <a-entity
+          scale="0.6 0.6 0.6"
+          position="-1 11 -5"
+          click-drag
+          rotation="0 45 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/vans_old_skool_green.glb?v=1689643042689"
+          dynamic-body
+                      animation-mixer
+                  > 
+      </a-entity>
+            <a-entity
+          scale="0.6 0.6 0.6"
+          position="1.3 35 -4.5"
+          click-drag
+          rotation="0 15 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/vans_old_skool_green.glb?v=1689643042689"
+          dynamic-body
+                      animation-mixer
+                  > 
+      </a-entity>
+            <a-entity
+          scale="8 8 8"
+          position="-0.12 120 -5"
+          click-drag
+          rotation="0 -45 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/vans.glb?v=1689642564986"
+          dynamic-body
+          animation-mixer
+                  > 
+      </a-entity>
+            <a-entity
+          scale="0.7 0.7 0.7"
+          position="-0.85 300 -3"
+          click-drag
+          rotation="0 -75 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/unused_blue_vans_shoe.glb?v=1689642869022"
+          dynamic-body
+          velocity="1 1 0"
+          animation-mixer
+                  > 
+      </a-entity>
+        <a-entity
+          scale="0.6 0.6 0.6"
+          position="1.3 350 -4.5"
+          click-drag
+          rotation="0 15 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/vans_old_skool_green.glb?v=1689643042689"
+          dynamic-body
+                      animation-mixer
+                  > 
+      </a-entity>
+            <a-entity
+          scale="8 8 8"
+          position="-0.12 12 -5"
+          click-drag
+          rotation="0 -45 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/vans.glb?v=1689642564986"
+          dynamic-body
+          animation-mixer
+                  > 
+      </a-entity>
+            <a-entity
+          scale="0.7 0.7 0.7"
+          position="-0.85 30 -3"
+          click-drag
+          rotation="0 -75 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/unused_blue_vans_shoe.glb?v=1689642869022"
+          dynamic-body
+          velocity="1 1 0"
+          animation-mixer
+                  > 
+      </a-entity>
+                  <a-entity
+          scale="0.6 0.6 0.6"
+          position="-0.85 200 -8"
+          click-drag
+          rotation="0 -75 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/unused_blue_vans_shoe.glb?v=1689642869022"
+          dynamic-body
+          velocity="1 0 0"
+          animation-mixer
+                  > 
+      </a-entity>
+                        <a-entity
+          scale="0.6 0.6 0.6"
+          position="-0.85 30 -14"
+          click-drag
+          rotation="0 -120 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/unused_blue_vans_shoe.glb?v=1689642869022"
+          dynamic-body
+          velocity="1 0 0"
+          animation-mixer
+                  > 
+      </a-entity>
+                        <a-entity
+          scale="0.6 0.6 0.6"
+          position="-1.3 350 -15.5"
+          click-drag
+          rotation="0 15 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/vans_old_skool_green.glb?v=1689643042689"
+          dynamic-body
+                      animation-mixer
+                  > 
+      </a-entity>
+                        <a-entity
+          scale="10 10 10"
+          position="-1.3 35 -15.5"
+          click-drag
+          rotation="0 15 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/vans_shoe_box.glb?v=1689643218586"
+          dynamic-body
+                      animation-mixer
+                  > 
+      </a-entity>
+                      <a-entity
+          scale="0.03 0.03 0.03"
+          position="-0.2 40 -15.35"
+          rotation="0 60 0"
+          visible="true"
+          gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/earth-real.glb?v=1682957004483"
+          shadow="receive: false"
+          animation-mixer
+          animation__2="property: object3D.rotation.y; to: 180; delay: 5500; dur: 50000; easing: easeInOutQuad; dir: alternate; loop: true;"
+                  > 
+      </a-entity>
+                       <a-entity
+          scale="0.6 0.6 0.6"
+          position="-0.85 200 -8"
+          click-drag
+          rotation="0 -75 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/unused_blue_vans_shoe.glb?v=1689642869022"
+          dynamic-body
+          velocity="1 0 0"
+          animation-mixer
+                  > 
+      </a-entity>
+                        <a-entity
+          scale="0.6 0.6 0.6"
+          position="-0.85 120 -14"
+          click-drag
+          rotation="0 -120 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/unused_blue_vans_shoe.glb?v=1689642869022"
+          dynamic-body
+          velocity="1 0 0"
+          animation-mixer
+                  > 
+      </a-entity>
+                        <a-entity
+          scale="0.6 0.6 0.6"
+          position="-1.3 220 -15.5"
+          click-drag
+          rotation="0 15 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/vans_old_skool_green.glb?v=1689643042689"
+          dynamic-body
+                      animation-mixer
+                  > 
+      </a-entity>
+                        <a-entity
+          scale="10 10 10"
+          position="-1.3 500 -15.5"
+          click-drag
+          rotation="0 15 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/vans_shoe_box.glb?v=1689643218586"
+          dynamic-body
+                      animation-mixer
+                  > 
+      </a-entity>
+                      <a-entity
+          scale="0.03 0.03 0.03"
+          position="-0.2 700 -15.35"
+          rotation="0 60 0"
+          visible="true"
+          gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/earth-real.glb?v=1682957004483"
+          shadow="receive: false"
+          animation-mixer
+          animation__2="property: object3D.rotation.y; to: 180; delay: 5500; dur: 50000; easing: easeInOutQuad; dir: alternate; loop: true;"
+                  > 
+      </a-entity>
+
+      
+      
+      
+
+         
+      <a-plane
+        position="0 0 -4"
+        rotation="-90 0 0"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/Moon_VT.reduce.jpg?v=1689644676820"
+        width="60"
+        height="60"
+        opacity="0.5"
+        static-body
+      ></a-plane>
+
+      <!--a-sky color="#ECECEC"></a-sky-->
+      <a-camera look-controls-enabled="false"></a-camera>
+      <a-entity light="type: ambient; intensity: 0.9;"></a-entity>
+      <a-light
+        type="directional"
+        light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+        id="light"
+        target="booth"
+        position="-1.8 20 100"
+      >
+      </a-light>
+    </a-scene>
+    <script>
+    $(".Click-here").on('click', function() {
+  $(".custom-model-main").addClass('model-open');
+}); 
+$(".close-btn, .bg-overlay").click(function(){
+  $(".custom-model-main").removeClass('model-open');
+});
+
+    </script>
+  </body>
+</html>

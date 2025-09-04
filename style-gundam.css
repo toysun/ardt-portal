@@ -1,0 +1,256 @@
+/* CSS files add styling rules to your content */
+
+body {
+  font-family: helvetica, arial, sans-serif;
+  margin: 2em;
+}
+
+h1 {
+  font-style: italic;
+  color: #373fff;
+}
+
+.logoWrapper {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 100%;
+  z-index: -1; /* needs to be in the background so that it doesn't overlay the title (from html) */
+}
+
+.logoImage {
+  width: 29%; /* 104px */
+  height: 10%; /*  40px */
+  visibility: visible; /* needs to be added, so that the image is always visible. Otherwise it could flicker during click-events or even be hidden (on iOS (Vers.13.5.1, Safari)) */
+}
+
+.scannerWrapper {
+  position: fixed;
+  top: 25%;
+  left: 15%;
+  margin: 0 auto;
+}
+
+.scannerImage {
+  width: 85%;
+}
+
+.backward {
+  position: fixed;
+  top: 1%;
+  left: 1%;
+  margin: 0 auto;
+  z-index: 99999;
+}
+
+.backwardImage {
+  width: 10%;
+}
+
+/* Darker background on mouse-over */
+
+.button {
+  background-color: Silver;
+  border: none;
+  color: white;
+  padding: 12px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 36px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 5px;
+  left: 40%;
+  width: 70px;
+  height: 70px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.button:hover {
+  background-color: Gold;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  width: 73vw;
+  background-image: url("https://cdn.glitch.com/c3e964aa-a822-4b2c-877a-b97e2fbfd390%2Fending_popup_50.png?v=1609049344617");
+  min-height: 40%;
+  background-position: center;
+  background-size: cover;
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 15%;
+  top: 10%;
+  border-radius: 10%;
+  /* width: 70%; 
+  height: 70%; */
+  overflow: auto; /* Enable scroll if needed */
+}
+
+/* Modal Content */
+.modal-content {
+  position: fixed;
+  border: none;
+  margin: auto;
+  padding: 1px;
+  /*  border: 1px solid #888; */
+  /*width: 50%; /* Full width */
+  /*  justify-content: center;
+/*  align-items: center;  */
+  align: center;
+  width: 40%;
+  top: 33%;
+  left: 20%;
+  z-index: 99999;
+}
+
+/* The Close Button */
+.closebtn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.closebtn:hover,
+.closebtn:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+
+/* KEYFRAMES */
+
+
+@keyframes spin {
+  from {
+    transform: rotate(0);
+  }
+  to{
+    transform: rotate(359deg);
+  }
+}
+
+@keyframes spin3D {
+  from {
+    transform: rotate3d(.5,.5,.5, 360deg);
+  }
+  to{
+    transform: rotate3d(0deg);
+  }
+}
+
+@keyframes configure-clockwise {
+  0% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(90deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(270deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes configure-xclockwise {
+  0% {
+    transform: rotate(45deg);
+  }
+  25% {
+    transform: rotate(-45deg);
+  }
+  50% {
+    transform: rotate(-135deg);
+  }
+  75% {
+    transform: rotate(-225deg);
+  }
+  100% {
+    transform: rotate(-315deg);
+  }
+}
+
+@keyframes pulse {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: .25;
+    transform: scale(.75);
+  }
+}
+
+/* GRID STYLING */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  background-color: #1d2630;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.image-target div {
+  text-align: center;
+  font-size: 1.2em;
+  color: white;
+}
+.image-target {
+  position: absolute;
+  width: 80vw;
+  height: 10vh;
+  display: flex;
+  top: 50vh;
+  left: 10vw;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  z-index: 9999;
+   text-align: center;
+  font-size: 1.2em;
+  color: white;
+}
+
+.arjs-loader {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  display: flex;
+  top: 25%;
+  left: 30%;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  z-index: 9999;
+}
+
+.arjs-loader div {
+  text-align: center;
+  font-size: 1.25em;
+  color: white;
+}

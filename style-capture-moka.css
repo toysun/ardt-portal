@@ -1,0 +1,290 @@
+/* CSS files add styling rules to your content */
+
+body {
+  font-family: helvetica, arial, sans-serif;
+  margin: 2em;
+}
+
+h1 {
+  font-style: italic;
+  color: #373fff;
+}
+
+.logoWrapper {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 100%;
+  z-index: -1; /* needs to be in the background so that it doesn't overlay the title (from html) */
+}
+
+.logoImage {
+  width: 29%; /* 104px */
+  height: 10%; /*  40px */
+  visibility: visible; /* needs to be added, so that the image is always visible. Otherwise it could flicker during click-events or even be hidden (on iOS (Vers.13.5.1, Safari)) */
+}
+
+.scannerWrapper {
+  position: fixed;
+  top: 5%;
+  left: 5%;
+  margin: 0 auto;
+}
+
+.scannerImage {
+  width: 95%;
+}
+.backward {
+    position: fixed;
+    top: 1%;
+    left: 1%;
+    margin: 0 auto; 
+}
+
+.backwardImage {
+    width: 10%;
+}
+/* Darker background on mouse-over */
+
+.button {
+  background-color: Silver;
+  border: none;
+  color: white;
+  padding: 12px 16px;
+  text-align: center;
+  text-decoration: none;
+  /*   display: inline-block; */
+  font-size: 36px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 5px;
+  left: 40%;
+  width: 70px;
+  height: 70px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+}
+
+.button:hover {
+  background-color: Gold;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 20px;
+  left: 5px;
+  width: 90%;
+  height: 80%;
+  z-index: 99998;
+  border-radius: 6px;
+}
+
+.modal-content {
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0 auto;
+  width: 100%; 
+  height: 100%;
+/*  max-width: 480px;
+  min-height: 20rem; */ 
+/*  width: 600px;
+  max-width: 75rem;
+  min-height: 20rem;  */
+  padding: 5px;
+  border: 10px outset white;
+  border-radius: 5px;
+  z-index: 99999;
+}
+
+.hfc {
+  position: relative;
+  margin: 0;
+  padding-top: 1%;
+  width: 70%;
+}
+
+#caption {
+  margin: auto;
+  display: none;
+  width: 70%;
+  max-width: 700px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+/* The Close Button */
+.closebtn {
+  /* position: absolute;  */
+  position: fixed;
+  top: 6%;
+  left: 87%;
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  z-index: 99999;
+}
+
+.closebtn:hover,
+.closebtn:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.capturebtn {
+  background-color: White;
+  background-image: url("https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/photo-camera-white.png?v=1662162661638");
+  background-size: cover;
+  background-position: center;
+  border: none;
+  padding: 5px;
+  display: inline-block;
+  margin: 1px 1px;
+  cursor: pointer;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 5%;
+  left: 42%;
+  width: 60px;
+  height: 60px;
+  /*display: flex;*/
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  transition: all 0.5s;
+  cursor: pointer;
+}
+
+/* Darker background on mouse-over */
+.capturebtn:hover {
+  background-color: Gold;
+}
+
+.savebtn {
+  background-color: Silver;
+  background-image: url("https://cdn.glitch.global/be340911-435f-4b68-b71f-00337c3212ac/direct-download-white.png?v=1661493577096");
+  background-size: cover;
+  background-position: center;
+  border: none;
+  padding: 10px;
+  display: none;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 20%;
+  position: fixed;
+  bottom: 3%;
+  left: 40%;
+  width: 80px;
+  height: 80px;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  transition: all 0.5s;
+  cursor: pointer;
+}
+
+/* Darker background on mouse-over */
+.savebtn:hover {
+  background-color: Gold;
+}
+
+/* Add Animation */
+.modal-content,
+#caption {
+  -webkit-animation-name: zoom;
+  -webkit-animation-duration: 0.6s;
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+  from {
+    -webkit-transform: scale(0);
+  }
+  to {
+    -webkit-transform: scale(1);
+  }
+}
+
+@keyframes zoom {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* The Close Button */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 2px;
+  color: #f1f1f1;
+  float: right;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+  z-index: 99999;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px) {
+  .modal-content {
+    width: 100%;
+  }
+}
+
+#vid {
+  display: none;
+}
+
+
+ #webcam {
+        opacity: 0.9;
+        position: fixed;
+        background-size: 100% 100%;
+        top: 0;
+        left: -60;
+        min-width: 100%;
+        min-height: 100%;
+        /*    width: 100%; height: 100%;  */
+      }
+
+.arjs-loader {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+.arjs-loader div {
+        text-align: center;
+        font-size: 1.25em;
+        color: white;
+}

@@ -1,0 +1,125 @@
+pose<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-face.prod.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-face-aframe.prod.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.4/pose.js"
+      crossorigin="anonymous"
+    ></script>
+    <!--script src="https://unpkg.com/aframe-environment-component/dist/aframe-environment-component.min.js"></script-->
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+     <!--style>
+      video {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        transform: scale(-1, 1);
+        z-index: -1;
+      }
+
+      canvas {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+      }
+
+      #coordinates {
+        color: black;
+        font-size: 20pt;
+        text-shadow: 0 0 3px #ffffff, 0 0 5px #ffffff;
+      }
+    </style-->
+    <style>
+      video {
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        transform: scale(-1, 1);
+        z-index: -1;
+      }
+
+      canvas {
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      #coordinates {
+        color: black;
+        font-size: 20pt;
+        text-shadow: 0 0 3px #ffffff, 0 0 5px #ffffff;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <div id="coordinates">
+        <div>
+          Left: (x: {{ round(left3D.x) }}m, y: {{ round(left3D.y) }}m, z: {{
+          round(left3D.z) }}m)
+        </div>
+        <div>
+          Right: (x: {{ round(right3D.x) }}m, y: {{ round(right3D.y) }}m, z: {{
+          round(right3D.z) }}m)
+        </div>
+      </div>
+      <canvas id="output"></canvas>
+      <video id="video"></video>
+      <a-scene
+        vr-mode-ui="enabled: false">
+        <a-camera position="0 1.6 0"></a-camera>
+        <a-gltf-model
+          id="left"
+          position="0 1 -3"
+          scale="0.003 0.003 0.003"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/toon_cat_free.glb?v=1667748167514"
+          animation-mixer
+        ></a-gltf-model>
+                <a-gltf-model
+          id="right"
+          position="0 1 -3"
+          scale="0.01 0.01 0.01"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/fish_animated.glb?v=1667748047801"
+          animation-mixer
+        ></a-gltf-model>
+        <!--a-sphere
+          id="left"
+          position="0 1 -3"
+          radius="0.5"
+          color="blue"
+        ></a-sphere-->
+        <!--a-sphere
+          id="right"
+          position="0 1 -3"
+          radius="0.5"
+          color="yellow"
+        ></a-sphere-->
+      </a-scene>
+    </div>
+
+    <script type="module" src="main_pose.js"></script>
+  </body>
+</html>

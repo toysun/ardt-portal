@@ -1,0 +1,72 @@
+html, body{
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  top-margin: 50px
+  display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow-y: hidden;
+	background-color: #fff;
+}
+
+button {
+  position: absolute;
+  width: 60px;
+  justify-content: center;
+	align-items: center;
+  z-index: 9999;
+  
+}
+canvas {
+    background-image: url('https://cdn.glitch.com/83822123-a16b-41b7-880f-a308fa8ee968%2Fmerry-christmas.png?v=1607560186543');
+    background-size:     cover;                      
+    background-repeat:   no-repeat;
+    background-position: center;
+}
+.cameraControls {
+    position: absolute;
+    bottom: 70px;
+    width: 100%;
+    z-index: 9998;
+    background: transparent;
+    opacity: 0.7;
+    padding: 0px;
+}
+
+.material-icons{
+    position: absolute;
+    font-size: 40px !important;
+    color: white;
+    width: 50px;
+    height: 50px;
+    justify-content: left;
+    align-items: left;
+    background-color: black;
+    border-radius: 50%;
+    padding-top: 7px;
+    padding-left: 10px;
+    margin-left: 70%;
+    margin-top: 1%;
+}
+#flip-btn {
+  position: absolute;
+  bottom: 5%;
+  right: 5%;
+  padding: 10px 20px;
+  
+}
+a-scene { 
+  display: block; 
+  width: 100%; 
+}
+
+.cameraControls {
+    position: absolute;
+    bottom: 70px;
+    width: 100%;
+    z-index: 9999;
+    background: transparent;
+    opacity: 0.7;
+    padding: 0px;
+}

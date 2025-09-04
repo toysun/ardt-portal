@@ -1,0 +1,114 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="
+https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.2/dist/aframe-physics-system.min.js
+"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <!--script src="https://unpkg.com/aframe-click-drag-component">
+//https://github.com/jesstelford/aframe-click-drag-component
+</script> 
+  <script>
+    registerClickDrag(aframe); 
+  </script-->
+  </head>
+  <body>
+    <a-scene
+      vr-mode-ui="enabled: false"
+      loading-screen="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+      arjs
+      physics
+    >
+                    <!--a-entity
+          scale="1 1 1"
+          position="0.5 15 -4"
+          click-drag
+          rotation="0 45 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/lemon.glb?v=1678144324828"
+          dynamic-body
+                  > 
+      </a-entity-->
+      <a-box
+        position="-0.85 50 -3"
+        click-drag
+        rotation="0 45 0"
+        color="#fff"
+        src="https://cdn.glitch.com/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288%2Fgame1-texture.jpg?v=1618150540316"
+        dynamic-body
+      >
+      </a-box>
+      <a-box
+        position="-1 11 -5"
+        scale="1 3 1"
+        click-drag
+        rotation="0 45 0"
+        color="#fff"
+        src="https://cdn.glitch.com/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288%2Fgame1-texture.jpg?v=1618150540316"
+        dynamic-body
+      >
+      </a-box>
+      <a-box
+        position="0.5 40 -4"
+        click-drag
+        rotation="0 45 0"
+        color="#fff"
+        src="https://cdn.glitch.com/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288%2Fgame1-texture.jpg?v=1618150540316"
+        dynamic-body
+      >
+      </a-box>
+                  <a-sphere
+        position="-0.3 10 -5"
+        click-drag
+        radius="1"
+        color="#fff"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/apple.jpg?v=1678206781570"
+        dynamic-body
+      ></a-sphere>
+            <a-sphere
+        position="-0.2 20 -5"
+        click-drag
+        radius="1"
+        color="#fff"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/apple.jpg?v=1678206781570"
+        dynamic-body
+      ></a-sphere>
+      <a-sphere
+        position="-0.4 30 -5"
+        click-drag
+        radius="1"
+        color="#fff"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/apple.jpg?v=1678206781570"
+        dynamic-body
+      ></a-sphere>
+      <a-box
+        position="-0.4 13 -2"
+        click-drag
+        rotation="0 45 0"
+        color="#fff"
+        src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/%E2%80%94Pngtree%E2%80%94curvy%20purple%20line%20abstract%20background_5588500-cut.png?v=1672532763671"
+        dynamic-body
+      ></a-box>
+      <a-box
+        position="-0.3 14 -1"
+        click-drag
+        rotation="0 45 0"
+        color="#4CC3D9"
+        src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/%E2%80%94Pngtree%E2%80%94curvy%20purple%20line%20abstract%20background_5588500-cut.png?v=1672532763671"
+        dynamic-body
+      ></a-box>
+
+      <a-plane
+        position="0 0 -4"
+        rotation="-90 0 0"
+        width="4"
+        height="4"
+        opacity="0"
+        static-body
+      ></a-plane>
+
+      <!--a-sky color="#ECECEC"></a-sky-->
+      <a-camera look-controls-enabled="false"></a-camera>
+    </a-scene>
+  </body>
+</html>

@@ -1,0 +1,209 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="
+https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.2/dist/aframe-physics-system.min.js
+"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+ 
+    <!--script src="https://unpkg.com/aframe-click-drag-component">
+//https://github.com/jesstelford/aframe-click-drag-component
+</script> 
+  <script>
+    registerClickDrag(aframe); 
+  </script-->
+  </head>
+  <body>
+    <a-scene
+      vr-mode-ui="enabled: false"
+      loading-screen="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+      arjs
+      physics
+    >
+      <a-entity
+          scale="3 3 3"
+          position="0 15 -4"
+          click-drag
+          rotation="0 45 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/candy_crush_bomba_de_color.glb?v=1682460699565"
+          dynamic-body
+                  > 
+      </a-entity>
+            <a-entity
+          scale="0.03 0.03 0.03"
+          position="-0.85 30 -3"
+          click-drag
+          rotation="0 45 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/candy%20(3).glb?v=1682461143319"
+          dynamic-body
+                  > 
+      </a-entity>
+                  <a-entity
+          scale="0.003 0.003 0.003"
+          position="-1 11 -5"
+          click-drag
+          rotation="0 0 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/candy.glb?v=1682461021934"
+          dynamic-body
+                  > 
+      </a-entity>
+                        <a-entity
+          scale="500 500 500"
+          position="0 14 -4.5"
+          click-drag
+          rotation="0 40 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/coffee_bean.glb?v=1682462028510"
+          dynamic-body
+  
+                  > 
+      </a-entity>
+                              <a-entity
+          scale="0.07 0.07 0.07"
+          position="0 25 -4.5"
+          click-drag
+          rotation="0 0 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/astronaut_helmet.glb?v=1682462232566"
+          dynamic-body
+          animation-mixer
+                  > 
+      </a-entity>
+                                   <a-entity
+          scale="1 1 1"
+          position="0 15 -4.5"
+          click-drag
+          rotation="0 0 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/peppermint_candy.glb?v=1682472841479"
+          dynamic-body
+          animation-mixer
+                  > 
+      </a-entity>
+                                         <a-entity
+          scale="1 1 1"
+          position="0 35 -6.5"
+          click-drag
+          rotation="0 0 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/spiral_lollipop.glb?v=1682473204160"
+          dynamic-body
+          animation-mixer
+                  > 
+      </a-entity>
+                                               <a-entity
+          scale="1 1 1"
+          position="0 35 -6.5"
+          click-drag
+          rotation="0 0 0"
+          gltf-model="https://cdn.glitch.me/7aef11f6-e1ff-4444-833f-2588de98f4e6/1928_chevy_tudor.glb?v=1682473608226"
+          dynamic-body
+          animation-mixer
+                  > 
+      </a-entity>
+                                                     <a-entity
+          scale="0.01 0.01 0.01"
+          position="0 0 -8.5"
+          click-drag
+          rotation="0 0 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/carousel_spinning.glb?v=1682506268528"
+          dynamic-body
+          animation-mixer
+                  > 
+      </a-entity>
+      <!--a-box
+        position="-0.85 50 -3"
+        click-drag
+        rotation="0 45 0"
+        color="#fff"
+        src="https://cdn.glitch.com/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288%2Fgame1-texture.jpg?v=1618150540316"
+        dynamic-body
+      >
+      </a-box>
+      <a-box
+        position="-1 11 -5"
+        scale="1 3 1"
+        click-drag
+        rotation="0 45 0"
+        color="#fff"
+        src="https://cdn.glitch.com/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288%2Fgame1-texture.jpg?v=1618150540316"
+        dynamic-body
+      >
+      </a-box>
+      <a-box
+        position="0.5 40 -4"
+        click-drag
+        rotation="0 45 0"
+        color="#fff"
+        src="https://cdn.glitch.com/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288%2Fgame1-texture.jpg?v=1618150540316"
+        dynamic-body
+      >
+      </a-box>
+                  <a-sphere
+        position="-0.3 10 -5"
+        click-drag
+        radius="1"
+        color="#fff"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/apple.jpg?v=1678206781570"
+        dynamic-body
+      ></a-sphere>
+            <a-sphere
+        position="-0.2 20 -5"
+        click-drag
+        radius="1"
+        color="#fff"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/apple.jpg?v=1678206781570"
+        dynamic-body
+      ></a-sphere>
+      <a-sphere
+        position="-0.4 30 -5"
+        click-drag
+        radius="1"
+        color="#fff"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/apple.jpg?v=1678206781570"
+        dynamic-body
+      ></a-sphere>
+      <a-box
+        position="-0.4 13 -2"
+        click-drag
+        rotation="0 45 0"
+        color="#fff"
+        src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/%E2%80%94Pngtree%E2%80%94curvy%20purple%20line%20abstract%20background_5588500-cut.png?v=1672532763671"
+        dynamic-body
+      ></a-box>
+      <a-box
+        position="-0.3 14 -1"
+        click-drag
+        rotation="0 45 0"
+        color="#4CC3D9"
+        src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/%E2%80%94Pngtree%E2%80%94curvy%20purple%20line%20abstract%20background_5588500-cut.png?v=1672532763671"
+        dynamic-body
+      ></a-box-->
+
+      <a-plane
+        position="0 0 -4"
+        rotation="-90 0 0"
+        width="60"
+        height="60"
+        opacity="0"
+        static-body
+      ></a-plane>
+
+      <!--a-sky color="#ECECEC"></a-sky-->
+      <a-camera look-controls-enabled="false"></a-camera>
+            <a-entity light="type: ambient; intensity: 3;"></a-entity>
+      <a-light
+        type="directional"
+        light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+        id="light"
+        target="booth"
+        position="-1.8 20 100"
+      >
+      </a-light>
+    </a-scene>
+  </body>
+</html>

@@ -1,0 +1,575 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="
+https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.2/dist/aframe-physics-system.min.js
+"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <!--script src="https://unpkg.com/aframe-click-drag-component">
+//https://github.com/jesstelford/aframe-click-drag-component
+</script> 
+  <script>
+    registerClickDrag(aframe); 
+  </script-->
+
+           <style>
+      .tab-start {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(255, 000, 000, 0.5);
+        z-index: 999999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .tab-start div {
+        text-align: center;
+        font-size: 1.25em;
+        color: white;
+      }
+          .logoWrapper {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 100%;
+  z-index: -1; /* needs to be in the background so that it doesn't overlay the title (from html) */
+}
+
+.logoImage {
+  width: 29%; /* 104px */
+  height: 10%; /*  40px */
+  visibility: visible; /* needs to be added, so that the image is always visible. Otherwise it could flicker during click-events or even be hidden (on iOS (Vers.13.5.1, Safari)) */
+}
+           .SoundReplayButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/sound-replay-btn.png?v=1667821099814");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: none;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 80%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+
+      .SoundPauseButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/sound-pause-btn.png?v=1667821093376");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: none;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 80%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+     .HomeButton {
+        background-color: White;
+        background-image: url("https://ardocent.com/aframe/wonder/image/home.png");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 5%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .HomeButton:hover {
+        background-color: Gold;
+      }
+             * {
+	border: 0;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+
+* {
+  font-family: Pretendard;
+}
+
+body {
+  background: #f7f8fc;
+}
+
+canvas {
+  top: 5rem;
+  left: 1rem;
+  width: 300px;
+  height: 300px;
+  position: fixed;
+  transition: 2s;
+}
+             
+      .btn_roullet {
+        background-color: #febf00;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 5px;
+        position: fixed;
+        top: 63%;
+        left: 15%;
+        width: 150px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+/*
+.btn_roullet {
+  background: #febf00;
+  margin-top: 1rem;
+  margin-left: 1.5rem;
+  padding: .8rem 1.8rem;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: .2s;
+  z-index: 99999;
+  display: inline-block;
+  cursor: pointer;
+}
+*/
+.btn_roullet :active {
+  background: #444;
+  color: #f9f9f9;
+}
+ 
+div {
+  width: 380px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+}
+
+div::before {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 50px;
+  border-radius: 5px;
+  background: #000;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 22;
+}
+    </style>
+  </head>
+  <body>
+        <div class="logoWrapper">
+      <input
+        id="logo"
+        type="image"
+        class="logoImage"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/67-672771_vans-logo-logo.png?v=1689643912142"
+      />
+    </div>
+        <button
+      class="SoundPauseButton"
+      id="audpausebtn"
+      onclick="AudPause();"
+    ></button>
+    <button
+      class="SoundReplayButton"
+      id="audreplaybtn"
+      onclick="AudReplay();"
+    ></button>
+        <button
+      class="HomeButton"
+      id="home-btn"
+      onclick="window.open('https://gif1-ardocent.glitch.me/gundam-head.html','_self');"
+    ></button>
+    <div>
+    <button class="btn_roullet" onclick="rotate()">룰렛 돌리기</button>  
+  <canvas width="380" height="380"></canvas>  
+    
+  </div>
+    <!--button class="fc spawned" id="fc_btn" type="button">
+	<div class="fc-part left"></div>
+	<div class="fc-part right"></div>
+	<div class="fc-crumbs">
+		<div class="fc-crumb"></div>
+		<div class="fc-crumb"></div>
+		<div class="fc-crumb"></div>
+		<div class="fc-crumb"></div>
+		<div class="fc-crumb"></div>
+		<div class="fc-crumb"></div>
+		<div class="fc-crumb"></div>
+		<div class="fc-crumb"></div>
+	</div>
+	<div class="fc-fortune">
+		<p class="fc-fortune-text">No fortune</p>
+		<p class="fc-lucky-numbers">행운 번호  <span>?, ?, ?, ?, ?, ?</span></p>
+	</div>
+</button>
+    
+    <!--a-scene
+      vr-mode-ui="enabled: false"
+      loading-screen="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+      arjs
+      physics
+    >
+      <a-entity
+          scale="8 8 8"
+          position="-1 25 -10"
+          click-drag
+          rotation="0 90 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/vans.glb?v=1689642564986"
+          dynamic-body
+                animation-mixer
+           animation="property: rotation; to: 0 360 0; delay: 3000; dur: 30000; easing: linear; loop: true"   
+                  > 
+      </a-entity>
+            <a-entity
+          scale="8 8 8"
+          position="1.85 20 -3"
+          click-drag
+          rotation="-4.5 -25 -2"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/vans.glb?v=1689642564986"
+          dynamic-body
+          animation-mixer
+          animation="property: rotation; to: 0 360 0; delay: 3000; dur: 30000; easing: linear; loop: true"  
+                  > 
+      </a-entity>
+            <a-entity
+          scale="0.6 0.6 0.6"
+          position="-1 11 -5"
+          click-drag
+          rotation="0 45 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/vans_old_skool_green.glb?v=1689643042689"
+          dynamic-body
+                      animation-mixer
+                  > 
+      </a-entity>
+            <a-entity
+          scale="0.6 0.6 0.6"
+          position="1.3 35 -4.5"
+          click-drag
+          rotation="0 15 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/vans_old_skool_green.glb?v=1689643042689"
+          dynamic-body
+                      animation-mixer
+                  > 
+      </a-entity>
+            <a-entity
+          scale="8 8 8"
+          position="-0.12 12 -5"
+          click-drag
+          rotation="0 -45 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/vans.glb?v=1689642564986"
+          dynamic-body
+          animation-mixer
+                  > 
+      </a-entity>
+            <a-entity
+          scale="0.7 0.7 0.7"
+          position="-0.85 30 -3"
+          click-drag
+          rotation="0 -75 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/unused_blue_vans_shoe.glb?v=1689642869022"
+          dynamic-body
+          velocity="1 1 0"
+          animation-mixer
+                  > 
+      </a-entity>
+                  <a-entity
+          scale="0.6 0.6 0.6"
+          position="-0.85 30 -8"
+          click-drag
+          rotation="0 -75 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/unused_blue_vans_shoe.glb?v=1689642869022"
+          dynamic-body
+          velocity="1 0 0"
+          animation-mixer
+                  > 
+      </a-entity>
+                        <a-entity
+          scale="0.6 0.6 0.6"
+          position="-0.85 30 -14"
+          click-drag
+          rotation="0 -120 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/unused_blue_vans_shoe.glb?v=1689642869022"
+          dynamic-body
+          velocity="1 0 0"
+          animation-mixer
+                  > 
+      </a-entity>
+                        <a-entity
+          scale="0.6 0.6 0.6"
+          position="-1.3 35 -15.5"
+          click-drag
+          rotation="0 15 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/vans_old_skool_green.glb?v=1689643042689"
+          dynamic-body
+                      animation-mixer
+                  > 
+      </a-entity>
+                        <a-entity
+          scale="10 10 10"
+          position="-1.3 35 -15.5"
+          click-drag
+          rotation="0 15 0"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/vans_shoe_box.glb?v=1689643218586"
+          dynamic-body
+                      animation-mixer
+                  > 
+      </a-entity>
+                      <!--a-entity
+          scale="0.03 0.03 0.03"
+          position="-0.2 7.6 -35.35"
+          rotation="0 60 0"
+          visible="true"
+          gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/earth-real.glb?v=1682957004483"
+          shadow="receive: false"
+          animation-mixer
+          animation__2="property: object3D.rotation.y; to: 180; delay: 5500; dur: 50000; easing: easeInOutQuad; dir: alternate; loop: true;"
+                  > 
+      </a-entity-->
+                    <a-entity
+        navigate-on-click="url: https://famous-actually-mint.glitch.me/"
+        gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/confetti_fbx.glb?v=1668304614536"
+        id="feel9"
+        position="-0.2 7.6 -35.35"
+        rotation="0 45 0"
+        scale="3 3 3"
+        animation-mixer="loop: true"
+        shadow="receive: true"
+      >
+      </a-entity>
+
+         
+      <a-plane
+        position="0 0 -4"
+        rotation="-90 0 0"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/Moon_VT.reduce.jpg?v=1689644676820"
+        width="60"
+        height="60"
+        opacity="0.5"
+        static-body
+      ></a-plane>
+
+      <!--a-sky color="#ECECEC"></a-sky-->
+      <a-camera look-controls-enabled="false"></a-camera>
+            <a-entity light="type: ambient; intensity: 2;"></a-entity>
+      <a-light
+        type="directional"
+        light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+        id="light"
+        target="booth"
+        position="-1.8 20 100"
+      >
+      </a-light>
+    </a-scene-->
+    <script>
+      const $c = document.querySelector("canvas");
+const ctx = $c.getContext(`2d`);
+
+
+const product = [
+  "떡볶이", '돈가스', "초밥", "피자", "냉면", "치킨", '족발', "피자", "삼겹살",
+];
+
+const colors = ["#dc0936", "#e6471d", "#f7a416", "#efe61f ", "#60b236", "#209b6c", "#169ed8", "#3f297e", "#87207b", "#be107f", "#e7167b"];
+
+const newMake = () => {
+    const [cw, ch] = [$c.width / 2, $c.height / 2];
+    const arc = Math.PI / (product.length / 2);
+  
+    for (let i = 0; i < product.length; i++) {
+      ctx.beginPath();
+      ctx.fillStyle = colors[i % (colors.length -1)];
+      ctx.moveTo(cw, ch);
+      ctx.arc(cw, ch, cw, arc * (i - 1), arc * i);
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    ctx.fillStyle = "#fff";
+    ctx.font = "18px Pretendard";
+    ctx.textAlign = "center";
+
+    for (let i = 0; i < product.length; i++) {
+      const angle = (arc * i) + (arc / 2);
+
+      ctx.save()  ;
+
+      ctx.translate(
+        cw + Math.cos(angle) * (cw - 50),
+        ch + Math.sin(angle) * (ch - 50),
+      );
+
+      ctx.rotate(angle + Math.PI / 2);
+
+      product[i].split(" ").forEach((text, j) => {
+        ctx.fillText(text, 0, 30 * j);
+      });
+
+      ctx.restore();
+    }
+}
+
+const rotate = () => {
+  $c.style.transform = `initial`;
+  $c.style.transition = `initial`;
+  
+  setTimeout(() => {
+    
+    const ran = Math.floor(Math.random() * product.length);
+
+    const arc = 360 / product.length;
+    const rotate = (ran * arc) + 3600 + (arc * 3) - (arc/4);
+    
+    $c.style.transform = `rotate(-${rotate}deg)`;
+    $c.style.transition = `2s`;
+    
+    setTimeout(() => alert(`오늘의 야식은?! ${product[ran]} 어떠신가요?`), 2000);
+  }, 1);
+};
+
+newMake();
+    </script>
+        <!--script>
+    addEventListener("load",app);
+function app() {
+	class Fortune {
+		constructor(fortuneList) {
+			this.text = !fortuneList ? "No fortune" : fortuneList[~~(Math.random() * fortuneList.length)];
+			this.luckyNumbers = [];
+			this.drawLuckyNumbers();
+		}
+		drawLuckyNumbers() {
+			let maxDraws = 6,
+				draws = maxDraws,
+				maxNumber = 99,
+				numberPool = [];
+
+			// create number pool
+			while (maxNumber--) {
+				numberPool.unshift(maxNumber + 1);
+			}
+			// draw from pool, populate the lucky numbers
+			while (draws--) {
+				let drawn = ~~(Math.random() * numberPool.length);
+				this.luckyNumbers.push(numberPool[drawn]);
+				numberPool.splice(drawn,1);
+			}
+		}
+	}
+
+	//var fcBtn = document.querySelector("button"),
+  var fcBtn = document.getElementById("fc_btn"),
+		fortuneText = document.querySelector(".fc-fortune-text"),
+		fortuneLuckyNumbers = document.querySelector(".fc-lucky-numbers span"),
+		fortuneList = [
+			"Did you know that fortune cookies aren’t even Chinese? They’re made by Americans, based on a Japanese recipe.",
+			"You have an ability to sense and know higher truth.",
+			"Excellent time to become a missing person.",
+			"Don’t look back, the lemmings are gaining on you.",
+			"You look tired.",
+			"Chess tonight.",
+			"Don’t feed the bats tonight.",
+			"Your boss is a few sandwiches short of a picnic.",
+			"You will forget that you ever knew me.",
+			"Future looks spotty. You will spill soup in late evening.",
+			"You have the capacity to learn from mistakes. You’ll learn a lot today.",
+			"A vivid and creative mind characterizes you.",
+			"If you think last Tuesday was a drag, wait till you see what happens tomorrow!",
+			"You will be attacked next Wednesday at 3:15 P.M. by six samurai sword wielding purple fish glued to Harley-Davidson motorcycles.",
+			"There was a phone call for you.",
+			"Are you making all this up as you go along?",
+			"Don’t plan any hasty moves. You’ll be evicted soon anyway.",
+			"Advancement in position.",
+			"You’re ugly and your mother dresses you funny.",
+			"Be careful! Is it classified?"
+		],
+		fortune = new Fortune(),
+
+		getFortune = function(){
+			fortune = new Fortune(fortuneList);
+			fortuneText.innerHTML = fortune.text;
+			fortuneLuckyNumbers.innerHTML = fortune.luckyNumbers.join(", ");
+		},
+		nextState = function(){
+			let elClass = this.classList,
+				spawned = "spawned",
+				opened = "opened";
+
+			// open cookie
+			if (elClass.contains(spawned)) {
+				elClass.remove(spawned);
+				elClass.add(opened);
+
+			// new cookie
+			} else {
+				elClass.remove(opened);
+				elClass.add(spawned);
+				getFortune();
+			}
+		};
+	
+	getFortune();
+	fcBtn.addEventListener("click",nextState);
+}
+    </script-->
+  </body>
+</html>

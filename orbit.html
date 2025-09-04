@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>A-Frame 3D Globe Component Example</title>
+    <meta name="description" content="Example for 3D Globe component." />
+
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-globe-component/dist/aframe-globe-component.min.js"></script>
+    <script src="https://cdn.rawgit.com/tizzle/aframe-orbit-controls-component/v0.1.14/dist/aframe-orbit-controls-component.min.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <!--module to parse CSV and fetch data-->
+    <script src="https://d3js.org/d3-dsv.v2.min.js"></script>
+    <script src="https://d3js.org/d3-fetch.v2.min.js"></script>
+    <script>
+      const weightColor = d3
+        .scaleSequentialLog()
+        .domain([11097, 1378665000])
+        .range(["yellow", "red"]);
+
+      const globeEntity = document.getElementById("globeID");
+
+      const globeEntityB = document.getElementById("globeID2");
+
+      function getWorldAirport() {
+        d3.json(
+          "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_airports.geojson"
+        ).then(function (data) {
+          globeEntityB.setAttribute("globe", {
+            labelsData: data.features,
+            labelLat: (d) => d.geometry.coordinates[1],
+            labelLng: (d) => d.geometry.coordinates[0],
+            labelText: (d) => d.properties.name,
+            labelDotOrientation: () => "bottom",
+            labelColor: () => "rgba(255,255,255,1)",
+            labelSize: 0.2,
+            labelResolution: 1,
+            labelIncludeDot: true,
+          });
+
+          globeEntity.setAttribute("globe", {
+            //data.features represent the Array of the parsed GeoJson
+            arcsData: data.features,
+            //Lat and Lng of London
+            arcStartLat: 51.509865,
+            arcStartLng: -0.118092,
+            //Lat and Lng of all the other Airports, d is the reference of data.features
+            arcEndLat: (d) => d.geometry.coordinates[1],
+            arcEndLng: (d) => d.geometry.coordinates[0],
+            //Parameters of the arc visualisation
+            arcDashLength: 0.25,
+            arcDashGap: 1,
+            arcDashInitialGap: () => Math.random(),
+            arcDashAnimateTime: 4000,
+            arcColor: () => [`rgba(0, 255, 0, 0.5)`, `rgba(255, 0, 0, 0.5)`],
+            arcsTransitionDuration: 0,
+
+            pointsData: data.features,
+            pointLat: (d) => d.geometry.coordinates[1],
+            pointLng: (d) => d.geometry.coordinates[0],
+            pointColor: () => "orange",
+            pointAltitude: 0,
+            pointRadius: 0.2,
+            pointsMerge: true,
+            pointResolution: 4,
+          });
+        });
+      }
+      getWorldAirport();
+    </script>
+  </head>
+  <body style="margin: 0px; overflow: hidden">
+    <a-scene embedded vr-mode-ui="enabled: false">
+      <a-assets>
+        <img
+          id="stars"
+          src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Solarsystemscope_texture_2k_stars_milky_way.jpg"
+        />
+      </a-assets>
+
+      <a-entity
+        id="globeID"
+        class="collidable"
+        scale="0.1 0.1 0.1"
+        globe="
+   globe-image-url: https://upload.wikimedia.org/wikipedia/commons/0/04/Solarsystemscope_texture_8k_earth_daymap.jpg;
+   bump-image-url: https://upload.wikimedia.org/wikipedia/commons/f/fb/Solarsystemscope_texture_8k_earth_normal_map.tif;"
+      >
+        <!--This second globe is used just to visualise data-->
+        <a-entity
+          id="globeID2"
+          class="collidable"
+          scale="1 1 1"
+          globe="show-globe:false"
+        >
+        </a-entity>
+      </a-entity>
+
+      <a-camera
+        position="0 0 25"
+        orbit-controls="
+              target: #globeID;
+              enableDamping: true;
+              dampingFactor: 0.125;
+              rotateSpeed:0.05;
+              minDistance:2;
+              maxDistance:35;
+              "
+      >
+        <a-cursor
+          color="lavender"
+          opacity="0.5"
+          raycaster="enabled: false"
+        ></a-cursor>
+      </a-camera>
+      <a-sky src="#stars"></a-sky>
+    </a-scene>
+  </body>
+</html>

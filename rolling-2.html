@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>A-Frame test component Component - Basic</title>
+    <meta
+      name="description"
+      content="Basic example for troika-text component."
+    />
+    <!--link
+      href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    /-->
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <!--script src="https://ardocent.com/aframe/wonder/js/aframe-ar-nft-3.js"></script-->
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="aframe-troika-text.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+    <script scr="aframe-effects.js"></script>
+    <!--script src="jquery-3.3.1.js"></script-->
+    <!--script src="font-awesome-5.13.0.js"></script-->
+    <script src="merge-image.js"></script>
+    
+    <!--script src="https://unpkg.com/aframe-animation-component@^4.1.2/dist/aframe-animation-component.min.js"></script--> 
+    <link rel="stylesheet" href="style-capture.css" />
+       <script>
+function resizenow() {
+  var browserwidth = jQuery(window).width();
+  var browserheight = jQuery(window).height();
+  jQuery(".bonfire-pageloader-icon")
+    .css(
+      "right",
+      (browserwidth - jQuery(".bonfire-pageloader-icon").width()) / 2
+    )
+    .css(
+      "top",
+      (browserheight - jQuery(".bonfire-pageloader-icon").height()) / 2
+    );
+}
+resizenow();
+
+jQuery(window).resize(function () {
+  resizenow();
+});
+function resizenow() {
+  var browserwidth = jQuery(window).width();
+  var browserheight = jQuery(window).height();
+  jQuery(".bonfire-pageloader-icon")
+    .css(
+      "right",
+      (browserwidth - jQuery(".bonfire-pageloader-icon").width()) / 2
+    )
+    .css(
+      "top",
+      (browserheight - jQuery(".bonfire-pageloader-icon").height()) / 2
+    );
+}
+resizenow();
+
+jQuery("html").addClass("bonfire-html-onload");
+
+jQuery(document.body).on("touchmove", function (e) {
+  e.preventDefault();
+});
+
+var scrollPosition = [
+  self.pageXOffset ||
+    document.documentElement.scrollLeft ||
+    document.body.scrollLeft,
+  self.pageYOffset ||
+    document.documentElement.scrollTop ||
+    document.body.scrollTop
+];
+var html = jQuery("html");
+html.data("scroll-position", scrollPosition);
+html.data("previous-overflow", html.css("overflow"));
+html.css("overflow", "hidden");
+window.scrollTo(scrollPosition[0], scrollPosition[1]);
+
+jQuery(window).load(function () {
+  setTimeout(function () {
+    jQuery(".bonfire-pageloader-icon").addClass("bonfire-pageloader-icon-hide");
+  }, 500);
+
+  setTimeout(function () {
+    jQuery(document.body).unbind("touchmove");
+
+    var html = jQuery("html");
+    var scrollPosition = html.data("scroll-position");
+    html.css("overflow", html.data("previous-overflow"));
+    window.scrollTo(scrollPosition[0], scrollPosition[1]);
+
+    jQuery("#bonfire-pageloader").addClass("bonfire-pageloader-fade");
+
+    jQuery("html").removeClass("bonfire-html-onload");
+  }, 750);
+
+  setTimeout(function () {
+    jQuery("#bonfire-pageloader").addClass("bonfire-pageloader-hide");
+  }, 1500);
+});
+
+
+    </script>
+  
+    
+    <script type="text/javascript">
+      setTimeout(function(){
+    //    alert("로딩 후 10초 지남");
+         document
+          .getElementById("message").style.display="inline-block";
+        document
+          .getElementById("find").style.display="inline-block";
+      }, 22000);
+     
+    
+    </script>
+
+      <!--style>
+/***********************************************************
+*** CUSTOMIZE THE LOADING SCREEN BACKGROUND + ICON COLORS
+************************************************************/
+/* loading screen background color */
+#bonfire-pageloader {
+  background-color: #1D2087;
+}
+/* loading icon color */
+#bonfire-pageloader svg {
+  fill: #fff;
+}
+
+/***********************************************************
+*** THE NITTY-GRITTY
+************************************************************/
+/* the pageloader */
+#bonfire-pageloader {
+  position: absolute;
+  z-index: 99999999999999;
+  width: 100%;
+  height: 1000%;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin-top: -50px;
+}
+.bonfire-pageloader-fade {
+  opacity: 0 !important;
+
+  -webkit-transition: all 0.75s ease;
+  -moz-transition: all 0.75s ease;
+  -o-transition: all 0.75s ease;
+  -ms-transition: all 0.75s ease;
+  transition: all 0.75s ease;
+}
+.bonfire-pageloader-hide {
+  display: none;
+}
+
+/* the loading icon */
+.bonfire-pageloader-icon {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  margin: 100px 0 0 0;
+  opacity: 1;
+  top: 0;
+}
+.bonfire-pageloader-icon-hide {
+  opacity: 0 !important;
+
+  -webkit-transition: all 0.25s ease;
+  -moz-transition: all 0.25s ease;
+  -o-transition: all 0.25s ease;
+  -ms-transition: all 0.25s ease;
+  transition: all 0.25s ease;
+}
+#bonfire-pageloader svg {
+  -webkit-animation: spin 2s linear infinite;
+  -moz-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+  width: 100px;
+  height: 100px;
+}
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(-360deg);
+  }
+}
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(-360deg);
+  }
+}
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(-360deg);
+    transform: rotate(-360deg);
+  }
+}
+
+/* lets give the page body that subtle slide-in animation */
+html {
+  height: 100%;
+
+  -webkit-backface-visibility: hidden;
+
+  -webkit-transform-origin: top;
+  -moz-transform-origin: top;
+  -ms-transform-origin: top;
+  -o-transform-origin: top;
+  transform-origin: top;
+
+  -webkit-transition: all 0.75s ease;
+  -moz-transition: all 0.75s ease;
+  -o-transition: all 0.75s ease;
+  -ms-transition: all 0.75s ease;
+  transition: all 0.75s ease;
+}
+.bonfire-html-onload {
+  -webkit-transform: translateY(-50px);
+  -moz-transform: translateY(-50px);
+  -ms-transform: translateY(-50px);
+  -o-transform: translateY(-50px);
+  transform: translateY(-50px);
+
+  -webkit-transition: all 0s ease;
+  -moz-transition: all 0s ease;
+  -o-transition: all 0s ease;
+  -ms-transition: all 0s ease;
+  transition: all 0s ease;
+}
+
+    </style-->
+
+    
+<style>
+  body {
+  padding: 0;
+  margin: 0; }
+
+a {
+    width: 100%;
+    height: 100%;}
+
+button {
+  top: 10%;
+  width: 95%;
+  height: 95%;
+  font-family: 'Muli', sans-serif;
+  -webkit-transition: 0.15s all ease-in-out;
+  -o-transition: 0.15s all ease-in-out;
+  transition: 0.15s all ease-in-out;
+  cursor: pointer; 
+  justify-content: center;}
+  
+  .one {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center; }
+  
+  .curve {
+  background: #transparent;
+  color: #fff;
+  border-radius: 6px;
+  border: none;
+  font-size: 16px;
+  padding: 15px 30px;
+  text-decoration: none; 
+  justify-content: center;}
+  
+  #message {
+    display: none;
+
+   
+  }
+  
+  #find { 
+    display: none;
+
+  }
+  
+    </style>
+
+    
+        <style>
+      @import url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff");
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :colors {
+        color: hsl(212, 21%, 14%);
+        color: hsl(212, 21%, 14%);
+        color: hsl(212, 21%, 14%);
+      }
+      .container {
+        position: absolute;
+        top: 35%;
+        left: 2%;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+      }
+
+      p {
+        color: white;
+        font-size: 14px;
+        font-family: "SDSamliphopangche_Outline";
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;margin: 20px 0;
+      }
+      #letter {
+        letter-spacing: 0.5em;
+      }
+      h2 {
+        color: white;
+        font-size: 40px;
+         font-family: "SDSamliphopangche_Outline";
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;margin: 20px 0;
+      }
+ 
+      h4 {
+        color: black;
+        font-size: 50px;
+         font-family: "SDSamliphopangche_Outline";
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;margin: 20px 0;
+      }
+
+      i {
+        margin-right: 10px;
+      }
+
+        h2 {
+          font-size: 30px;
+        }
+
+        h3 {
+          color: black;
+          font-family: "Montserrat", sans-serif;
+          font-size: 16px;
+        }
+        p {
+          margin: 10px;
+        }
+          table, th, td {
+  border: 0px solid black;
+}
+      }
+    </style>
+  
+<!--style>
+      .HomeButton {
+        background-color: grey;
+        background-image: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/back-w.png?v=1670890339429");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 90%;
+        left: 10%;
+        width: 60px;
+        height: 60px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .HomeButton:hover {
+        background-color: Gold;
+      }
+      .SoundReplayButton {
+        display: none;
+        background-color: grey;
+        background-image: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/volume-button-play-w-60.png?v=1671365438160");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: none;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 3.5%;
+        left: 5%;
+        width: 65px;
+        height: 65px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+  .SoundReplayButton:hover {
+    display: none;
+        background-color: Gold;
+      }
+
+      .SoundPauseButton {
+        display: none;
+        background-color: grey;
+        background-image: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/volume-button-stop-w-60.png?v=1671365437189");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 3.5%;
+        left: 5%;
+        width: 65px;
+        height: 65px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+  .SoundPauseButton:hover {
+    display: none;
+        background-color: Gold;
+      }
+         .ChangeButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/camera-flip.png?v=1666830382378");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 3%;
+        left: 80%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .ChangeButton:hover {
+        background-color: Gold;
+      }
+
+    </style-->
+     
+  </head>
+
+  <body style="margin: 0px; overflow: hidden">
+
+
+
+
+<div class="container">
+
+        <div class="one">
+          <table>
+  <tr>
+    <td><button type="button" class="curve" id="message" onclick="window.open('https://a-portal.glitch.me/letter.html','_self');"><img align="cener" src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/message-s.png?v=1671358584588"></button></td></tr>
+    <tr> <td><button type="button" class="curve" id="find" onclick="window.open('https://a-portal.glitch.me/findmickey-info.html','_self');"><img src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/find-s.png?v=1671358585181"></button>
+            </td>
+          </tr>        
+          </table>
+ 
+        </div>
+</div>
+        <a-scene
+          vr-mode-ui="enabled: false"
+          loading-screen="enabled: false"
+          device-orientation-permission-ui="enabled: false"
+          ar-session-notifier
+          cursor-modifier
+          renderer="antialias: true; logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true;"
+          embedded
+          arjs="sourceType: webcam; debugUIEnabled: false;"
+          start
+        >
+
+
+          <a-assets>
+
+            <audio id="aud" src="https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/disney-intro-1.mp3?v=1666075254104"></audio>
+          </a-assets>
+          <!--a-camera active="false" position="0 1.6 -3"></a-camera-->
+          <a-entity camera look-controls>
+
+            <a-gltf-model
+              rotation="0 0 0"
+              position="0 -1.25 -3.6"
+              scale="0.1 0.1 0.1"
+              src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/firework.glb?v=1663132402330"
+              class="hat2-entity"
+              animation-mixer
+            ></a-gltf-model>
+
+
+            <a-gltf-model
+              rotation="0 0 0"
+              position="0 -1.8 -3.5"
+              scale="0.005 0.005 0.005"
+              src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/MickeyMoon_.glb?v=1670667532695"
+              class="glasses2-entity"   
+              animation="property: rotation; to: 0 360 0; delay: 200; dur: 5000; easing: linear; loop: false"
+              animation__2="property: position; to: 0 0.4 -3.5; delay: 2000; dur: 4000; easing: linear; loop: false"
+              animation__3="property: rotation; to: 0 360 0; delay: 20000; dur: 20000; easing: linear; loop: false"            
+              id="mickey-moon"
+              ></a-gltf-model>
+
+
+
+            <a-troika-text
+              id="output"
+              position="0 -0.9 -0.8"
+              color="#fff"
+              max-width="13"
+              max-height="50"
+              curve-radius="0"
+              scale="0.11 0.11 0.11"
+              letterspacing="-25"
+              font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/AppleSDGothicNeoM.ttf?v=1671085239370"
+              value="        
+              100년 동안 여러분의 일상을
+디즈니와 함께해 주셔서 감사합니다.
+                     
+다가오는 2023년에도
+디즈니의 가슴 뛰는 
+감동의 순간을 함께해 주세요!
+                     
+100 YEARS of WONDER
+100년의 가슴 뛰는 감동!"
+              align="center"
+              material="shader: standard; metalness: 0.8; roughness: 0.4;"
+              outline-width="5%"
+              outline-color="#fff"
+              stroke-width="2%"
+              stroke-color="#fff"            
+              animation="property: position; to: 0 -0.15 -0.8; delay: 1000; dur: 10000; easing: linear; loop: false"
+              animation__2="property: rotation; to: -180 0 0; delay: 15000; dur: 7000; easing: linear; loop: false"
+              animation__3="property: scale; to: 0 0 0; delay: 21000; dur: 10000; easing: linear; loop: false"
+>
+            </a-troika-text>
+            <a-plane
+              position="-0.008 -0.2 -0.9"
+              color="#fff"
+              width="1.2"
+              height="1.3"
+              material="opacity: 0.3; transparent: true"
+              scale="0 0 0"
+              animation="property: scale; to: 0.3 0.3 0.3; delay: 1000; dur: 1100; easing: linear; loop: false"
+              animation__2="property: rotation; to: -180 0 0; delay: 20000; dur: 2000; easing: linear; loop: false"
+              animation__3="property: scale; to: 0 0 0; delay: 21000; dur: 200; easing: linear; loop: false"
+                     ></a-plane>
+     
+            <a-image 
+              src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/Landing3.png?v=1670561453753" 
+              position="0 0.95 -3"
+              scale="0.3 0.22 0.3"
+                     ></a-image>
+                  <a-nft
+        raycaster="objects: .clickable"
+        logohandler
+        scannerhandler
+        ioshandler
+        emitevents="true"
+        id="marker"
+        type="nft"
+        url=" https://raw.githubusercontent.com/toysun/sg/master/imarker/barbatos"
+        smooth="true"
+        smoothcount="10"
+        moothtolerance="0.01"
+        smooththreshold="5"
+      >
+          
+          <a-entity
+            text="value: some text; wrapCount: 20; width: 3"
+            position="0 2 0"
+            my-test-component
+          ></a-entity>
+            </a-nft>
+      <!--a-entity
+        id="#mickey-moon"
+        light="type: point; intensity: 1.3; castShadow: false"
+      ></a-entity-->
+            
+          <a-entity light="type: ambient; intensity: 1.9;"></a-entity>
+
+                <a-light
+        type="directional"
+        light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+        id="light"
+        target="balloon"
+        position="-5 3.6 10"
+      >
+      </a-light>
+      </a-entity>
+
+        </a-scene>
+       <!--button
+          class="capturebtn"
+          id="capture"
+          style="vertical-align: middle"
+        ></button-->
+        <img src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/MYmessage11.png?v=1670811480668"
+          class="capturebtn"
+          id="capture"
+          style="vertical-align: middle"/>
+        <button
+          class="savebtn"
+          id="save"
+          style="vertical-align: middle"
+        ></button>
+        <!-- The Modal -->
+        <div id="myModal" class="modal" align="center">
+          <!-- Modal content -->
+          <div>
+            <img class="modal-content" id="img01" />
+            <span class="closebtn">
+              <img
+                src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/close-white.png?v=1670812239754"
+                width="30px"
+                height="30px"
+              />
+            </span>
+            <div id="caption"></div>
+          </div>
+        </div>
+     
+    
+  <script type="text/javascript" src="hmodal_active.js"></script>
+    <script type="text/javascript" src="capture-1.js"></script>
+      <script>
+    var AudPauseBtn = document.getElementById("audpausebtn");
+    var AudReplayBtn = document.getElementById("audreplaybtn");
+
+    document.getElementById("PlayBtn").addEventListener("click", function () {
+      var PlayBtn = document.getElementById("PlayBtn");
+      var Balloon = document.getElementById("balloon");
+      var Balloon1 = document.getElementById("balloon1");
+      //   var whlogo = document.getElementById("whlogo");
+      var NFtext = document.getElementById("NFtext");
+
+      this.aud = document.querySelector("#aud");
+
+      PlayBtn.setAttribute("visible", false);
+      PlayBtn.style.display = "none";
+      Balloon.setAttribute("visible", true);
+      Balloon.style.display = "inline-block";
+      Balloon1.setAttribute("visible", true);
+      Balloon1.style.display = "inline-block";
+      NFtext.setAttribute("visible", false);
+      NFtext.style.display = "none";
+
+      this.aud.play();
+
+      AudPauseBtn.style.display = "inline-block";
+      //  audpausebtn.style.display = "inline-block";
+
+      AudPauseBtn.addEventListener("click", AudPause);
+      AudReplayBtn.addEventListener("click", AudReplay);
+    });
+
+    function AudPause() {
+      this.aud.pause();
+      AudPauseBtn.style.display = "none";
+      AudPauseBtn.setAttribute("visible", false);
+      AudReplayBtn.style.display = "inline-block";
+      AudReplayBtn.setAttribute("visible", true);
+    }
+
+    function AudReplay() {
+      this.aud.play();
+      AudReplayBtn.style.display = "none";
+      AudReplayBtn.setAttribute("visible", false);
+      AudPauseBtn.style.display = "inline-block";
+      AudPauseBtn.setAttribute("visible", true);
+    }
+  </script>
+  
+    <script>
+      $(".btn_popup").click(function () {
+        $(".ly_wrap").show();
+      });
+
+      $(".btn_close").click(function () {
+        $(".ly_wrap").hide();
+      });
+    </script>
+  </body>
+   
+    <script>
+    document.getElementById("VPlayBtn").addEventListener("click", function() {
+      var VideoPlayBtn = document.getElementById("VPlayBtn");
+      var VideoModel = document.getElementById("VideoModel");
+      this.vid = document.querySelector("#vid");
+
+      VideoPlayBtn.setAttribute("visible", false); 
+      VideoPlayBtn.style.display = "none";
+      
+      VideoModel.setAttribute("visible", true); 
+      VideoModel.style.display = "inline-block";
+      this.vid.play();
+    });
+  </script>
+</html>

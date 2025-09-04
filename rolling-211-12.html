@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>A-Frame test component Component - Basic</title>
+    <meta name="description" content="Disney100 AR SERVICE" />
+    <!--link
+      href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    /-->
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <!--script src="https://ardocent.com/aframe/wonder/js/aframe-ar-nft-3.js"></script-->
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="aframe-troika-text.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+    <!--script src="jquery-3.3.1.js"></script-->
+    <!--script src="font-awesome-5.13.0.js"></script-->
+    <script src="mobile-check.js"></script>
+    <script src="merge-image.js"></script>
+    <script src="aframe-spe-particles-component.js"></script>
+    <script type="text/javascript">
+      setTimeout(function () {
+        //    alert("로딩 후 10초 지남");
+        document.getElementById("reload-btn").style.display = "inline-block";
+        document.getElementById("message").style.display = "inline-block";
+        document.getElementById("find").style.display = "inline-block";
+      }, 22000);
+    </script>
+    <!--script src="https://unpkg.com/aframe-animation-component@^4.1.2/dist/aframe-animation-component.min.js"></script-->
+    <link rel="stylesheet" href="style-capture.css" />
+    <!--script>
+    document.getElementById('rolling').contentWindow.location.reload();
+    </script-->
+
+    <style>
+      body {
+        padding: 0;
+        margin: 0;
+      }
+
+      a {
+        width: 100%;
+        height: 100%;
+      }
+
+      button {
+        top: 10%;
+        width: 95%;
+        height: 95%;
+        font-family: "Muli", sans-serif;
+        -webkit-transition: 0.15s all ease-in-out;
+        -o-transition: 0.15s all ease-in-out;
+        transition: 0.15s all ease-in-out;
+        cursor: pointer;
+        justify-content: center;
+      }
+
+      .one {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+      }
+
+      .curve {
+        background: #1c2087;
+        color: #fff;
+        border-radius: 15px;
+        border: none;
+        font-size: 16px;
+        padding: 5px 5px;
+        text-decoration: none;
+        justify-content: center;
+      }
+      #reload-btn {
+        display: none;
+      }
+      
+      #message {
+        display: none;
+      }
+
+      #find {
+        display: none;
+      }
+      .ReloadButton {
+        background-color: transparent;
+        background-image: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/_%EA%B0%90%EC%82%AC%EB%A9%94%EC%84%B8%EC%A7%80%20%EB%8B%A4%EC%8B%9C%20%EB%B3%B4%EA%B8%B0.png?v=1673060980032");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 5%;
+        position: fixed;
+        top: 1%;
+        left: 1%;
+        width: 140px;
+        height: 35px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .ReloadButton:hover {
+        background-color: Gold;
+      }
+    </style>
+
+    <style>
+            @import url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/Landing1.png?v=1671752194773') format('ttf");
+            * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+            }
+            :colors {
+              color: hsl(212, 21%, 14%);
+              color: hsl(212, 21%, 14%);
+              color: hsl(212, 21%, 14%);
+            }
+            .container {
+              position: absolute;
+              top: 35%;
+              left: 2%;
+              width: 100%;
+              height: 100%;
+              background-size: cover;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              z-index: 99999;
+            }
+
+            p {
+              color: white;
+              font-size: 14px;
+             font-family: "AppleSDGothicNeoM";
+              src: url('https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/Landing1.png?v=1671752194773') format('ttf');
+              font-weight: normal;
+              font-style: normal;margin: 20px 0;
+            }
+            #letter {
+              letter-spacing: 0.5em;
+            }
+            h2 {
+              color: white;
+              font-family: "AppleSDGothicNeoM";
+              src: url('https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/Landing1.png?v=1671752194773') format('ttf');
+              font-weight: normal;
+              font-style: normal;margin: 20px 0;
+            }
+
+            h4 {
+              color: black;
+              font-size: 50px;
+              font-family: "AppleSDGothicNeoM";
+              src: url('https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/Landing1.png?v=1671752194773') format('ttf');
+              font-weight: normal;
+              font-style: normal;margin: 20px 0;
+            }
+
+            i {
+              margin-right: 10px;
+            }
+
+              h2 {
+                font-size: 30px;
+              }
+
+              h3 {
+                color: black;
+                font-family: "Montserrat", sans-serif;
+                font-size: 16px;
+              }
+              p {
+                margin: 10px;
+              }
+                table, th, td {
+        border: 0px solid black;
+      }
+                .mm2d {
+      /*
+        background-image: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/MYmessage11.png?v=1670811480668");
+        background-size: cover;
+        background-position: center;
+        */
+        border: none;
+        padding: 20px;
+        display: inline-block;
+        margin: 2px 2px;
+        cursor: pointer;
+        border-radius: 30%;
+        position: fixed;
+        top: 20%;
+        left: 25%;
+        width: 52%;
+        /*
+        height: 60px;
+        */
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: -1;
+        transition: all 0.5s;
+        cursor: pointer;
+        filter: drop-shadow(0 0 3.95rem white);
+      }
+
+      /* Darker background on mouse-over */
+      .mm2d:hover {
+        background-color: Gold;
+      }
+
+            }
+    </style>
+  </head>
+
+  <body style="margin: 0px; overflow: hidden">
+    <div class="container">
+      <div class="one">
+        <table>
+          <tr>
+            <td>
+              <img
+                align="cener"
+                class="curve"
+                id="reload-btn"
+                src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/reload.png?v=1673244198061"
+                onclick="pageReload();"
+                href="#"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <img
+                align="cener"
+                class="curve"
+                id="message"
+                src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/_message5-s.png?v=1671939935358"
+                onclick="window.open('https://abc-portal.glitch.me/letter-1.html','_parent');"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <img
+                align="cener"
+                class="curve"
+                id="find"
+                src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/find-s.png?v=1671358585181"
+                onclick="window.open('https://abc-portal.glitch.me/findmickey-info.html','_parent');"
+              />
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <a-scene
+      vr-mode-ui="enabled: false"
+      loading-screen="dotsColor: white; backgroundColor: #070933"
+      device-orientation-permission-ui="enabled: false"
+      ar-session-notifier
+      cursor-modifier
+      renderer="antialias: true; logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true;"
+      embedded
+      arjs="sourceType: webcam; debugUIEnabled: false;"
+      class="scene"
+      pagefromchk
+    >
+      <a-assets>
+        <audio
+          id="aud"
+          src="https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/disney-intro-1.mp3?v=1666075254104"
+        ></audio>
+      </a-assets>
+      <!--a-camera active="false" position="0 1.6 -3"></a-camera-->
+      <a-entity camera look-controls>
+        <!--a-gltf-model
+              rotation="0 0 0"
+              position="-1.9 1.55 -8.9"
+              scale="0.05 0.05 0.05"
+              src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/black_hole.glb?v=1662961968981"
+              class="hat2-entity"
+              animation-mixer
+              animation="property: rotation; from: 0 0 0; to: 0 360 40; dur: 10000; loop: true"
+            ></a-gltf-model-->
+
+        <a-gltf-model
+          rotation="0 0 0"
+          position="0 0.8 -7"
+          scale="0.0065 0.0065 0.0065"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/MickeyMoon_.glb?v=1670667532695"
+          class="glasses2-entity"
+          id="mickey-moon"
+          animation="property: visible; from: false; to: true; dur: 1000; loop: false"
+        >
+        </a-gltf-model>
+
+        <!--a-troika-text
+          id="output"
+          position="0 -0.05 -0.8"
+          color="#fff"
+          max-width="13"
+          max-height="50"
+          curve-radius="0"
+          scale="0.1 0.1 0.1"
+          font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/AppleSDGothicNeoB.ttf?v=1672703372036"
+          value="        
+              100년 동안 여러분의 일상을"
+
+          align="center"
+          animation="property: visible; from: false; to: true; dur: 5000; loop: false"
+         >
+        </a-troika-text>
+                <a-troika-text
+          id="output1"
+          position="0 -0.08 -0.8"
+          color="#fff"
+          max-width="13"
+          max-height="50"
+          curve-radius="0"
+          scale="0.1 0.1 0.1"
+          font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/AppleSDGothicNeoB.ttf?v=1672703372036"
+          value="        
+
+디즈니와 함께해 주셔서 감사합니다."
+
+          align="center"
+          animation="property: visible; from: false; to: true; dur: 7000; loop: false"
+        >
+        </a-troika-text>
+                <a-troika-text
+          id="output2"
+          position="0 -0.12 -0.8"
+          color="#fff"
+          max-width="13"
+          max-height="50"
+          curve-radius="0"
+          scale="0.1 0.1 0.1"
+          font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/AppleSDGothicNeoB.ttf?v=1672703372036"
+          value="        
+
+                     
+다가오는 2023년에도"
+
+          align="center"
+          animation="property: visible; from: false; to: true; dur: 10000; loop: false"
+        >
+        </a-troika-text>
+                <a-troika-text
+          id="output3"
+          position="0 -0.15 -0.8"
+          color="#fff"
+          max-width="13"
+          max-height="50"
+          curve-radius="0"
+          scale="0.1 0.1 0.1"
+          font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/AppleSDGothicNeoB.ttf?v=1672703372036"
+          value="        
+
+디즈니의 가슴 뛰는" 
+
+          align="center"
+          animation="property: visible; from: false; to: true; dur: 12000; loop: false"
+        >
+        </a-troika-text>
+                <a-troika-text
+          id="output4"
+          position="0 -0.18 -0.8"
+          color="#fff"
+          max-width="13"
+          max-height="50"
+          curve-radius="0"
+          scale="0.1 0.1 0.1"
+          font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/AppleSDGothicNeoB.ttf?v=1672703372036"
+          value="        
+
+감동의 순간을 함께해 주세요!"
+
+          align="center"
+          animation="property: visible; from: false; to: true; dur: 14000; loop: false"
+        >
+        </a-troika-text>
+                <a-troika-text
+          id="output5"
+          position="0 -0.22 -0.8"
+          color="#fff"
+          max-width="13"
+          max-height="50"
+          curve-radius="0"
+          scale="0.1 0.1 0.1"
+          font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/AppleSDGothicNeoB.ttf?v=1672703372036"
+          value="        
+
+                     
+100 YEARS of WONDER"
+          align="center"
+          animation="property: visible; from: false; to: true; dur: 16000; loop: false"
+        >
+        </a-troika-text>
+                <a-troika-text
+          id="output6"
+          position="0 -0.25 -0.8"
+          color="#fff"
+          max-width="13"
+          max-height="50"
+          curve-radius="0"
+          scale="0.1 0.1 0.1"
+          font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/AppleSDGothicNeoB.ttf?v=1672703372036"
+          value="        
+
+100년의 가슴 뛰는 감동!"
+          align="center"
+          animation="property: visible; from: false; to: true; dur: 19000; loop: false"
+        >
+        </a-troika-text-->
+        <!--a-plane
+              position="-0.007 -0.21 -0.9"
+              color="#fff"
+              width="1.2"
+              height="1.25"
+              segments-width="24"
+	            segments-height="64"
+              curve-radius="40"
+              material="opacity: 0.3; transparent: true"
+              scale="0 0 0"
+              animation="property: scale; to: 0.3 0.3 0.3; delay: 1000; dur: 1100; easing: linear; loop: false"
+
+                     ></a-plane-->
+        <!--a-image
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/message-thanks-white-r.png?v=1671948199992"
+          position="0 -0.2 -0.9"
+          radius="5.7"
+          material="opacity: 0.3; transparent: true"
+          scale="0 0 0"
+          animation="property: scale; to: 0.37 0.4 1; delay: 1000; dur: 1100; easing: linear; loop: false"
+          animation__1="property: components.material.material.color; type: color; dur: 5000;
+          from: #3F2D81; to: white; loop: true; repeat: indefinite">         
+        </a-image-->
+        <a-troika-text
+          id="output"
+          position="0 -1.4 -0.8"
+          color="#fff"
+          max-width="13"
+          max-height="50"
+          curve-radius="0"
+          scale="0.09 0.09 0.09"
+          font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/AppleSDGothicNeoM.ttf?v=1671085239370"
+          value="        
+              100년 동안 여러분의 일상을
+디즈니와 함께해 주셔서 감사합니다.
+                     
+다가오는 2023년에도
+디즈니의 가슴 뛰는 
+감동의 순간을 함께해 주세요!
+                     
+100 YEARS of WONDER
+100년의 가슴 뛰는 감동!"
+          align="center"
+          animation="property: position; to: 0 -0.17 -0.8; dur: 7000; easing: linear; loop: false"
+          animation__1="property: scale; to: 0 0 0; delay: 22000; dur: 500; easing: linear; loop: false"
+        >
+        </a-troika-text>
+        <a-image
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/message-thanks-white-r.png?v=1671948199992"
+          position="-0.007 -0.21 -0.9"
+          radius="5.7"
+          material="color: #3F2D81; opacity: 0.3; transparent: true"
+          scale="0 0 0"
+          animation="property: scale; to: 0.37 0.4 1; delay: 1000; dur: 1100; easing: linear; loop: false"
+          animation__1="property: scale; to: 0 0 0; delay: 22000; dur: 1000; easing: linear; loop: false"
+        ></a-image>
+        <a-image
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/Landing3.png?v=1670561453753"
+          position="0 0.85 -3"
+          scale="0.3 0.22 0.3"
+        ></a-image>
+        <!--a-image
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/mickeymoon-100-1.png?v=1671753420039"
+          position="0 0.35 -3"
+          scale="0.8 0.72 0.8"
+        ></a-image-->
+        <!--a-image
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/message7.png?v=1671687242277"
+          position="0 0.35 -3"
+          scale="3 3 3"
+          animation="property: rotation; to: 20 20 20; dur: 10000; easing: linear; loop: true"
+        >
+        </a-image-->
+        <!--a-sphere
+      radius = "0.01"
+      position = "0 0.4 -4"
+      color = "#FFFFFF">
+      <a-entity 
+        spe-particles="
+          texture: https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/sparkle.png?v=1672751728536;
+          color: #FFFFFF, #FFFF00; 
+          size: 6, 0;
+          distribution: SPHERE;
+          radius: 0.001;
+          velocity: 0.001;
+          velocity-spread: 1.2; 
+          angle: 0, 8.28;
+          particle-count: 100;
+          blending: additive;
+          maxAge: 3; ">
+      </a-entity> 
+      </a-sphere-->
+        <a-entity
+          position="0 0.7 -6.9"
+          spe-particles="
+        texture: https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/star_1.png?v=1672801153318;
+        color: white, white, white, white; 
+        distribution: sphere; 
+        randomize-velocity: true;
+        radius: 0.3; 
+        particle-count: 200; 
+        velocity: 0.7; 
+        velocity-spread: 0.8; 
+        drag: 1; 
+        max-age: 2;
+        blending: additive;
+        active-multiplier: 1000; 
+        size: 2, 2, 2, 0"
+        >
+        </a-entity>
+        <a-entity
+          text="value: some text; wrapCount: 20; width: 3"
+          position="0 2 0"
+          my-test-component
+        ></a-entity>
+
+        <!--a-entity
+        id="#mickey-moon"
+        light="type: point; intensity: 1.3; castShadow: false"
+      ></a-entity-->
+
+        <!--a-entity light="type: ambient; intensity: 1.9;"></a-entity-->
+
+        <a-light
+          type="directional"
+          light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+          id="light"
+          target="balloon"
+          position="-5 3.6 10"
+        >
+        </a-light>
+      </a-entity>
+    </a-scene>
+    <audio
+      id="sound-oiseaux"
+      src="https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/disney-intro-1.mp3?v=1666075254104
+"
+      autostart="false"
+    ></audio>
+    <!--button
+      class="ReloadButton"
+      id="reload-btn"
+      onclick="pageReload();"
+      href="#"
+    ></button-->
+    <!--img src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/restart.-w.png?v=1672846844202"
+          class="mm2d"
+          id="mm2d"
+          style="vertical-align: middle"/-->
+    <img
+      src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/MYmessage11.png?v=1670811480668"
+      class="capturebtn"
+      id="capture"
+      style="vertical-align: middle"
+    />
+    <button class="savebtn" id="save" style="vertical-align: middle"></button>
+    <!-- The Modal -->
+    <div id="myModal" class="modal" align="center">
+      <!-- Modal content -->
+      <div>
+        <img class="modal-content" id="img01" />
+        <span class="closebtn">
+          <img
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/close-white.png?v=1670812239754"
+            width="30px"
+            height="30px"
+          />
+        </span>
+        <div id="caption"></div>
+      </div>
+    </div>
+    <script>
+      var audioElement = document.getElementById("sound-oiseaux");
+
+      function play(id) {
+        const audioElement = document.getElementById(id);
+
+        //resetAll();
+
+        if (audioElement.paused) {
+          audioElement.play();
+        }
+      }
+
+      function resetAll() {
+        audioElements.forEach((audioElement) => {
+          audioElement.pause();
+          audioElement.currentTime = 0;
+        });
+      }
+
+      function pageReload() {
+        audioElement.pause();
+        audioElement.currentTime = 0;
+
+        window.parent.postMessage(
+          {
+            from: "child",
+            type: "show",
+          },
+          "*"
+        );
+      }
+      /*
+     const audioElement = document.getElementById('sound-oiseaux');
+     const Message = document.getElementById('message');
+     const Find = document.getElementById('find');
+    
+       Message.style.display = "none";
+       Find.style.display = "none";
+       audioElement.currentTime = 0;
+       audioElement.play();
+     
+       pagefromchk(); 
+     
+     setTimeout(function(){
+    //    alert("로딩 후 10초 지남");
+        Message.style.display="inline-block";
+        Find.style.display="inline-block";
+      }, 22000);
+     
+     
+     }
+   
+  /* 
+    AFRAME.registerComponent('pagefromchk', {
+        //initiate
+        init: function () {
+            //add behaviour for mouse enter (or gaze enter)
+            */
+      function pagefromchk() {
+        if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+          var output = document.querySelector("#output");
+          var output1 = document.querySelector("#output1");
+          var output2 = document.querySelector("#output2");
+          var output3 = document.querySelector("#output3");
+          var output4 = document.querySelector("#output4");
+          var output5 = document.querySelector("#output5");
+          var output6 = document.querySelector("#output6");
+
+          /*  output.setAttribute('visible', false);
+                output1.setAttribute('visible', false);
+                output2.setAttribute('visible', false);
+                output3.setAttribute('visible', false);
+                output4.setAttribute('visible', false);
+                output5.setAttribute('visible', false);
+                output6.setAttribute('visible', false);
+                */
+
+          output.setAttribute(
+            "animation",
+            "property: visible; from: true; to: false"
+          );
+          output1.setAttribute(
+            "animation",
+            "property: visible; from: true; to: false"
+          );
+          output2.setAttribute(
+            "animation",
+            "property: visible; from: true; to: false"
+          );
+          output3.setAttribute(
+            "animation",
+            "property: visible; from: true; to: false"
+          );
+          output4.setAttribute(
+            "animation",
+            "property: visible; from: true; to: false"
+          );
+          output5.setAttribute(
+            "animation",
+            "property: visible; from: true; to: false"
+          );
+          output6.setAttribute(
+            "animation",
+            "property: visible; from: true; to: false"
+          );
+
+          output.setAttribute(
+            "animation",
+            "property: visible; from: false; to: true; dur: 5000; loop: false"
+          );
+          output1.setAttribute(
+            "animation",
+            "property: visible; from: false; to: true; dur: 7000; loop: false"
+          );
+          output2.setAttribute(
+            "animation",
+            "property: visible; from: false; to: true; dur: 10000; loop: false"
+          );
+          output3.setAttribute(
+            "animation",
+            "property: visible; from: false; to: true; dur: 12000; loop: false"
+          );
+          output4.setAttribute(
+            "animation",
+            "property: visible; from: false; to: true; dur: 14000; loop: false"
+          );
+          output5.setAttribute(
+            "animation",
+            "property: visible; from: false; to: true; dur: 16000; loop: false"
+          );
+          output6.setAttribute(
+            "animation",
+            "property: visible; from: false; to: true; dur: 19000; loop: false"
+          );
+        }
+      } //end initiate
+      //  });//end registerComponent
+    </script>
+    <script type="text/javascript" src="hmodal_active.js"></script>
+    <script type="text/javascript" src="capture-1.js"></script>
+    <script>
+      $(".btn_popup").click(function () {
+        $(".ly_wrap").show();
+      });
+
+      $(".btn_close").click(function () {
+        $(".ly_wrap").hide();
+      });
+    </script>
+  </body>
+</html>
