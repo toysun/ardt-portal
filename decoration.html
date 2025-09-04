@@ -1,0 +1,165 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="./css/font-awesome-6.2.0.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>디즈니100 - 나만의 메시지</title>
+
+    <script src="./js/mobile-check.js"></script>
+    <style>
+      /*
+  The grid itself needs only 4 CSS declarations:
+*/
+      @media only screen and (max-width: 700px) {
+        .container {
+        }
+
+        .myGallery {
+          display: grid;
+          grid-gap: 20px;
+          grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        }
+
+        .myGallery img {
+          width: 90%;
+          border-radius: 10px;
+        }
+
+        /*
+  And here are some declarations for the image caption.
+  Just hover over one of the last 5 images to see it.
+*/
+
+        .myGallery .item {
+          position: relative;
+          overflow: hidden;
+        }
+
+        .myGallery .item img {
+          vertical-align: middle;
+        }
+
+        .myGallery .caption {
+          margin: 0;
+          padding: 1em;
+          position: absolute;
+          z-index: 1;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          max-height: 100%;
+          overflow: auto;
+          box-sizing: border-box;
+          transition: transform 0.5s;
+          transform: translateY(100%);
+          background: rgba(0, 0, 0, 0.7);
+          color: rgb(255, 255, 255);
+        }
+
+        .myGallery .item:hover .caption {
+          transform: translateY(0%);
+        }
+
+        /*
+  The rest is only styling for this example page
+*/
+
+        @import url("https://fonts.googleapis.com/css2?family=Vollkorn:wght@400;900&display=swap");
+
+        body {
+          width: 100%;
+          height: 95vh;
+          background-size: contain;
+          background-image: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/BG.png?v=1670560998820");
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font: 400 1.5em/1.58 Vollkorn, serif;
+        }
+        .box-1 {
+          margin: 0;
+          width: 100%;
+          height: 10%;
+          background: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/disney100-%EA%B0%80%EB%A1%9C.png?v=1670639834306");
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: contain;
+          justify-content: center;
+          align-items: center;
+        }
+
+        h1 {
+          text-align: center;
+          color: white;
+          font-size: 24px;
+          font-family: "SDSamliphopangche_Outline";
+          src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff")
+            format("woff");
+          font-weight: normal;
+          font-style: normal;
+          margin: 10px 0;
+        }
+        p {
+          text-align: center;
+          color: white;
+          font-size: 16px;
+          font-family: "SDSamliphopangche_Outline";
+          src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff")
+            format("woff");
+          font-weight: normal;
+          font-style: normal;
+          margin: 10px 0;
+        }
+
+        .myGallery {
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <p>&nbsp</p>
+      <div class="box-1"></div>
+      <p>나만의 3D 스티커를 골라 편지지를 꾸미세요.</p>
+      <h1>3D 스티커 고르기</h1>
+      <div class="myGallery">
+          <img
+            id="hat1"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/confetti.png?v=1670662619575"
+          />
+          <img
+            id="hat2"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/ginger-man.png?v=1670662620461"
+          />
+          <img
+            id="glasses1"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/tropical-fishes.png?v=1670662616691"
+          />
+          <img
+            id="glasses2"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/beating-love.png?v=1670662617752"
+          />
+
+          <img
+            id="helmet"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/candy-cane.png?v=1670662618749"
+          />
+          <img
+            id="helmet2"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/love-neon.png?v=1670662615807"
+          />
+
+      </div>
+
+    </div>
+  </body>
+</html>

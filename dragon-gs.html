@@ -1,0 +1,289 @@
+<html>
+  <head>
+    <!--title>AR HMS Busan</title-->
+    <meta charset="utf-8" />
+    <meta http-equiv="Cache-control" content="no-cache" />
+    <meta http-equiv="Expires" content="-1" />
+    <meta http-equiv="Pragma" content="no-cache" /> 
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+
+    <!-- settings for favicons -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./favicon/ardocent_180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./favicon/ardocent_32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./favicon/ardocent_16x16.png"
+    />
+    <link rel="manifest" href="./favicon/site.webmanifest" />
+    <link
+      rel="mask-icon"
+      href="./favicon/safari-pinned-tab.svg"
+      color="#21284d"
+    />
+    <link rel="shortcut icon" href="./favicon/ardocent_32x32.png" />
+
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="msapplication-config" content="./favicon/browserconfig.xml" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <!--  this is REQUIRED for iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+
+    <!--script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="https://unpkg.com/aframe-chromakey-material/dist/aframe-chromakey-material.min.js"></script-->
+
+    <script src="./material.js"></script>
+    <script src="./event.js"></script>
+    <script src="./components.js"></script>
+    <script src="./cursor_m.js" defer></script>
+    <script src="./vidhandler.js"></script>
+    <script src="./mobile-detect-1.js"></script>
+    <script src="./ioshandler.js"></script>
+    <script src="./playvideo.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+    <script src="https://unpkg.com/merge-images"></script>
+    <!--script type="text/javascript" src="./service-worker.js"></script-->
+
+
+    <link rel="stylesheet" href="./hstyle.css" />
+
+    <script>
+      var mobile = /iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(
+        navigator.userAgent.toLowerCase()
+      );
+      var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      var footer_flag = document.getElementById("myFooter");
+
+      var Browser = navigator.userAgent.toLowerCase();
+
+      if (mobile) {
+        if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+          if (Browser.indexOf("safari") > 90) {
+            //                  alert(Browser.indexOf("safari"));
+            //                    footer_flag.style.display = 'block';
+          } else {
+            //                  alert(Browser.indexOf("safari"));
+            location.href = "ftp://117.52.89.118/pub/bridge_cj1.html";
+          }
+
+          //	           footer_flag.style.display = 'block';
+        } else if (Browser.indexOf("chrome") < 90) {
+          //                          alert(Browser.indexOf("chrome"));
+        } else {
+          //                         alert(Browser.indexOf("chrome"));
+          location.href =
+            "intent://ardocent.com/aframe/hmsbusan/cj1.html#Intent;scheme=https;package=com.android.chrome;end";
+        }
+      }
+           else
+              window.location.replace("./cj1-pc.html");
+
+
+  //    self.addEventListener('activate', function(e) {
+  //            e.waitUntil(
+  //            caches.keys().then(function(keyList) {
+  //               return Promise.all(keyList.map(function(key) {
+  //            if(cacheName.indexOf(key) === -1) {
+  //              return caches.delete(key);
+  //            }
+  //          }));
+  //        })
+  //      );
+  //    });
+
+         self.addEventListener('activate', function(e) {
+    // Remove old caches
+        e.waitUntil(
+          (async () => {
+            const keys = await caches.keys();
+            return keys.map(async (cache) {
+              if(cache !== cacheName) {
+                console.log("Service Worker: Removing old cache: "  + cache);
+                return await caches.delete(cache);
+              }
+            })
+          })
+        )
+      })
+
+
+
+      document.addEventListener('DOMContentLoaded', function() {
+          var scene = document.querySelector('a-scene');
+          var previd = document.querySelector('#vid');
+          scene.addEventListener('loaded', function (e) {
+              previd.stop();
+          });
+      });
+
+    </script>
+
+    <script>
+      var cameraView;
+
+      var constraints = {
+        audio: false,
+        video: {
+          facingMode: "environment"
+        }
+      };
+
+      // Access the device camera and stream to cameraView
+      function cameraStart() {
+        cameraView = document.querySelector("#webcam");
+        navigator.mediaDevices
+          .getUserMedia(constraints)
+          .then(function(stream) {
+            cameraView.srcObject = stream;
+          })
+          .catch(function(error) {
+            console.error("Oops. Something is broken.", error);
+          });
+      }
+
+      // Start the video stream when the window loads
+      window.addEventListener("load", cameraStart, false);
+
+      //    const buttons = document.querySelector(".buttons")
+
+      // buttons.addEventListener('click', cameraStart, false);
+
+      // Component to change to a sequential color on cursor suspension.
+//      AFRAME.registerComponent("cursor-listener", {
+//        init: function() {
+//          var lastIndex = -1;
+//          var COLORS = ["red", "green", "blue"];
+//          this.el.addEventListener("click", function(evt) {
+//            lastIndex = (lastIndex + 1) % COLORS.length;
+//            this.setAttribute("material", "color", COLORS[lastIndex]);
+//            console.log("I was clicked at: ", evt.detail.intersection.point);
+//          });
+//        }
+//      });
+    </script>
+  </head>
+
+  <body style="margin : 0px; overflow: hidden;">
+    <video id="webcam" autoplay playsinline></video>
+
+    <a-scene
+      device-orientation-permission-ui="enabled: false"
+      loading-screen="dotsColor: red; backgroundColor: black"
+      ar-session-notifier
+      cursor-modifier
+      playvideo
+      raycaster="objects: .clickable"
+      vr-mode-ui="enabled: false;"
+      renderer="antialias: true; alpha: true; precision: mediump;"
+      embedded
+      arjs="trackingMethod: best; sourceType: #webcam; debugUIEnabled: false;"
+      id="scene"
+    >
+      <a-assets>
+        <img
+          id="asset_btn_play"
+          src="./image/play-button-white-hollow.png"
+        />
+
+        <video
+          src="./assets/fairy.mp4"
+          type="video/mp4"
+          preload="auto"
+          id="vid"
+          response-type="arraybuffer"
+          
+          crossorigin="anonymous"
+          webkit-playsinline
+          autoplay="none"
+          playsinline
+          style="display: none"
+        ></video>
+      </a-assets>
+
+      <a-entity
+        camera="active: true"
+        look-controls
+        wasd-controls
+        position="0 0 5"
+      >
+        <a-entity
+          id="myFooter"
+          geometry="primitive: circle; height: 0.5; width: 0.5"
+          material="side: double; src:#asset_btn_play"
+          position="0 0 -4"
+          rotation="0 0 0"
+          class="clickable"
+          onclick="vid.play()"
+          event-set__click="_target: a-entity; visible: false;"
+        >
+        </a-entity>
+        <a-entity
+          geometry="primitive: plane; height: 2.7; width: 2"
+          material="shader: chromakey; side: double; src: #vid; color: 0.1 0.9 0.2"
+          vidhandler
+          position="0 0 -2"
+          rotation="0 0 0"
+          class="clickable"
+          event-set__enter="_event: mousedown"
+        >
+        </a-entity>
+      </a-entity>
+
+      <button class="button" id="mybutton"></button>
+    </a-scene>
+
+    <button class="capturebtn" id="capture" style="vertical-align:middle"></button>
+    <button class="savebtn" id="save" style="vertical-align:middle">
+      <!--a class="downbtn" id="download" download="capture.jpg"></a-->
+    </button>
+    <!-- The Modal -->
+    <div id="myModal" class="modal" align="center">
+      <!-- Modal content -->
+      <div>
+        <img class="modal-content" id="img01" />
+        <span
+          class="closebtn">
+          <img
+            src="./image/close.png"
+            width="30px"
+            height="30px"
+          />
+        </span>
+        <div id="caption"></div>
+      </div>
+    </div>
+
+    <!--div id="myModal" class="modal">
+      <div class="hfc">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01">
+        <div id="caption"></div>
+      </div>
+ </div-->
+
+    <script type="text/javascript" src="./hmodal_button.js"></script>
+    <script type="text/javascript" src="./hmodal_active.js"></script>
+    <script type="text/javascript" src="./capture-pony.js"></script>
+       
+  </body>
+</html>

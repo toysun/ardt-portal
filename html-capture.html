@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A-Frame test component Component - Basic</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <link
+      sxr="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css"
+    />
+    <script>
+      function download(url) {
+        var a = $("<a style='display:none' id='js-downloder'>")
+          .attr("href", url)
+          .attr("download", "test.png")
+          .appendTo("body");
+
+        a[0].click();
+
+        a.remove();
+      }
+
+      function saveCapture(element) {
+        html2canvas(element).then(function (canvas) {
+          download(canvas.toDataURL("image/png"));
+        });
+      }
+
+      $("#btnDownload").click(function () {
+        var element = document.querySelector("#capture");
+        saveCapture(element);
+      });
+    </script>
+    <script>
+      let btnDownload = document.querySelector("button");
+      let img = document.querySelector("img");
+
+      // Must use FileSaver.js 2.0.2 because 2.0.3 has issues.
+      btnDownload.addEventListener("click", () => {
+        let imagePath = img.getAttribute("src");
+        let fileName = getFileName(imagePath);
+        saveAs(imagePath, fileName);
+      });
+
+      function getFileName(str) {
+        return str.substring(str.lastIndexOf("/") + 1);
+      }
+    </script>
+    <style>
+      div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      img {
+        z-index: 9999;
+        height: 400px;
+        width: 400px;
+      }
+
+      button {
+        display: block;
+        padding: 10px;
+        margin-top: 10px;
+      }
+    </style>
+    <style>
+      @import url("https://fonts.googleapis.com/css?family=Noto+Sans:400,700");
+
+      #capture {
+        margin: 0 auto;
+        width: 100%;
+        height: 400px;
+        overflow: hidden;
+      }
+
+      textarea {
+        width: 100%;
+        padding: 2rem 0.5rem;
+        background: transparent;
+        border: 0;
+        text-align: center;
+        color: #fff;
+        font-family: "Noto Sans", sans-serif;
+        font-weight: 700;
+        font-size: 2rem;
+        resize: none;
+        overflow: hidden;
+        max-height: 100%;
+        min-height: 100%;
+      }
+      #code {
+        color: white;
+        background-color: black;
+        background: url(https://i.imgur.com/sduLRvf.jpg) center center no-repeat;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-8 offset-2">
+          <!-- Btn to trigger action -->
+          <a href="#" class="btn btn-block btn-primary mb-3" id="btnDownload"
+            >Download</a
+          >
+
+          <!-- Content to capture -->
+          <div id="capture" class="text-center bg-info align-middle">
+            <textarea id="code" maxlength="110">
+Click to edit...
+        </textarea
+            >
+            <div>
+              <button>Download</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

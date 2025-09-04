@@ -1,0 +1,787 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>퀴즈게임</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--link
+      href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    /-->
+    <link
+      href="https://fonts.googleapis.com/css?family=Anton"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="aframe-troika-text.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/common-game@0.0.60/common-game.js"></script>
+    <!--script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script-->
+    <style>
+body, html {
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  background-color: #c7c7c7;
+  background-image: url("data:image/svg+xml,%3Csvg width='42' height='44' viewBox='0 0 42 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='Page-1' fill='none' fill-rule='evenodd'%3E%3Cg id='brick-wall' fill='%23404040' fill-opacity='0.4'%3E%3Cpath d='M0 0h42v44H0V0zm1 1h40v20H1V1zM0 23h20v20H0V23zm22 0h20v20H22V23z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+#container {
+  width: 835px;
+  height: 400px;
+  padding: 0;
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translate(-48%, 0%);
+}
+
+.me {
+  position: relative;
+  background-size: 800px 400px;
+  background-repeat: no-repeat;
+  display: inline-block;
+  margin: 2.2px;
+  margin-top: -0.5px;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  transition: 0.2s;
+}
+
+.full {
+  height: 400px;
+  width: 800px;
+  border-radius: 15px;
+}
+
+.me_0 {
+  height: 133.33px;
+  width: 133.33px;
+  background-position: -0px -0px;
+}
+
+.me_1 {
+  height: 133.33px;
+  width: 133.33px;
+  background-position: -133.33px -0px;
+}
+
+.me_2 {
+  height: 133.33px;
+  width: 133.33px;
+  background-position: -266.66px -0px;
+}
+
+.me_3 {
+  height: 133.33px;
+  width: 133.33px;
+  background-position: -399.99px -0px;
+}
+
+.me_4 {
+  height: 133.33px;
+  width: 133.33px;
+  background-position: -533.32px -0px;
+}
+
+.me_5 {
+  height: 133.33px;
+  width: 133.33px;
+  background-position: -666.65px -0px;
+}
+
+.me_6 {
+  height: 133.33px;
+  width: 133.33px;
+  background-position: -0px -133.33px;
+}
+
+.me_7 {
+  height: 133.33px;
+  width: 133.33px;
+  background-position: -133.33px -133.33px;
+}
+
+.me_8 {
+  height: 133.33px;
+  width: 133.33px;
+  background-position: -266.66px -133.33px;
+}
+
+.me_9 {
+  height: 133.33px;
+  width: 133.33px;
+  background-position: -399.99px -133.33px;
+}
+
+.me_10 {
+  height: 133.33px;
+  width: 133.33px;
+  background-position: -533.32px -133.33px;
+}
+
+.me_11 {
+  height: 133.33px;
+  width: 133.33px;
+  background-position: -666.65px -133.33px;
+}
+
+.me_12 {
+  height: 133.33px;
+  width: 133.33px;
+  background-position: -0px -266.66px;
+}
+
+.me_13 {
+  height: 133.33px;
+  width: 133.33px;
+  background-position: -133.33px -266.66px;
+}
+
+.me_14 {
+  height: 133.33px;
+  width: 133.33px;
+  background-position: -266.66px -266.66px;
+}
+
+.me_15 {
+  height: 133.33px;
+  width: 133.33px;
+  background-position: -399.99px -266.66px;
+}
+
+.me_16 {
+  height: 133.33px;
+  width: 133.33px;
+  background-position: -533.32px -266.66px;
+}
+
+.me_17 {
+  height: 133.33px;
+  width: 133.33px;
+  background-position: -666.65px -266.66px;
+}
+
+.prevent_click {
+  pointer-events: none;
+}
+
+.correct {
+  border-radius: 0px;
+  box-shadow: 0 0 0 transparent, 0 0 0 transparent;
+  animation: corect 0.5s ease;
+  animation-delay: 0.2s;
+}
+
+@keyframes corect {
+  0% {
+    transform: scale(1);
+    border-radius: 10px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  }
+  50% {
+    transform: scale(1.25);
+    border-radius: 5px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  }
+  100% {
+    transform: scale(1);
+    border-radius: 0px;
+    box-shadow: 0 0 0 transparent, 0 0 0 transparent;
+  }
+}
+.pre_img {
+  margin-top: 10px;
+  width: 100%;
+  position: absolute;
+  left: 100px;
+}
+
+.pre_img li {
+  display: inline-block;
+  list-style: none;
+}
+
+.pre_img li img {
+  width: 150px;
+  height: 75px;
+  position: relative;
+  cursor: pointer;
+}
+
+.cover {
+  display: none;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.38);
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+}
+
+.score {
+  margin: 13% auto;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #666;
+  width: 300px;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+  position: relative;
+}
+
+#scr_head {
+  text-align: center;
+  font-weight: 600;
+  font-size: 30px;
+  font-family: cursive;
+  color: #3d3d3d;
+}
+
+#scr_time {
+  text-align: center;
+  font-weight: 600;
+  font-size: 22px;
+  font-family: cursive;
+  color: #3d3d3d;
+}
+
+#scr_moves {
+  text-align: center;
+  font-weight: 600;
+  font-size: 22px;
+  font-family: cursive;
+  color: #3d3d3d;
+}
+
+.start {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 18px 45px;
+}
+
+.reset {
+  position: absolute;
+  margin: 0 auto;
+  padding: 18px 45px;
+  left: 50%;
+  transform: translate(-50%, 120px);
+}
+
+.OK {
+  padding: 8px 25px;
+  float: right;
+  cursor: pointer;
+}
+
+.button {
+  margin: 0px 10px 10px 0px;
+  border-radius: 10px;
+  font-family: sans-serif;
+  font-size: 25px;
+  color: #FFF;
+  text-decoration: none;
+  background-color: #E74C3C;
+  border-bottom: 5px solid #BD3E31;
+  text-shadow: 0px -2px #BD3E31;
+  z-index: 999;
+  transition: all 0.1s;
+  -webkit-transition: all 0.1s;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.button:active {
+  border-bottom: 1px solid #BD3E31;
+}
+
+.i {
+  text-align: center;
+  font-family: cursive;
+  font-weight: 550;
+  color: #3c3c3c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: black;
+  min-height: 100%;
+  font-family: "Arial", sans-serif;
+}
+
+.wrap {
+  position: relative;
+  height: 100%;
+  min-height: 500px;
+  padding-bottom: 20px;
+}
+
+.game {
+  transform-style: preserve-3d;
+  perspective: 500px;
+  min-height: 100%;
+  height: 100%;
+}
+
+@keyframes matchAnim {
+  0% {
+    background: #bcffcc;
+  }
+  100% {
+    background: white;
+  }
+}
+.card {
+  float: left;
+  width: 16.66666%;
+  height: 25%;
+  padding: 5px;
+  text-align: center;
+  display: block;
+  perspective: 500px;
+  position: relative;
+  cursor: pointer;
+  z-index: 50;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+@media (max-width: 800px) {
+  .card {
+    width: 25%;
+    height: 16.666%;
+  }
+}
+.card .inside {
+  width: 100%;
+  height: 100%;
+  display: block;
+  transform-style: preserve-3d;
+  transition: 0.4s ease-in-out;
+  background: white;
+}
+.card .inside.picked, .card .inside.matched {
+  transform: rotateY(180deg);
+}
+.card .inside.matched {
+  animation: 1s matchAnim ease-in-out;
+  animation-delay: 0.4s;
+}
+.card .front, .card .back {
+  border: 1px solid black;
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+}
+.card .front img, .card .back img {
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+  max-height: 100%;
+}
+.card .front {
+  transform: rotateY(-180deg);
+}
+@media (max-width: 800px) {
+  .card .front {
+    padding: 5px;
+  }
+}
+.card .back {
+  transform: rotateX(0);
+}
+@media (max-width: 800px) {
+  .card .back {
+    padding: 10px;
+  }
+}
+
+.modal-overlay {
+  display: none;
+  background: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.modal {
+  display: none;
+  position: relative;
+  width: 500px;
+  height: 400px;
+  max-height: 90%;
+  max-width: 90%;
+  min-height: 380px;
+  margin: 0 auto;
+  background: white;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 30px 10px;
+}
+.modal .winner {
+  font-size: 80px;
+  text-align: center;
+  font-family: "Anton", sans-serif;
+  color: #4d4d4d;
+  text-shadow: 0px 3px 0 black;
+}
+@media (max-width: 480px) {
+  .modal .winner {
+    font-size: 60px;
+  }
+}
+.modal .restart {
+  font-family: "Anton", sans-serif;
+  margin: 30px auto;
+  padding: 20px 30px;
+  display: block;
+  font-size: 30px;
+  border: none;
+  background: #4d4d4d;
+  background: linear-gradient(#4d4d4d, #222);
+  border: 1px solid #222;
+  border-radius: 5px;
+  color: white;
+  text-shadow: 0px 1px 0 black;
+  cursor: pointer;
+}
+.modal .restart:hover {
+  background: linear-gradient(#222, black);
+}
+.modal .message {
+  text-align: center;
+}
+.modal .message a {
+  text-decoration: none;
+  color: #28afe6;
+  font-weight: bold;
+}
+.modal .message a:hover {
+  color: #56c0eb;
+  border-bottom: 1px dotted #56c0eb;
+}
+.modal .share-text {
+  text-align: center;
+  margin: 10px auto;
+}
+.modal .social {
+  margin: 20px auto;
+  text-align: center;
+}
+.modal .social li {
+  display: inline-block;
+  height: 50px;
+  width: 50px;
+  margin-right: 10px;
+}
+.modal .social li:last-child {
+  margin-right: 0;
+}
+.modal .social li a {
+  display: block;
+  line-height: 50px;
+  font-size: 20px;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+.modal .social li a.facebook {
+  background: #3b5998;
+}
+.modal .social li a.facebook:hover {
+  background: #4c70ba;
+}
+.modal .social li a.google {
+  background: #D34836;
+}
+.modal .social li a.google:hover {
+  background: #dc6e60;
+}
+.modal .social li a.twitter {
+  background: #4099FF;
+}
+.modal .social li a.twitter:hover {
+  background: #73b4ff;
+}
+
+footer {
+  height: 20px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 0;
+}
+footer .disclaimer {
+  line-height: 20px;
+  font-size: 12px;
+  color: #727272;
+  text-align: center;
+}
+@media (max-width: 767px) {
+  footer .disclaimer {
+    font-size: 8px;
+  }
+}
+    </style>
+    <!--link rel="stylesheet" href="style-capture-t.css" /-->
+  </head>
+  <body style="margin: 0px; overflow: hidden">
+<div id="container">	
+	<a href="#" class="button start">시작</a>
+	<div class="box">	
+		<div class="me full"></div>
+	</div>
+	<div class="pre_img">	
+		<li data-bid="0"><img src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/smile.jpg?v=1696332301830"></li>
+		<li data-bid="1"><img src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/yoon-jang-dae.jpg?v=1696332383926"></li>
+		<li data-bid="2"><img src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/jijang.jpg?v=1696322505502"></li>	
+		<li data-bid="3" id="upfile1"><!--img src="https://image.ibb.co/cXSomR/upload1.png" /--></li>
+		<input type="file" name="image" id="file1" style="display: none">
+	</div>
+	<div align="center"><a href="#" class="button reset" align="center">섞기</a></div>
+</div>
+
+<div class="cover" >
+	<div class="score">
+		<p id="scr_head"> &#9875 Puzzel이 완성되었습니다. &#9875</p>
+		<p id="scr_time"> 소요시간 : <span id="min">00</span> 분 <span id="sec">00</span> 초</p>
+		<p id="scr_moves"> 이동수 : <span id="moves"></span></p>
+		<p class="i">developed by suzisoft</p>
+		<div class="button OK">OK</div>
+	</div>
+</div>
+
+
+      <!--a-scene
+      vr-mode-ui="enabled: false"
+      loading-screen="dotsColor: white; backgroundColor: #grey"
+      device-orientation-permission-ui="enabled: false"
+      ar-session-notifier
+      renderer="antialias: true; logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true;"
+      embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+          <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+  
+                </a-scene-->
+
+    <script>
+$(document).ready(function() {
+
+
+	var box = $(".box"),
+		orginal = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+		temp = orginal,
+		x = [],
+		sec = 0,
+		date1,date2,
+		moves = 0,
+		mm = 0,
+		ss = 0,
+		upIMG,
+		images = ["https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/smile.jpg?v=1696332301830","https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/yoon-jang-dae.jpg?v=1696332383926","https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/jijang.jpg?v=1696322505502"]
+		img = 0;
+
+
+
+
+	$('.me').css({"background-image" : 'url('+images[0]+')'});
+
+	$(".start").click(function() {
+		$(".start").addClass('prevent_click');
+		$(".start").delay(100).slideUp(500);
+		$(".full").hide();
+		$(".pre_img").addClass("prevent_click");
+		
+		date1 = new Date();
+		Start();
+		return 0;
+	});
+
+	function Start() {
+		randomTile();
+		changeBG(img);
+		var count = 0,
+			a,
+			b,
+			A,
+			B;
+		$(".me").click(function() {
+			count++;
+			if (count == 1) {
+				a = $(this).attr("data-bid");
+				$('.me_'+a).css({"opacity": ".65"});
+			} else {
+				b = $(this).attr("data-bid");	
+				$('.me_'+a).css({"opacity": "1"});
+				if (a == b) {
+				} else {
+					$(".me_" + a)
+						.addClass("me_" + b)
+						.removeClass("me_" + a);
+					$(this)
+						.addClass("me_" + a)
+						.removeClass("me_" + b);
+					$(".me_" + a).attr("data-bid", a);
+					$(".me_" + b).attr("data-bid", b);
+				}
+				moves++;
+				swapping(a, b);
+				checkCorrect(a);
+				checkCorrect(b);
+				a = b = count = A = B = 0;
+			}
+			if (arraysEqual(x)) { 
+				date2 = new Date();
+				timeDifferece();
+				showScore();
+				return 0;
+			}
+		});
+		return 0;
+	}
+
+	function randomTile() {
+		var i;
+		for (i = orginal.length-1; i >= 0; i--) {
+			var flag = getRandom(0, i);
+			x[i] = temp[flag];
+			temp[flag] = temp[i];
+			temp[i] = x[i];
+		}
+		for (i = 0; i < orginal.length; i++) {
+			box.append(
+				'<div  class="me me_' + x[i] + ' tile" data-bid="' + x[i] + '"></div>'
+			);
+			if ((i + 1) % 6 == 0) box.append("<br>");
+		}
+		i = 17;
+		return 0;
+	}
+
+	function arraysEqual(arr) {
+		var i;
+		for (i = orginal.length - 1; i >= 0; i--) {
+			if (arr[i] != i) return false;
+		}
+		return true;
+	}
+
+	function checkCorrect(N1) {
+		var pos = x.indexOf(parseInt(N1, 10));
+		if (pos != N1) {
+			return;
+		}
+		$(".me_" + N1).addClass("correct , prevent_click ");
+		return;
+	}
+
+	function swapping(N1, N2) {
+		var first = x.indexOf(parseInt(N1, 10)),
+			second = x.indexOf(parseInt(N2, 10));
+		x[first] = parseInt(N2, 10);
+		x[second] = parseInt(N1, 10);
+		return 0;
+	}
+	
+	function getRandom(min, max) {
+			return Math.floor(Math.random() * (max - min + 1)) + min;
+		}
+	
+	function timeDifferece(){
+		var diff = date2 - date1;
+		var msec = diff;
+		var hh = Math.floor(msec / 1000 / 60 / 60);
+		msec -= hh * 1000 * 60 * 60;
+	 	mm = Math.floor(msec / 1000 / 60); // Gives Minute
+		msec -= mm * 1000 * 60;
+		ss = Math.floor(msec / 1000);		// Gives Second
+		msec -= ss * 1000;
+		return 0;
+	}
+
+
+	function changeBG(img){	
+		if(img != 3){
+		$('.me').css({
+			"background-image" : "url("+images[img]+")"
+		});
+		return
+		}
+		else
+			$('.me').css({"background-image" : "url("+upIMG+")"});
+	}
+
+	$('.pre_img li').hover(function(){
+			img = $(this).attr("data-bid");
+			changeBG(img);
+
+		});
+	
+	function showScore(){
+		$('#min').html(mm);
+		$('#sec').html(ss);
+		$('#moves').html(moves);
+		setTimeout(function(){
+		$('.cover').slideDown(350);
+		},1050);
+		return 0;
+	}
+
+	$('.OK').click(function(){
+		$('.cover').slideUp(350);
+	});
+
+	$('.reset').click(function(){
+		$(".tile").remove();
+		$("br").remove();
+		$(".full").show();
+		$(".start").show();
+		$(".pre_img, .start").removeClass("prevent_click");
+		
+		temp = orginal;
+		x = [];
+		moves =  ss = mm = 0;
+		return 0;
+	});
+
+	$("#upfile1").click(function () {
+ 	   $("#file1").trigger('click');
+	});
+
+	$("#file1").change(function(){
+        readURL(this);
+    });
+
+     function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+               upIMG =  e.target.result;
+               img = 3;
+               changeBG(3);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+
+    }
+});
+    </script>
+
+  </body>
+</html>

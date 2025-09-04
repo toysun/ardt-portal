@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ios-recorder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <script>
+      export default {
+        data() {
+          return {
+            blob: null,
+            blobs: [],
+            facingMode: "user",
+            intro: true,
+            muted: true,
+            preview: false,
+            previewing: false,
+            recorder: false,
+            recording: false,
+            stream: null,
+          };
+        },
+        methods: {
+          async startCamera() {
+            this.stream = await navigator.mediaDevices.getUserMedia({
+              audio: true,
+              video: {
+                facingMode: this.facingMode,
+              },
+            });
+
+            this.$refs.video.srcObject = this.stream;
+
+            this.intro = false;
+            this.preview = false;
+            this.recorder = true;
+
+            this.mediaRecorder = new MediaRecorder(this.stream);
+
+            this.mediaRecorder.ondataavailable = (event) => {
+              if (event.data) {
+                this.blobs.push(event.data);
+              }
+            };
+
+            this.mediaRecorder.onstart = () => {
+              this.recording = true;
+            };
+
+            this.mediaRecorder.onstop = () => {
+              this.recording = false;
+
+              this.doPreview();
+            };
+          },
+          flipCamera() {
+            this.stopCamera();
+
+            if (this.facingMode == "environment") {
+              this.facingMode = "user";
+            } else {
+              this.facingMode = "environment";
+            }
+
+            this.startCamera();
+          },
+          stopCamera() {
+            this.stream.getTracks().forEach((track) => track.stop());
+
+            this.stream = null;
+          },
+          closeCamera() {
+            this.stopCamera();
+
+            this.recorder = false;
+            this.intro = true;
+          },
+          startRecording() {
+            this.mediaRecorder.start(1000);
+          },
+          endRecording() {
+            this.mediaRecorder.stop();
+
+            this.stopCamera();
+          },
+          doPreview() {
+            this.blob = new Blob(this.blobs, {
+              type: this.mediaRecorder.mimeType,
+            });
+
+            this.$refs.preview.src = URL.createObjectURL(this.blob);
+
+            this.recorder = false;
+            this.preview = true;
+          },
+          toggleMute() {
+            this.$refs.preview.muted = !this.$refs.preview.muted;
+
+            this.muted = this.$refs.preview.muted;
+          },
+          closePreview() {
+            this.$refs.preview.src = null;
+
+            this.blobs = [];
+            this.blob = null;
+
+            this.startCamera();
+          },
+          shareVideo() {
+            let file = new File([this.blob], "video.mp4", {
+              type: this.mediaRecorder.mimeType,
+            });
+
+            navigator
+              .share({
+                title: "MediaRecorder Camera",
+                url: "https://cdpn.io/leemartin/debug/37d1561b4e206dd8393216e5724066c3",
+                description:
+                  "This demo uses the MediaRecorder API to create a simple web based video recorder which utilizes the simple recording UX of popular social apps.",
+                files: [file],
+              })
+              .then(() => {
+                console.log("Share succeeded.");
+              })
+              .catch((e) => {
+                console.log("Share failed.", e);
+              });
+          },
+        },
+      };
+    </script>
+
+    <style>
+      html,
+      body,
+      main,
+      section {
+        height: 100%;
+        width: 100%;
+      }
+
+      html {
+        position: fixed;
+      }
+
+      body {
+        background: #e5e5e5;
+      }
+
+      a {
+        color: black;
+      }
+
+      button {
+        appearance: none;
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+        margin: 0;
+        padding: 0;
+      }
+
+      button:focus {
+        outline: none;
+      }
+
+      section {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+      }
+
+      footer,
+      header {
+        display: flex;
+        position: absolute;
+        width: 100%;
+        z-index: 10;
+      }
+
+      footer {
+        bottom: 2em;
+        justify-content: center;
+      }
+
+      header {
+        box-sizing: border-box;
+        justify-content: space-between;
+        padding: 0 2em;
+        top: 2em;
+      }
+
+      header button.material-icons {
+        color: white;
+        font-size: 36px;
+      }
+
+      video {
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        width: 100%;
+      }
+
+      /* Intro */
+      section#intro {
+      }
+
+      section#intro article {
+        padding: 0 2em 4em 2em;
+        text-align: center;
+      }
+
+      section#intro article img {
+        width: 120px;
+      }
+
+      section#intro article h1 {
+        font-size: 24px;
+        margin: 24px 0;
+      }
+
+      section#intro article p {
+        line-height: 1.5em;
+        margin: 0;
+      }
+
+      section#intro footer button {
+        background: black;
+        border-radius: 6px;
+        color: white;
+        height: 48px;
+        font-weight: bold;
+        padding: 0 24px;
+      }
+
+      /* Recorder */
+      section#recorder footer button.material-icons {
+        font-size: 96px;
+      }
+
+      section#recorder footer button.record {
+        color: red;
+      }
+
+      section#recorder footer button.stop {
+        color: white;
+      }
+
+      /* Preview */
+      section#preview footer button.material-icons {
+        color: white;
+        font-size: 96px;
+      }
+
+      @media (min-width: 768px) {
+        main {
+          align-items: center;
+          display: flex;
+          justify-content: center;
+        }
+
+        section {
+          border: 1px solid white;
+          border-radius: 24px;
+          height: 667px;
+          width: 375px;
+        }
+
+        section#intro article {
+          padding-bottom: 0em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <template>
+      <main>
+        <!-- Intro -->
+        <section id="intro" v-show="intro">
+          <article>
+            <img
+              src="https://assets.codepen.io/141041/ios-15-camera.png"
+              alt="iOS 15 Web Camera"
+            />
+            <h1>iOS 15 Safari Camera</h1>
+            <p>
+              This
+              <a
+                href="https://www.apple.com/ios/ios-15-preview/"
+                target="_blank"
+                >iOS 15</a
+              >
+              Safari demo uses
+              <a href="https://webrtc.org/" target="_blank">WebRTC</a>,
+              <a
+                href="https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder"
+                target="_blank"
+                >MediaRecorder API</a
+              >, and
+              <a href="https://www.w3.org/TR/web-share/" target="_blank"
+                >Web Share API</a
+              >
+              to create a simple web based video recorder which includes sharing
+              directly to a native social app.
+              <a
+                href="https://twitter.com/leemartin/status/1402989831169351699"
+                target="_blank"
+                >Read more</a
+              >.
+            </p>
+          </article>
+
+          <footer>
+            <button @click="startCamera">Allow Camera</button>
+          </footer>
+        </section>
+
+        <!-- Recorder -->
+        <section id="recorder" v-show="recorder">
+          <header>
+            <button class="material-icons" @click="closeCamera">close</button>
+
+            <button
+              class="material-icons"
+              @click="flipCamera"
+              v-if="!recording"
+            >
+              flip_camera_ios
+            </button>
+          </header>
+
+          <video ref="video" autoplay playsinline muted></video>
+
+          <footer>
+            <button
+              class="material-icons stop"
+              @click="endRecording"
+              v-if="recording"
+            >
+              stop
+            </button>
+
+            <button
+              class="material-icons record"
+              @click="startRecording"
+              v-else
+            >
+              fiber_manual_record
+            </button>
+          </footer>
+        </section>
+
+        <!-- Preview -->
+        <section id="preview" v-show="preview">
+          <header>
+            <button class="material-icons" @click="closePreview">close</button>
+
+            <button class="material-icons" @click="toggleMute">
+              {{ muted ? 'volume_off' : 'volume_up' }}
+            </button>
+
+            <button class="material-icons" @click="shareVideo">share</button>
+          </header>
+
+          <video ref="preview" autoplay muted playsinline loop></video>
+        </section>
+      </main>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,501 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>목아박물관 퀴즈게임</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <link
+      href="https://fonts.googleapis.com/css?family=Anton"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+   
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/common-game@0.0.60/common-game.js"></script>
+   
+    <style>
+* {
+    font-family: ng, "Malgun Gothic", "Ariel", "Apple SD Gothic Neo",
+          Dotum, "돋음", sans-serif;
+}
+
+body {
+  background-color: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.quiz-container {
+  background-color: #FFF;
+  width: 90%;
+  height: 70%; 
+  border-radius: 15px;
+  box-shadow: 3px 2px 19px -6px rgba(0,0,0,0.75);
+  padding: 20px;
+}
+
+.quiz-score{
+  display: none;
+  text-align: center;
+  margin-top: 10%;
+  
+}
+#playAgainButton {
+  display: none;    
+  text-align: center; 
+  margin-top: 5%;
+  z-index: 9999;
+}
+
+.question{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+  height: 150px;
+  font-size: 1.3rem;
+ 
+}
+
+.answer-list{
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.answer-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 50%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.answer-item button {
+  width: 100%;
+  height: 50px;
+  font-size: 16px;
+  color: #FFFFFF;
+  background-color: #545E75;
+}
+
+.answer-item button:hover {
+  background-color: #F4E04D;
+  color: #000000;
+}
+
+.answer-item button:focus {
+  outline: none;
+}
+ 
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Apple SD Gothic NeoArial, Helvetica, sans-serif;
+    color: black;
+  }
+
+  *:focus {
+    outline:0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  h1 {
+    font-size: 5.4rem;
+    color: #ffca18;
+    margin-bottom: 3rem;
+  }
+  
+  h1 > span {
+    font-size: 2.4rem;
+    font-weight: 500;
+  }
+  
+  h2 {
+    font-size: 4.2rem;
+    margin-bottom: 4rem;
+    font-weight: 700;
+  }
+  
+  h3 {
+    font-size: 2.8rem;
+    font-weight: 500;
+  }
+  
+  .container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 280px;
+    max-width: 60%;
+    margin: 0 auto;
+  }
+  
+  .container > * {
+    width: 100%;
+  }
+  
+  .flex-column {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .flex-center {
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .justify-center {
+    justify-content: center;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  .hidden {
+    display: none;
+  }
+
+  .explanation {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+    text-align: center;
+    line-height: 1.8rem;
+  }
+  
+  .firstcontainer {
+    margin-top: 0rem;
+  }
+
+
+  .btn {
+    font-size: 1.8rem;
+    padding: 1rem 0;
+    width: 50vw;
+    text-align: center;
+    border: 0.2rem solid #ffca18;
+    margin-bottom: 1rem;
+    text-decoration: none;
+    color: #ffca18;
+    background-color: black;
+  }
+  
+  .btn:hover {
+    cursor: pointer;
+    box-shadow: 0 0.4rem 1.4rem 0 rgba(255, 153, 221, 0.5);
+    transform: translateY(-0.1rem);
+    transition: transform 150ms;
+  }
+  
+  .btn[disabled]:hover {
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+  
+  select {
+    appearance: none;
+    text-align-last:center;
+    text-align: center;
+    border: none;
+  }
+option {
+  appearance: none;
+  -webkit-appearance: none;
+  font-size: 16px;
+  color: #ffca18;
+  padding: 3px;
+}
+
+  @media only screen and (max-width: 360px) {
+    h1 {
+        font-size: 4rem;
+        white-space: nowrap;
+      }
+  }
+  @media only screen and (max-width: 900px) {
+    .container {
+      max-width: 80%;
+    }
+  }
+
+
+#hud {
+  display: flex;
+  justify-content: space-between;
+}
+
+.hud-prefix {
+  text-align: center;
+  font-size: 2rem;
+}
+
+.hud-main-text {
+  text-align: center;
+}
+      
+#progressBar {
+  width: 100%;
+  height: 4rem;
+  border: 0.3rem solid #ffca18;
+  margin-top: 1rem;
+}
+
+#progressBarFull {
+  height: 3.4rem;
+  background-color: #ffca18;
+  width: 0%;
+  max-width: 100%;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media only screen and (max-width: 365px) {
+  :root {
+    font-size: 50%;
+  }
+  .hud-main-text {
+    margin-top: 10px;
+  }
+}
+              p {
+          font-size: 20px;
+          color: white;
+          margin: 18px;
+
+        }
+
+    </style>
+    
+  </head>
+  
+  <body style="margin: 0px; overflow: hidden">
+     <div class="firstcontainer flex-center flex-column" id="toppage">
+              <h1>Quiz Time</h1>
+       <p class="explanation">즐거운 관람 되셨나요? <br>퀴즈를 모두 맞히면 명예 도슨트 자격을 드립니다.<br></p>
+              <div id="home" class="flex-center flex-column">
+                <a class="btn" id="playButton" onclick="play()">시작</a>
+              </div>
+    </div>
+  <div class="quiz-container hidden" id="playing">
+     <div id="game" class="justify-center flex-column hidden">
+     <div id="hud">
+                <div class="hud-item">
+                  <p id="progressText" class="hud-prefix">Question</p>
+                  <div id="progressBar">
+                    <div id="progressBarFull"></div>
+                  </div>
+                </div>
+                <div class="hud-item" id="scorezone">
+                  <p class="hud-prefix">Score</p>
+                  <h1 class="hud-main-text" id="score">0</h1>
+                </div>
+              </div>
+  <div class="question">
+  </div>
+  <div class="answer-list">
+  </div>
+  <div class="quiz-score flex-center flex-column hud-prefix">
+  </div>
+  <div class="flex-center flex-column" id="retry">
+      <a class="btn" id="playAgainButton" onclick="playAgain()">다시 도전</a>
+  </div>
+</div>
+    </div>      
+
+    <script>
+// define our data and state objects
+const quizQuestions = [
+  {
+    questionText: " 반가사유상은 한쪽 다리를 다른 쪽 다리 위에 올리고 있는 자세인 반가좌를 하고, 오른쪽 손가락을 한쪽 뺨에 대고 생각하는 모습입니다. 어느 쪽 다리를 올리고 있을까요? ",
+    answerOptions: ["왼쪽", "오른쪽"],
+    answer: "오른쪽"
+  },
+    {
+    questionText: " 절을 하거나 진언(염불)을 외울 때 횟수를 세는 염주는 보통 108개 입니다. 2층 불교 유물 전시실에 있는 염주는 총 몇 알일까요?",
+    answerOptions: ["540", "216"],
+    answer: "540"
+  },
+    {
+    questionText: " 본관 2층에는 3점의 보물이 있습니다. 그 중, 누구나 부처가 될 수 있다는 것을 중요사상으로 하는 천태종의 근본 경전의 이름은 무엇일까요? ",
+    answerOptions: ["묘법연화경", "금강반야경"],
+    answer: "묘법연화경"
+  },
+    {
+    questionText: " 불교 수호신으로, 동물의 얼굴에 손에는 무기를 들고 갑옷을 입고 있습니다. 우리에게는 띠 동물로 더 친숙합니다. 이들은 누구일까요?",
+    answerOptions: ["십육나한", "십이지신"],
+    answer: "십이지신"
+  },
+    {
+    questionText: " 물 속에 사는 생명들을 구제하기 위해 배 부분을 채로 두드려 소리를 내는 불교 사물 중 하나로, 나무로 만들어진 물고기입니다. 무엇일까요?",
+    answerOptions: ["목탁", "목어"],
+    answer: "목어"
+  },
+    {
+    questionText: " 지옥에는 10명의 왕이 있습니다. 다섯 번째 왕으로 발설지옥을 다스리고 있습니다. 누구일까요?",
+    answerOptions: ["진광대왕", "염라대왕"],
+    answer: "염라대왕"
+  },
+    {
+    questionText: " 염라대왕은 죽은 사람이 생전에 지은 죄를 모두 보여주는 이것을 보고 심판을 한다고 합니다. 거울처럼 생긴 이것은 무엇일까요?",
+    answerOptions: ["업경대", "장경대"],
+    answer: "업경대"
+  },
+    {
+    questionText: " 허준은 조선 중기 의학자입니다. 허준이 집필한 최고의 의학서적으로 불리는 이 책은 무엇일까요?",
+    answerOptions: ["동의보감", "의방유취"],
+    answer: "동의보감"
+  },
+    {
+    questionText: " 최고의 깨달음을 얻은 불교의 성자라는 뜻으로, 부처님의 제자들을 말합니다. <큰 말씀의 집>에 모셔진 이분들은 누구일까요?",
+    answerOptions: ["중생", "나한"],
+    answer: "나한"
+  },
+
+];
+
+let currentQuestion = 0; //computers start counting from zero remember!
+let currentScore = 0;
+
+// get our elements from the dom
+const quizContainer = document.querySelector(".quiz-container");
+const questionDisplay = document.querySelector(".question");
+const answerList = document.querySelector(".answer-list");
+const score = document.querySelector(".quiz-score");
+      
+const playAgainButton = document.querySelector('#playAgainButton');
+const RetryZone = document.querySelector('#retryzone');
+const progressBarFull = document.querySelector("#progressBarFull");
+const progressText = document.querySelector("#progressText");
+const scoreText = document.querySelector("#score");
+const maxQuestion = 9;
+var DispQuest = 1;
+      
+const home = document.querySelector("#home");
+const playing = document.querySelector("#playing");
+const playButton = document.querySelector("#playButton");    
+const Toppage = document.querySelector('#toppage');
+      
+// helper methods to create our elements
+const createQuizQuestion = quizQuestion => {
+  createQuestionText(quizQuestion.questionText);
+  createAnswerButtons(quizQuestion.answerOptions);
+  DispQuest = currentQuestion + 1;
+  progressText.innerText = `Question ${DispQuest}/${maxQuestion}`;
+  progressBarFull.style.width = `${(DispQuest / maxQuestion) * 100}%`;
+};
+
+const createQuizScore = () => {
+  questionDisplay.style.display = "none";
+  answerList.style.display = "none";
+  // show the score
+  score.style.display = "inline-block";
+  score.textContent =
+    "총 " + quizQuestions.length + " 문제 중 " + currentScore + " 문제를 맞혔어요.";
+  playAgainButton.style.display = "inline-block";
+ 
+};
+
+const createQuestionText = questionText => {
+  // append our div to our answer list
+  questionDisplay.textContent = "Q)" + questionText;
+};
+
+const createAnswerButtons = answerOptions => {
+  //clear our answer list before creating new answer buttons
+  answerList.innerHTML = "";
+
+  // our answerOptions is an array, so we map over it to
+  // create a list of answer buttons
+  answerOptions.map(answerOption => {
+    // create an answer item div and give it a class
+    const answerItemDiv = document.createElement("div");
+    answerItemDiv.className = "answer-item";
+
+    //create a button
+    const answerButton = document.createElement("button");
+    answerButton.textContent = answerOption;
+
+    // add an eventlistener to this button to check if answer is correct or not
+    handleAnswerButtonClick();
+
+    answerButton.addEventListener("click", () => {
+      // get our currentQuestion
+      const question = quizQuestions[currentQuestion];
+      // compare the answer the user selected to the correct answer
+      if (question.answer === answerButton.textContent) {
+        currentScore += 1;
+      }
+      scoreText.innerText = currentScore;
+ 
+      currentQuestion += 1;
+
+      if (quizQuestions[currentQuestion]) {
+        createQuizQuestion(quizQuestions[currentQuestion]);
+      } else {
+        createQuizScore();
+      }
+    });
+
+    answerItemDiv.appendChild(answerButton);
+
+    answerList.appendChild(answerItemDiv);
+  });
+};
+
+const handleAnswerButtonClick = answerButton => {};
+
+(function() {
+  createQuizQuestion(quizQuestions[0]);
+})();
+
+
+function play() { 
+  game.classList.remove("hidden");
+  playing.classList.remove("hidden");
+  Toppage.classList.add("hidden"); 
+}
+
+function playAgain() {  
+   currentQuestion = 0; //computers start counting from zero remember!
+   currentScore = 0;
+   DispQuest = 1;
+   createQuizQuestion(quizQuestions[0]);
+   scoreText.innerText = currentScore;
+   questionDisplay.style.display = "flex";
+   answerList.style.display = "flex";  
+   score.style.display = "none";
+   playAgainButton.style.display = "none";  
+}
+
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,295 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>퀴즈게임</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--link
+      href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    /-->
+    <link
+      href="https://fonts.googleapis.com/css?family=Anton"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="aframe-troika-text.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/common-game@0.0.60/common-game.js"></script>
+    <!--script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script-->
+    <style>
+* {
+    font-family: ng, "Malgun Gothic", "맑은고딕", "Apple SD Gothic Neo",
+          Dotum, "돋음", sans-serif;
+}
+
+body {
+  background-color: #7CC6FE;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.quiz-container {
+  background-color: #FFF;
+  width: 450px;
+  height: min-content; 
+  border-radius: 15px;
+  box-shadow: 3px 2px 19px -6px rgba(0,0,0,0.75);
+  padding: 20px;
+}
+
+.quiz-score{
+  display: none;
+  text-align: center;
+}
+
+.question{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+  height: 150px;
+}
+
+.answer-list{
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.answer-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 50%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.answer-item button {
+  width: 100%;
+  height: 50px;
+  font-size: 16px;
+  color: #FFFFFF;
+  background-color: #545E75;
+}
+
+.answer-item button:hover {
+  background-color: #F4E04D;
+  color: #000000;
+}
+
+.answer-item button:focus {
+  outline: none;
+}
+      #hud {
+  display: flex;
+  justify-content: space-between;
+}
+
+.hud-prefix {
+  text-align: center;
+  font-size: 2rem;
+}
+
+.hud-main-text {
+  text-align: center;
+}
+
+#progressBar {
+  width: 20rem;
+  height: 4rem;
+  border: 0.3rem solid #ff99dd;
+  margin-top: 1.5rem;
+}
+
+#progressBarFull {
+  height: 3.4rem;
+  background-color: #ff99dd;
+  width: 0%;
+  max-width: 100%;
+}
+
+    </style>
+    <!--link rel="stylesheet" href="style-capture-t.css" /-->
+  </head>
+  <body style="margin: 0px; overflow: hidden">
+   <div class="quiz-container">
+  <div class="question">
+<!--     Q) Where will the questions appear? What if the question is super long like this? -->
+  </div>
+  <div class="answer-list">
+<!--     <div class="answer-item">
+      <button>Answer 1</button>
+    </div>
+    <div class="answer-item">
+      <button>Answer 2</button>
+    </div>
+    <div class="answer-item">
+      <button>Answer 3</button>
+    </div>
+    <div class="answer-item">
+      <button>Answer 4</button>
+    </div> -->
+
+  </div>
+  <div class="quiz-score">
+
+  </div>
+</div>
+
+      <!--a-scene
+      vr-mode-ui="enabled: false"
+      loading-screen="dotsColor: white; backgroundColor: #grey"
+      device-orientation-permission-ui="enabled: false"
+      ar-session-notifier
+      renderer="antialias: true; logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true;"
+      embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+          <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+  
+                </a-scene-->
+
+    <script>
+// define our data and state objects
+const quizQuestions = [
+  {
+    questionText: " 반가사유상은 한쪽 다리를 다른 쪽 다리 위에 올리고 있는 자세인 반가좌를 하고, 오른쪽 손가락을 한쪽 뺨에 대고 생각하는 모습입니다. 어느 쪽 다리를 올리고 있을까요? ",
+    answerOptions: ["왼쪽", "오른쪽"],
+    answer: "오른쪽"
+  },
+    {
+    questionText: " 절을 하거나 진언(염불)을 외울 때 횟수를 세는 염주는 보통 108개 입니다. 2층 불교 유물 전시실에 있는 염주는 총 몇 알일까요?",
+    answerOptions: ["540", "216"],
+    answer: "540"
+  },
+    {
+    questionText: "본관 2층에는 3점의 보물이 있습니다. 그 중, 누구나 부처가 될 수 있다는 것을 중요사상으로 하는 천태종의 근본 경전의 이름은 무엇일까요? ",
+    answerOptions: ["묘법연화경", "금강반야경"],
+    answer: "묘법연화경"
+  },
+    {
+    questionText: "불교 수호신으로, 동물의 얼굴에 손에는 무기를 들고 갑옷을 입고 있습니다. 우리에게는 띠 동물로 더 친숙합니다. 이들은 누구일까요?",
+    answerOptions: ["십육나한", "십이지신"],
+    answer: "십이지신"
+  },
+    {
+    questionText: "물 속에 사는 생명들을 구제하기 위해 배 부분을 채로 두드려 소리를 내는 불교 사물 중 하나로, 나무로 만들어진 물고기입니다. 무엇일까요?",
+    answerOptions: ["목탁", "목어"],
+    answer: "목어"
+  },
+    {
+    questionText: "지옥에는 10명의 왕이 있습니다. 다섯 번째 왕으로 발설지옥을 다스리고 있습니다. 누구일까요?",
+    answerOptions: ["진광대왕", "염라대왕"],
+    answer: "염라대왕"
+  },
+    {
+    questionText: "염라대왕은 죽은 사람이 생전에 지은 죄를 모두 보여주는 이것을 보고 심판을 한다고 합니다. 거울처럼 생긴 이것은 무엇일까요?",
+    answerOptions: ["업경대", "장경대"],
+    answer: "업경대"
+  },
+    {
+    questionText: "허준은 조선 중기 의학자입니다. 허준이 집필한 최고의 의학서적으로 불리는 이 책은 무엇일까요?",
+    answerOptions: ["동의보감", "의방유취"],
+    answer: "동의보감"
+  },
+    {
+    questionText: "최고의 깨달음을 얻은 불교의 성자라는 뜻으로, 부처님의 제자들을 말합니다. <큰 말씀의 집>에 모셔진 이분들은 누구일까요?",
+    answerOptions: ["중생", "나한"],
+    answer: "나한"
+  },
+
+];
+
+let currentQuestion = 0; //computers start counting from zero remember!
+let currentScore = 0;
+
+// get our elements from the dom
+const quizContainer = document.querySelector(".quiz-container");
+const questionDisplay = document.querySelector(".question");
+const answerList = document.querySelector(".answer-list");
+const score = document.querySelector(".quiz-score");
+
+// helper methods to create our elements
+const createQuizQuestion = quizQuestion => {
+  createQuestionText(quizQuestion.questionText);
+  createAnswerButtons(quizQuestion.answerOptions);
+};
+
+const createQuizScore = () => {
+  questionDisplay.style.display = "none";
+  answerList.style.display = "none";
+  // show the score
+  score.style.display = "block";
+  score.textContent =
+    "You scored " + currentScore + " out of " + quizQuestions.length;
+};
+
+const createQuestionText = questionText => {
+  // append our div to our answer list
+  questionDisplay.textContent = "Q)" + questionText;
+};
+
+const createAnswerButtons = answerOptions => {
+  //clear our answer list before creating new answer buttons
+  answerList.innerHTML = "";
+
+  // our answerOptions is an array, so we map over it to
+  // create a list of answer buttons
+  answerOptions.map(answerOption => {
+    // create an answer item div and give it a class
+    const answerItemDiv = document.createElement("div");
+    answerItemDiv.className = "answer-item";
+
+    //create a button
+    const answerButton = document.createElement("button");
+    answerButton.textContent = answerOption;
+
+    // add an eventlistener to this button to check if answer is correct or not
+    handleAnswerButtonClick();
+
+    answerButton.addEventListener("click", () => {
+      // get our currentQuestion
+      const question = quizQuestions[currentQuestion];
+      // compare the answer the user selected to the correct answer
+      if (question.answer === answerButton.textContent) {
+        currentScore += 1;
+      }
+
+      // move on to the next question
+      currentQuestion += 1;
+
+      // display questions if we still have them,
+      // otherwise display the scores
+      if (quizQuestions[currentQuestion]) {
+        createQuizQuestion(quizQuestions[currentQuestion]);
+      } else {
+        createQuizScore();
+      }
+    });
+
+    // append button to our div
+    answerItemDiv.appendChild(answerButton);
+
+    // append our div to our answer list
+    answerList.appendChild(answerItemDiv);
+  });
+};
+
+const handleAnswerButtonClick = answerButton => {};
+
+(function() {
+  createQuizQuestion(quizQuestions[0]);
+})();
+
+    </script>
+
+  </body>
+</html>

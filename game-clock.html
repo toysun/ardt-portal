@@ -1,0 +1,344 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>십이간지시계</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--link
+      href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    /-->
+    <link
+      href="https://fonts.googleapis.com/css?family=Anton"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="aframe-troika-text.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!--script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script-->
+    <style>
+body {
+  background: rgb(13, 186, 230);
+  color: #333;
+  margin-top: 50px;
+  font-family: Helvetica, sans-serif;
+}
+
+#clock ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  text-align: center;
+}
+
+#clock li {
+  position: absolute;
+  transform-origin: 50% 100%;
+  height: 160px;
+}
+
+.hours {
+  left: 120px;
+  font-size: 23.3333333333px;
+  letter-spacing: -1.6px;
+  line-height: 45px;
+}
+.hours li {
+  width: 80px;
+}
+.hours span {
+  display: block;
+}
+.hours li:nth-of-type(1) {
+  transform: rotate(30deg);
+}
+.hours li:nth-of-type(1) span {
+  transform: rotate(-30deg);
+}
+.hours li:nth-of-type(2) {
+  transform: rotate(60deg);
+}
+.hours li:nth-of-type(2) span {
+  transform: rotate(-60deg);
+}
+.hours li:nth-of-type(3) {
+  transform: rotate(90deg);
+}
+.hours li:nth-of-type(3) span {
+  transform: rotate(-90deg);
+}
+.hours li:nth-of-type(4) {
+  transform: rotate(120deg);
+}
+.hours li:nth-of-type(4) span {
+  transform: rotate(-120deg);
+}
+.hours li:nth-of-type(5) {
+  transform: rotate(150deg);
+}
+.hours li:nth-of-type(5) span {
+  transform: rotate(-150deg);
+}
+.hours li:nth-of-type(6) {
+  transform: rotate(180deg);
+}
+.hours li:nth-of-type(6) span {
+  transform: rotate(-180deg);
+}
+.hours li:nth-of-type(7) {
+  transform: rotate(210deg);
+}
+.hours li:nth-of-type(7) span {
+  transform: rotate(-210deg);
+}
+.hours li:nth-of-type(8) {
+  transform: rotate(240deg);
+}
+.hours li:nth-of-type(8) span {
+  transform: rotate(-240deg);
+}
+.hours li:nth-of-type(9) {
+  transform: rotate(270deg);
+}
+.hours li:nth-of-type(9) span {
+  transform: rotate(-270deg);
+}
+.hours li:nth-of-type(10) {
+  transform: rotate(300deg);
+}
+.hours li:nth-of-type(10) span {
+  transform: rotate(-300deg);
+}
+.hours li:nth-of-type(11) {
+  transform: rotate(330deg);
+}
+.hours li:nth-of-type(11) span {
+  transform: rotate(-330deg);
+}
+.hours li:nth-of-type(12) {
+  transform: rotate(360deg);
+}
+.hours li:nth-of-type(12) span {
+  transform: rotate(-360deg);
+}
+
+#clock {
+   top: 25%;
+  background: #fff;
+  border: 15px solid #222;
+  border-radius: 50%;
+  position: relative;
+  width: 320px;
+  height: 320px;
+  margin: auto;
+}
+
+/* JavaScript pre-rotates these wrappers instead of the hands when getting the time at load. If it pre-rotates the hands, then the hands will not perform 1 turn at their normal speeds. */
+.hr-wrapper,
+.min-wrapper,
+.sec-wrapper {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  transform-origin: 50% 100%;
+}
+
+.hr {
+  background: #222;
+  left: 152px;
+  width: 13px;
+  height: 105px;
+  border-radius: 10px;
+  animation: rotateHand 43200s linear infinite;
+}
+.hr:after {
+  background: #222;
+  border-radius: 50%;
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: -8px;
+  width: 13px;
+  height: 16px;
+}
+
+.min {
+  background: #222;
+  left: 155px;
+  width: 9px;
+  height: 125px;
+  border-radius: 8px;
+  animation: rotateHand 3600s linear infinite;
+}
+.min:after {
+  background: #222;
+  border-radius: 50%;
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: -8px;
+  width: 9px;
+  height: 16px;
+}
+
+.sec {
+  background: #d00;
+  left: 156.5px;
+  width: 5px;
+  height: 132px;
+  border-radius: 8px;
+  animation: rotateHand 60s linear infinite;
+}
+.sec:after {
+  background: #d00;
+  border-radius: 50%;
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: -3.5px;
+  width: 5px;
+  height: 7px;
+}
+
+@keyframes rotateHand {
+  to {
+    transform: rotate(1turn);
+  }
+}
+img {
+  height: 50px;
+  width: 50px;
+}
+
+    </style>
+    <!--link rel="stylesheet" href="style-capture-t.css" /-->
+  </head>
+  <body style="margin: 0px; overflow: hidden">
+<div id="clock">
+  <ul class="hours">
+    <li>
+      <span>
+        <img src = "https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/mah-cow.png?v=1696425662777" alt = "Tutorials Point" border = "0"/>
+      </span>
+    </li>
+    <li>
+      <span>
+        <img src = "https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/mah-tiger.png?v=1696425781232" alt = "Tutorials Point" border = "0"/>
+      </span>
+    </li>
+    <li>
+      <span>
+         <img src = "https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/mah-rabbit.png?v=1696425891994" alt = "Tutorials Point" border = "0"/>
+      </span>
+    </li>
+    <li>
+      <span>
+         <img src = "https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/mah-dragon.png?v=1696426067447" alt = "Tutorials Point" border = "0"/>
+      </span>
+    </li>
+    <li>
+      <span>
+         <img src = "https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/mah-snake.png?v=1696426103574" alt = "Tutorials Point" border = "0"/>
+      </span>
+    </li>
+    <li>
+      <span>
+         <img src = "https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/mah-horse.png?v=1696426153441" alt = "Tutorials Point" border = "0"/>
+      </span>
+    </li>
+    <li>
+      <span>
+         <img src = "https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/mah-sheep.png?v=1696426197546" alt = "Tutorials Point" border = "0"/>
+      </span>
+    </li>
+    <li>
+      <span>
+         <img src = "https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/mah-monky.png?v=1696426236942" alt = "Tutorials Point" border = "0"/>
+      </span>
+    </li>
+    <li>
+      <span>
+         <img src = "https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/mah-chicken.png?v=1696426267504" alt = "Tutorials Point" border = "0"/>
+      </span>
+    </li>
+    <li>
+      <span>
+         <img src = "https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/mah-dog.png?v=1696426302736" alt = "Tutorials Point" border = "0"/>
+      </span>
+    </li>
+    <li>
+      <span>
+         <img src = "https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/mah-pig.png?v=1696426331867" alt = "Tutorials Point" border = "0"/>
+      </span>
+    </li>
+    <li>
+      <span>
+                <img src = "https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/mah-rat.png?v=1696399519786" alt = "Tutorials Point" border = "0"/>
+      </span>
+    </li>
+  </ul>
+
+  <div class="hr-wrapper">
+    <div class="hand hr"></div>
+  </div>
+  <div class="min-wrapper">
+    <div class="hand min"></div>
+  </div>
+  <div class="sec-wrapper">
+    <div class="hand sec"></div>
+  </div>
+
+
+      <a-scene
+      vr-mode-ui="enabled: false"
+      loading-screen="dotsColor: white; backgroundColor: #grey"
+      device-orientation-permission-ui="enabled: false"
+      ar-session-notifier
+      renderer="antialias: true; logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true;"
+      embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+          <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+  
+                </a-scene>
+
+    </div>
+    <script>
+// get current time
+var dateInfo = new Date();
+var hr =
+    dateInfo.getHours() > 12 ? dateInfo.getHours() - 12 : dateInfo.getHours(),
+  min = dateInfo.getMinutes(),
+  sec = dateInfo.getSeconds(),
+  milsec = dateInfo.getMilliseconds();
+
+/*
+1 hr = 30°, 1 min = 6°, 1 sec = 6°, 1 millisec = 0.36°
+Even though we can calculate the proper angles of the hour, minute, and second hands, we can determine more accurately where the hands are between the current and next ticks. For example, if it is 6:30, we know that the hour hand is at least 180°, yet it should be between the 6 and 7. To get that, we divide the angle of the current minute by 12 ((30 * 6°) / 12) and add the result (15) to 180. Therefore, the hour hand should be at 195°.
+*/
+var hrAngle = hr * 30 + (min * 6) / 12,
+  minAngle = min * 6 + (sec * 6) / 60,
+  secAngle = sec * 6 + (milsec * 0.36) / 1000;
+
+// set initial angles of the hand wrappers
+function setAngle(wrapper, angle) {
+  document.querySelector("." + wrapper).style.transform =
+    "rotate(" + angle + "deg)";
+}
+setAngle("hr-wrapper", hrAngle);
+setAngle("min-wrapper", minAngle);
+setAngle("sec-wrapper", secAngle);
+
+    </script>
+  </body>
+</html>
