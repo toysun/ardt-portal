@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>A-Frame test component Component - Basic</title>
+    <meta
+      name="description"
+      content="Basic example for troika-text component."
+    />
+    <!--script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script-->
+    <!--script src="../dist/aframe-ar-nft-3.js"></script-->
+    <!--script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script-->
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.7.8/aframe/build/aframe-ar.js"></script>
+    <!--script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.7.7/aframe/build/aframe-ar.js"></script-->
+    <!--script src="./aframe-troika-text.js"></script-->
+    <script
+      scr="https://cdn.jsdelivr.net/npm/aframe-troika-text@0.7.1/dist/aframe-troika-text.min.js"
+    ></script>
+    <!--script src="https://unpkg.com/aframe-text-geometry-component@^0.5.0/dist/aframe-text-geometry-component.min.js"></script-->
+  </head>
+  <body>
+    <a-scene embedded arjs cursor="rayOrigin:mouse">
+      <!-- Custom moving light to demonstrate MeshStandardMaterial -->
+
+      <a-entity
+        light="color: #FFF; intensity: 0.5"
+        animation="property: position; from: -1 0 1; to: 1 0 1; loop: true; dir: alternate; dur: 2000; easing: easeInOutQuad;"
+      ></a-entity>
+
+      <a-entity
+        position="0 0 2"
+        scale="2 2 2"
+        font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumpenscript/NanumPenScript-Regular.json"
+        troika-text="* AR서비스용 원천 콘텐츠(3D, 비디오, 오디오, 음악, 이미지, 텍스트)는 고객이 제공; color:#F99;"
+        troika-text-material="shader: standard; metalness: 0.8; roughness: 0.4;"
+      ></a-entity>
+
+      <a-troika-text
+        position="0 0 -2"
+        font="https://cdn.jsdelivr.net/npm/typeface-nanum-barun-gothic@1.0.0/NanumBarunGothic.woff"
+        color="#99F"
+        value="* 각 scene은 동일한 Template 형태로 디자인 작성하고 콘텐츠와 위치만 변경"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+      ></a-troika-text>
+
+      <a-text
+        position="-0.3 0 -2"
+        shader="msdf"
+        scale="0.2 0.2 0.2"
+        font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumpenscript/NanumPenScript-Regular.json"
+        value=" * 커스텀 영역에 속하는 기타 기능 구현 요청 시 별도 개발 견적 필요."
+      ></a-text>
+      <a-entity camera></a-entity>
+    </a-scene>
+  </body>
+</html>

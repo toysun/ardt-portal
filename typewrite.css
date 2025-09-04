@@ -1,0 +1,235 @@
+@import url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/AppleSDGothicNeoB.ttf?v=1672703372036') format('ttf");
+
+
+html {
+  height: 100%;
+  width: 100%;
+  background: #111;
+  color: #00cc44;
+  font-family: "AppleSDGothicNeoB", monospace;
+  letter-spacing: -25%;
+}
+
+.wrapper {
+  position: absolute;
+  z-index: 9999;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 53%;
+  left: 0; 
+}
+
+.line__1,
+.line__2,
+.line__3,
+.line__4,
+.line__5,
+.line__6,
+.line__7 {
+  white-space: nowrap; /* keep text in one line */
+  overflow: hidden; /* hide text behind the cursor */
+  margin: 0.5rem auto;
+  font-family: "AppleSDGothicNeoB";
+  letter-spacing: -25%;
+  font-size: 1.3rem;
+  align: center;
+}
+
+.line__1 {
+  border-right: 0px solid rgba(17, 17, 17, 1);
+
+  /* define animation types for text + cursor */
+  animation: animated-text__1 3s steps(30, end) 1s 1 normal both,
+    animated-cursor__1 400ms steps(30, end) 4;
+  -webkit-animation-delay: 1.5s;
+  animation-delay: 1.5s;
+}
+
+.line__2 {
+  border-right: 0px solid rgba(17, 17, 17, 1);
+
+  /* define animation types for text + cursor */
+  animation: animated-text__2 3s steps(30, end) 1s 1 normal both,
+    animated-cursor__2 400ms steps(30, end) infinite;
+  -webkit-animation-delay: 4.5s;
+  animation-delay: 4.5s;
+}
+.line__3 {
+  border-right: 0px solid rgba(17, 17, 17, 1);
+
+  /* define animation types for text + cursor */
+  animation: animated-text__3 2.7s steps(20, end) 1s 1 normal both,
+    animated-cursor__3 400ms steps(20, end) infinite;
+  -webkit-animation-delay: 8s;
+  animation-delay: 8s;
+}
+.line__4 {
+  border-right: 0px solid rgba(17, 17, 17, 1);
+
+  /* define animation types for text + cursor */
+  animation: animated-text__4 3s steps(35, end) 1s 1 normal both,
+    animated-cursor__4 400ms steps(35, end) infinite;
+  -webkit-animation-delay: 10.5s;
+  animation-delay: 10s;
+}
+.line__5 {
+  border-right: 0px solid rgba(17, 17, 17, 1);
+
+  /* define animation types for text + cursor */
+  animation: animated-text__5 1.2s steps(10, end) 1s 1 normal both,
+    animated-cursor__5 400ms steps(10, end) infinite;
+  -webkit-animation-delay: 13s;
+  animation-delay: 13s;
+}
+.line__6 {
+  border-right: 0px solid rgba(17, 17, 17, 1);
+
+  /* define animation types for text + cursor */
+  animation: animated-text__6 3s steps(30, end) 1s 1 normal both,
+    animated-cursor__6 400ms steps(30, end) infinite;
+  -webkit-animation-delay: 14.5s;
+  animation-delay: 14.5s;
+}
+.line__7 {
+  border-right: 0px solid rgba(17, 17, 17, 1);
+
+  /* define animation types for text + cursor */
+  animation: animated-text__7 3s steps(30, end) 1s 1 normal both,
+    animated-cursor__7 400ms steps(30, end) infinite;
+  -webkit-animation-delay: 16.5s;
+  animation-delay: 17s;
+
+}
+@keyframes animated-cursor__1 {
+  from {
+    border-right-color: rgba(17, 17, 17, 1);
+  }
+  to {
+    border-right-color: rgba(255, 255, 255, 1);
+  }
+}
+
+@keyframes animated-cursor__2 {
+  from {
+    border-right-color: rgba(17, 17, 17, 1);
+  }
+  to {
+    border-right-color: rgba(255, 255, 255, 1);
+  }
+}
+@keyframes animated-cursor__3 {
+  from {
+    border-right-color: rgba(17, 17, 17, 1);
+  }
+  to {
+    border-right-color: rgba(255, 255, 255, 1);
+  }
+}
+@keyframes animated-cursor__4 {
+  from {
+    border-right-color: rgba(17, 17, 17, 1);
+  }
+  to {
+    border-right-color: rgba(255, 255, 255, 1);
+  }
+}
+
+@keyframes animated-cursor__5 {
+  from {
+    border-right-color: rgba(17, 17, 17, 1);
+  }
+  to {
+    border-right-color: rgba(255, 255, 255, 1);
+  }
+}
+@keyframes animated-cursor__6 {
+  from {
+    border-right-color: rgba(17, 17, 17, 1);
+  }
+  to {
+    border-right-color: rgba(255, 255, 255, 1);
+  }
+}
+@keyframes animated-cursor__7 {
+  from {
+    border-right-color: rgba(17, 17, 17, 1);
+  }
+  to {
+    border-right-color: rgba(255, 255, 255, 1);
+  }
+}
+@keyframes animated-text__1 {
+  from {
+    width: 0;
+  }
+  to {
+    width: 14.5rem;
+  }
+}
+
+@keyframes animated-text__2 {
+  from {
+    width: 0;
+  }
+  to {
+    width: 18.5rem;
+  }
+}
+@keyframes animated-text__3 {
+  from {
+    width: 0;
+  }
+  to {
+    width: 11.5rem;
+  }
+}
+@keyframes animated-text__4 {
+  from {
+    width: 0;
+  }
+  to {
+    width: 17.5rem;
+  }
+}
+
+@keyframes animated-text__5 {
+  from {
+    width: 0;
+  }
+  to {
+    width: 8rem;
+  }
+}
+@keyframes animated-text__6 {
+  from {
+    width: 0;
+  }
+  to {
+    width: 15rem;
+  }
+}
+@keyframes animated-text__7 {
+  from {
+    width: 0;
+  }
+  to {
+    width: 12.5rem;
+   
+  }
+}
+.elementToFadeInAndOut {
+
+    -webkit-animation: fadeinout 22s linear forwards;
+    animation: fadeinout 22s linear forwards;
+}
+
+@-webkit-keyframes fadeinout {
+  100% { opacity: 0; }
+  0%, 99% { opacity: 1; }
+}
+
+@keyframes fadeinout {
+ 100% { opacity: 0; }
+  0%, 99% { opacity: 1; }
+}

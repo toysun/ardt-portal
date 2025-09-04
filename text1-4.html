@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>A-Frame test component Component - Basic</title>
+    <meta name="description" content="Basic example for troika-text component." />
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="aframe-troika-text.js"></script>
+  </head>
+  <body>
+    <a-scene arjs>
+      <!-- Custom moving light to demonstrate MeshStandardMaterial -->
+      <a-entity
+        light="color: #FFF; intensity: 0.5"
+        animation="property: position; from: -1 0 1; to: 1 0 1; loop: true; dir: alternate; dur: 2000; easing: easeInOutQuad;"
+      ></a-entity>
+
+      <!--a-entity
+        position="0 2 -2"
+        font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/BMYEONSUNG_ttf.ttf?v=1658466818160"
+        troika-text="value: 완전 좋아요; color:#F99;"
+        troika-text-material="shader: standard; metalness: 0.8; roughness: 0.4;"
+      ></a-entity-->
+      
+      <!--a-troika-text
+        position="0 2 -2"
+        font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/%ED%96%89%EB%B3%B5%EA%B3%A0%ED%9D%A5B.ttf?v=1658800506733"
+        color="#99F"
+        value="고인돌 유적지 3코스"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+      ></a-troika-text-->
+            <a-troika-text
+        position="0 2 -2"
+        font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/TheBoldStreet-2ODGe.ttf?v=1660146882582"
+        color="#FF10F0"
+        value="Dolmen Site"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+      ></a-troika-text>
+      <a-troika-text
+        position="0 1.8 -2.5"
+        font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/SplatterKings-Bgex.ttf?v=1660146749766"
+        color="#008080"
+        value="Dolmen Site"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+      ></a-troika-text>
+      <a-troika-text
+        position="0 1.6 -2.5"
+        font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/WandohopeB.ttf?v=1658800510222"
+        color="#3F66DA"
+        value="고인돌 유적지 3코스"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+      ></a-troika-text>
+            <a-troika-text
+        position="0 1.4 -2"
+        font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/UrbanJungle-yGnq.ttf?v=1660145839686"
+        color="##FFDFBA"
+        value="Dolmen Site"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+      ></a-troika-text>
+      <!--a-troika-text
+        position="0 1.6 -2"
+        font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/Ghanachocolate.ttf?v=1658802278705"
+        color="#99F"
+        value="고인돌 유적지 3코스"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+      ></a-troika-text>
+      <!--a-troika-text
+        position="0 1.4 -2"
+        font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/%EA%B5%AD%EB%A6%BD%EC%A4%91%EC%95%99%EB%8F%84%EC%84%9C%EA%B4%80%EA%B8%80%EC%9E%90%EC%B2%B4.ttf?v=1658800493595"
+        color="#99F"
+        value="고인돌 유적지 3코스"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"
+      ></a-troika-text-->
+      <a-text value="안녕하세요"
+        position="0 1.2 -2"
+        font="BMYEONSUNG_ttf-msdf.json"
+        color="#33C3F0"
+        negate="false">
+     </a-text>
+
+      <!--<a-text
+        position="0 1.1 -2"
+        value="Hello a-text for comparison!"
+      ></a-text>-->
+    </a-scene>
+ <a-entity camera></a-entity>
+  </body>
+</html>

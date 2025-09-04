@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--script src="https://zz.ngrok.io/dist/aframe-master.js"></script-->
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script-->
+    <!--script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.7.8/aframe/build/aframe-ar.js"></script-->
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="https://unpkg.com/aframe-orbit-controls@1.2.0/dist/aframe-orbit-controls.min.js"></script>
+    <script>
+      AFRAME.registerComponent("my-test-component", {
+        tick: function () {
+          var el = this.el;
+          el.setAttribute("text", { value: "" });
+        },
+      });
+
+      function ee() {
+        document
+          .querySelector("a-text")
+          .setAttribute("value", document.getElementById("fname").value);
+      }
+    </script>
+
+    <style>
+      #wrapper {
+        height: 100%;
+        width: 100%;
+      }
+      form {
+        position: absolute;
+        height: 3%;
+        left: 0%;
+        top: 2%;
+        width: 80%;
+        z-index: 1;
+        padding: 1em;
+      }
+      button {
+        position: absolute;
+        top: 5%;
+        left: 80%;
+        z-index: 1;
+      }
+      body {
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <form name="myForm">
+      사연적기: <input type="text" value="" name="fname" id="fname" />
+    </form>
+    <button onclick="ee()">글쓰기</button>
+
+    <div id="wrapper">
+      <a-scene embedded arjs>
+        <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
+        <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
+        <a-cylinder
+          position="1 0.75 -3"
+          radius="0.5"
+          height="1.5"
+          color="#FFC65D"
+        ></a-cylinder>
+        <a-plane
+          position="0 0 -4"
+          rotation="-90 0 0"
+          width="4"
+          height="4"
+          color="#7BC8A4"
+        ></a-plane>
+        <!--a-sky color="#ECECEC"></a-sky-->
+        <a-text
+          id="output"
+          text="value: text; align: center;"
+          position="0 1.6 -0.5"
+          scale="2 2 2"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumpenscript/NanumPenScript-Regular.json"
+        ></a-text>
+        <a-entity
+          text="value: some text; wrapCount: 20; width: 3"
+          position="0 2 0"
+          my-test-component
+        ></a-entity>
+
+        <a-camera position="0 2 3.7"></a-camera>
+      </a-scene>
+    </div>
+  </body>
+</html>

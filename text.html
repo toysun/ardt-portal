@@ -1,0 +1,28 @@
+  <html>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.7.7/aframe/build/aframe-ar.js"></script>
+<script> 
+
+AFRAME.registerComponent('displaydate', {
+
+  init: function(){
+
+    var d = new Date()
+    this.el.setAttribute('value', d)
+
+  }
+
+})
+
+</script>
+      <body style="margin : 0px; overflow: hidden;">
+        <a-scene embedded arjs>
+
+          <a-marker preset="hiro">
+          <a-text scale="3 3 3" rotation="-45 0 0" color="blue" displaydate></a-text>
+        <!--a-text position="-.5 -1 -1.8" rotation="-45 0 0" color="red" value="var d"></a-text-->
+          </a-marker>
+          <a-entity camera></a-entity>
+        </a-scene>
+      </body>
+    </html>

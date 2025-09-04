@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>A-Frame test component Component - Basic</title>
+    <meta
+      name="description"
+      content="Basic example for troika-text component."
+    />
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="aframe-troika-text.js"></script>
+    <script>
+      AFRAME.registerComponent("foo", {
+        init: function () {
+          console.log(this.el.object3D.rotation);
+          console.log(this.el.components.rotation.data);
+          console.log(this.el.getAttribute("rotation"));
+        },
+      });
+    </script>
+    <script>
+      (function () {
+        var box = document.createElement("a-box");
+        document.querySelector("a-scene").appendChild(box);
+        box.setAttribute("position", { x: 0, y: 10, z: -10 });
+        box.setAttribute("rotation", { x: 0, y: 10, z: -10 });
+      })();
+    </script>
+  </head>
+  <body>
+    <a-scene arjs stats>
+      <a-entity
+        position="0 3 -10"
+        rotation="45 30 0"
+        geometry="primitive: box; height: 2; width: 2; depth: 2;"
+        material="color: #167341; roughness: 1.0; metalness: 0.2;"
+      ></a-entity>
+
+      <a-cone
+        position="0 1.6 -3"
+        rotation="-50 30 0"
+        radius-bottom="0.2"
+        radius-top="0"
+        animation
+      ></a-cone>
+      <a-troika-text
+        position="0 1.6 -2"
+        font="https://cdn.glitch.global/9d7c79e6-5fe2-4f9f-8fc3-68db68d22e9d/Pretendard-ExtraBold.otf?v=1739405807673"
+        color="#FF10F0"
+        scale="2"
+        curve-radius="0.5"
+        value="ARDOCENT Font"
+      ></a-troika-text>
+
+      <a-troika-text
+        position="0 1.4 -2"
+        rotation="0 -45 0"
+        font="https://cdn.glitch.global/9d7c79e6-5fe2-4f9f-8fc3-68db68d22e9d/Pretendard-Regular.otf?v=1739405790411"
+        color="#99F"
+        scale="2"
+        curve-radius="0.5"
+        value="안녕하세요"
+      ></a-troika-text>
+      <a-troika-text
+        position="0 1.8 -2"
+        rotation="45 30 0"
+        font="https://cdn.glitch.global/9d7c79e6-5fe2-4f9f-8fc3-68db68d22e9d/Pretendard-ExtraBold.otf?v=1739405807673"
+        color="#99F"
+        scale="2"
+        curve-radius="0.5"
+        value="나침반"
+      ></a-troika-text>
+      <a-gltf-model
+        id="left"
+        position="1.5 2 -5"
+        rotation="0 -11 0"
+        scale="3 3 3"
+        src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/hear-arrow.glb?v=1670173658252"
+        animation-mixer
+      ></a-gltf-model>
+
+      <a-troika-text
+        position="0 1.2 -2"
+        font="https://cdn.jsdelivr.net/npm/typeface-nanum-barun-gothic@1.0.0/NanumBarunGothic.woff"
+        color="green"
+        outline-width="5%"
+        outline-color="blue"
+        stroke-width="2%"
+        stroke-color="red"
+        value="강조 글씨체!"
+      ></a-troika-text>
+
+      <a-troika-text
+        position="0 1.0 -2"
+        font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/UrbanJungle-yGnq.ttf?v=1660145839686"
+        color="#ccc"
+        curve-radius="1"
+        value="Curvy curvy curvy"
+      ></a-troika-text>
+
+      <!--<a-text
+        position="0 1.1 -2"
+        value="Hello a-text for comparison!"
+      ></a-text>-->
+    </a-scene>
+    <a-entity camera></a-entity>
+  </body>
+</html>

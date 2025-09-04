@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>A-Frame test component Component - Basic</title>
+    <meta
+      name="description"
+      content="Basic example for troika-text component."
+    />
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script
+      scr="https://cdn.jsdelivr.net/npm/aframe-troika-text@0.7.1/dist/aframe-troika-text.min.js"
+    ></script>
+    <script>
+      AFRAME.registerComponent("my-test-component", {
+        tick: function () {
+          var el = this.el;
+          el.setAttribute("text", { value: "sky catle ok?" });
+        },
+      });
+    </script>
+
+    <!--script src="../aframe-troika-text.min.js"></script-->
+  </head>
+      <input type="submit" class="like" value="Like" />
+  <body>
+
+    <a-scene background="color: #000">
+      <a-entity
+        font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumpenscript/NanumPenScript-Regular.json"
+        text="value: some text; wrapCount: 20; width: 3"
+        position="0 2 0"
+        my-test-component
+      ></a-entity>
+      <a-troika-text
+        position="0 0 -1"
+        color="#99F"
+        max-width="5"
+        curve-radius="4"
+        shader="msdf"
+        font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumpenscript/NanumPenScript-Regular.json"
+        value="주의 : 
+ * AR서비스용 원천 콘텐츠(3D, 비디오, 오디오, 음악, 이미지, 텍스트)는 고객이 제공 
+ * 각 scene은 동일한 Template 형태로 디자인 작성하고 콘텐츠와 위치만 변경
+ * 커스텀 영역에 속하는 기타 기능 구현 요청 시 별도 개발 견적 필요."
+      ></a-troika-text>
+           <a-troika-text
+        position="0 1.0 -2"
+        color="#fff"
+        curve-radius="1"
+        value="Curvy curvy curvy"
+      ></a-troika-text>
+
+      <a-text position="0 1.1 -2" value="Hello a-text for comparison!"></a-text>
+      <a-camera position="0 2 3.7"></a-camera>
+    </a-scene>
+  </body>
+</html>

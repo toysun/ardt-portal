@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>A-Frame test component Component - Basic</title>
+    <meta name="description" content="Basic example for troika-text component." />
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+      <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.js"></script>
+     <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="aframe-troika-text.js"></script>
+  </head>
+  <body>
+    <a-scene
+      vr-mode-ui="enabled: false"
+      loading-screen="dotsColor: white; backgroundColor: #grey"
+      device-orientation-permission-ui="enabled: false"
+      ar-session-notifier
+      renderer="alpha:true; physicallyCorrectLights:true; colorManagement:true; exposure:1; toneMapping:ACESFilmic; antialias: true; logarithmicDepthBuffer: true; sortObjects: true;"
+      arjs="sourceType: webcam; debugUIEnabled: false;"
+      light="defaultLightsEnabled: false">
+      <!-- Custom moving light to demonstrate MeshStandardMaterial -->
+      <!--a-entity
+        light="color: #FFF; intensity: 1.5"
+        animation="property: position; from: -4 0 1; to: 4 0 1; loop: true; dir: alternate; dur: 2000; easing: easeInOutQuad;"
+      ></a-entity-->
+         <a-entity light="type: ambient; intensity: 2.1;"></a-entity>
+              <a-light
+          type="directional"
+          light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+          id="light"
+          target="balloon"
+          position="-5 3.6 10"
+        >
+        </a-light>
+            <a-entity
+        light="color: #FFF; intensity: 1.5"
+        postioon="0 0 -1"
+        animation="property: position; from: 0 0 -1; to: 0 0 1; loop: true; dir: alternate; dur: 1000; easing: easeInOutQuad;"
+      ></a-entity>
+      <a-plane
+        material="shader:gif; src: url(https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/disgaea-samurai.gif?v=1712841974030); opacity: 1; alphaTest: 0.5; side: double;"
+        position="-2 1 -8"
+        color="white"
+        scale="2 2 2"
+      ></a-plane>
+              <a-entity
+          scale="0.15 0.15 0.15"
+          position="0 -8 -0.3"
+          rotation="0 0 0"
+          visible="true"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/8-animated-butterflies.glb?v=1692771856899"
+          shadow="receive: false"
+          animation-mixer
+          animation="property: object3D.rotation.y; to: 180; delay: 5500; dur: 5000; easing: easeInOutQuad; dir: alternate; loop: false;"
+          animation__2="property: position; to: 0 1.4 -0.55; delay: 500; dur: 3000; loop: false"
+                  > 
+      </a-entity>
+            <a-troika-text
+        position="0 2.2 -2"
+        font="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/Maplestory%20OTF%20Bold.otf?v=1712793740810"
+        color="#FF10F0"
+        value="바람의검심"
+        depth-offset="-5"
+        curve-radius="0.5"
+       outline-width="0.01"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+      ></a-troika-text>
+      <a-troika-text
+        position="0 2 -2.5"
+        font="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/DX__%2050%20Extra-Bold.ttf?v=1712796811286"
+        color="#000"
+        value="바람의검심"
+        letter-spacing="0.5"
+        depth-offset="-5"
+        outline-color="orange"
+        outline-width="0.01"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+      ></a-troika-text>
+      <a-troika-text
+        position="0 1.7 -2.5"
+        font="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/1HoonJumbomambo%20Bold.ttf?v=1712794041709"
+        color="#000"
+        value="바람의검심"
+        letter-spacing="0.5"
+        depth-offset="-5"
+        outline-color="red"
+        outline-width="0.01"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+      ></a-troika-text>
+            <a-troika-text
+        position="0 1.4 -2.5"
+        font="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/1HoonNamugneul%20Medium.ttf?v=1712794193027"
+        color="yellow"
+        value="바람의검심"
+        letter-spacing="0.5"
+        depth-offset="-5"
+        outline-color="red"
+        outline-width="0.01"
+        outline-blur="0.05"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+      ></a-troika-text>
+            <a-troika-text
+        position="0 1.2 -2"
+        font="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/DX__01%20B.ttf?v=1712794726785"
+        color="#ffffff"
+        value="바람의검심"
+        letter-spacing="0.5"
+        depth-offset="-5"
+        curve-radius="-1.5"
+        outline-color="red"
+        outline-width="0.01"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+        animation="property: rotation; to: 0 360 0; loop: true; delay: 5000; dur: 10000"
+      ></a-troika-text>
+                  <a-troika-text
+        position="0 1.2 -2"
+        font="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/DX__01%20B.ttf?v=1712794726785"
+        color="#fffff"
+        value="바람의검심"
+        letter-spacing="0.5"
+        depth-offset="-5"
+        curve-radius="-1.5"
+        outline-color="blue"
+        outline-width="0.01"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+        animation="property: rotation; to: 0 -360 0; loop: true; dur: 10000"
+      ></a-troika-text>
+                  <a-troika-text
+        position="0 0.9 -2"
+        font="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/BareunBatangPro%201.ttf?v=1712794531544"
+        color="##FFDFBA"
+        value="바람의검심"
+        letter-spacing="0.1"
+        depth-offset="-5"
+        curve-radius="-0.5"
+        outline-color="red"
+        outline-blur="0.05"
+        outline-width="0.01"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+      ></a-troika-text>
+      <!--a-troika-text
+        position="0 1.6 -2"
+        font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/Ghanachocolate.ttf?v=1658802278705"
+        color="#99F"
+        value="고인돌 유적지 3코스"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+      ></a-troika-text>
+      <!--a-troika-text
+        position="0 1.4 -2"
+        font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/%EA%B5%AD%EB%A6%BD%EC%A4%91%EC%95%99%EB%8F%84%EC%84%9C%EA%B4%80%EA%B8%80%EC%9E%90%EC%B2%B4.ttf?v=1658800493595"
+        color="#99F"
+        value="고인돌 유적지 3코스"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"
+      ></a-troika-text-->
+  
+
+      <!--<a-text
+        position="0 1.1 -2"
+        value="Hello a-text for comparison!"
+      ></a-text>-->
+       <a-entity camera position="0 1.6 0"></a-entity>
+    </a-scene>
+
+  </body>
+</html>
