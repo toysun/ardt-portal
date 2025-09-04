@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>디즈니 100주년 기념</title>
+    <meta
+      name="description"
+      content="Basic example for troika-text component."
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="aframe-troika-text.js"></script>
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!--script src="jquery-3.3.1.js"></script-->
+    <!--script src="font-awesome-5.13.0.js"></script-->
+    <script src="merge-image.js"></script>
+    <link rel="stylesheet" href="style-capture-t.css" />
+    <script type="text/javascript">
+      AFRAME.registerComponent("drag-rotate-component", {
+        schema: { speed: { default: 1 } },
+        init: function () {
+          this.ifMouseDown = false;
+          this.x_cord = 0;
+          this.y_cord = 0;
+          document.addEventListener(
+            "mousedown",
+            this.OnDocumentMouseDown.bind(this)
+          );
+          document.addEventListener(
+            "mouseup",
+            this.OnDocumentMouseUp.bind(this)
+          );
+          document.addEventListener(
+            "mousemove",
+            this.OnDocumentMouseMove.bind(this)
+          );
+        },
+        OnDocumentMouseDown: function (event) {
+          this.ifMouseDown = true;
+          this.x_cord = event.clientX;
+          this.y_cord = event.clientY;
+        },
+        OnDocumentMouseUp: function () {
+          this.ifMouseDown = false;
+        },
+        OnDocumentMouseMove: function (event) {
+          if (this.ifMouseDown) {
+            var temp_x = event.clientX - this.x_cord;
+            var temp_y = event.clientY - this.y_cord;
+            if (Math.abs(temp_y) < Math.abs(temp_x)) {
+              this.el.object3D.rotateY((temp_x * this.data.speed) / 1000);
+            } else {
+              this.el.object3D.rotateX((temp_y * this.data.speed) / 1000);
+            }
+            this.x_cord = event.clientX;
+            this.y_cord = event.clientY;
+          }
+        },
+      });
+    </script>
+    <!--script type="text/javascript">
+    AFRAME.registerComponent('drag-rotate-component',{
+      schema : { speed : {default:1}},
+      init : function(){
+        this.ifTouchStart = false;
+        this.x_cord = 0;
+        this.y_cord = 0;
+        document.addEventListener('touchstart',this.OnDocumentTouchStart.bind(this));
+        document.addEventListener('touchend',this.OnDocumentTouchEnd.bind(this));
+        document.addEventListener('touchmove',this.OnDocumentTouchMove.bind(this));
+      },
+      OnDocumentTouchStart : function(event){
+        this.ifTouchStart = true;
+        this.x_cord = event.clientX;
+        this.y_cord = event.clientY;
+      },
+      OnDocumentTouchEnd : function(){
+        this.ifTouchStart = false;
+      },
+      OnDocumentTouchMove : function(event)
+      {
+        if(this.ifTouchStart)
+        {
+          var temp_x = event.clientX-this.x_cord;
+          var temp_y = event.clientY-this.y_cord;
+          if(Math.abs(temp_y)<Math.abs(temp_x))
+          {
+            this.el.object3D.rotateY(temp_x*this.data.speed/1000);
+          }
+          else
+          {
+            this.el.object3D.rotateX(temp_y*this.data.speed/1000);
+          }
+          this.x_cord = event.clientX;
+          this.y_cord = event.clientY;
+        }
+      }
+    });
+  </script-->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const list = [
+          "glasses1",
+          "glasses2",
+          "hat1",
+          "hat2",
+          "helmet",
+          "helmet2",
+        ];
+        const visibles = [false, false, false, false, false, false];
+        const setVisible = (button, entities, visible) => {
+          if (visible) {
+            button.classList.add("selected");
+          } else {
+            button.classList.remove("selected");
+          }
+          entities.forEach((entity) => {
+            entity.setAttribute("visible", visible);
+          });
+        };
+        list.forEach((item, index) => {
+          const button = document.querySelector("#" + item);
+          const entities = document.querySelectorAll("." + item + "-entity");
+          setVisible(button, entities, visibles[index]);
+          button.addEventListener("click", () => {
+            visibles[index] = !visibles[index];
+            setVisible(button, entities, visibles[index]);
+          });
+        });
+      });
+    </script>
+    <script>
+      /*  AFRAME.registerComponent("my-test-component", {
+        tick: function () {
+          var el = this.el;
+          el.setAttribute("text", { value: "" });
+        },
+      }); */
+
+      function ee() {
+        document
+          .getElementById("output")
+          .setAttribute("value", document.getElementById("fname").value);
+        document.getElementById("MsgZone").style.display = "none";
+        $(".DecoButton").show();
+        $(".capturebtn").show();
+        $(".WriteButton").show();
+      }
+    </script>
+    <script>
+      // You can set the input as you want
+      var inputeditable =
+        '<textarea contenteditable="true" type="text" name="" class="input">';
+
+      // For each DOM element that has .inputeditable, we add a click event, using inputeditableEnabled(). Which can be used anywhere
+      $(".inputeditable").each(function () {
+        inputeditableEnabled($(this));
+      });
+
+      // This function store the HTML, add child with input. When input lose focus, we push back the value of the input,
+      // el is the dom object edited
+      function inputeditableEnabled(el) {
+        var contentWidth = el.width();
+        var contentHeight = el.height();
+        el.click(function () {
+          var content = el.html().replace(/\n/g, "");
+          el.html("").append(inputeditable);
+          el.off("click");
+          el.width(contentWidth).height(contentHeight);
+          el.find(".input").val(content).focus();
+          autosize(el.find(".input"));
+          el.find(".input").focusout(function () {
+            inputeditableDisabled(el, $(this));
+          });
+        });
+      }
+
+      // This function disable the edition of input. It change back the html of .inputeditable to plain text and remove the input
+      // ,el is the editable dom object that need to be disabled
+      // ,elInput is the input of said object
+      function inputeditableDisabled(el, elInput) {
+        if (!elInput) {
+          elInput = el.find(".input");
+        }
+        var inputval = elInput.val();
+        el.html(inputval);
+        el.css({ width: "", height: "auto" });
+        inputeditableEnabled(el);
+      }
+
+      // Every piece of code can be minified, but I chose not to, for editing purposes.
+      // we use autoresize.js but it is not necessary if you have your own textarea resize. You can find the script here https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js
+      // if you want the text to be inline, use an input, no textarea
+    </script>
+ 
+    <style>
+      table,
+      th,
+      td {
+        border: solid 0px #000;
+        padding: 10px;
+      }
+
+      table {
+        border-collapse: collapse;
+      }
+    </style>
+    <style>
+      .material-icons {
+        font-family: "Material Icons";
+        font-weight: normal;
+        font-style: normal;
+        font-size: 24px; /* Preferred icon size */
+        display: inline-block;
+        line-height: 1;
+        text-transform: none;
+        letter-spacing: normal;
+        word-wrap: normal;
+        white-space: nowrap;
+        direction: ltr;
+
+        /* Support for all WebKit browsers. */
+        -webkit-font-smoothing: antialiased;
+        /* Support for Safari and Chrome. */
+        text-rendering: optimizeLegibility;
+
+        /* Support for Firefox. */
+        -moz-osx-font-smoothing: grayscale;
+
+        /* Support for IE. */
+        font-feature-settings: "liga";
+      }
+
+      header {
+        padding: 15px;
+      }
+      section {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .tooltip-container {
+        position: relative;
+        &:hover {
+          .tooltip-content {
+            visibility: visible;
+            opacity: 1;
+            transition: 0.25s all ease;
+            transition-delay: 0s;
+            top: -125px;
+          }
+        }
+      }
+      .tooltip-content {
+        visibility: hidden;
+        opacity: 0;
+        position: absolute;
+        background: #000000;
+        left: -38px;
+        top: -130px;
+        padding: 0 15px;
+        margin: 16px;
+        font-size: 15px;
+        width: 250px;
+        transition: 0.25s all ease;
+        transition-delay: 0.25s;
+        z-index: 2;
+        color: #ffffff;
+        .align-right {
+          text-align: right;
+          a {
+            color: red;
+            text-decoration: none;
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+        &:after {
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section>
+      <div class="tooltip-container">
+        <i class="info-icon material-icons">info</i>
+        <div class="tooltip-content">
+          <p>This panel displays a summary of relevant information.</p>
+          <p class="align-right">
+            <a href="https://google.com" target="_blank">Read More</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+      <a-scene
+      vr-mode-ui="enabled: false"
+      loading-screen="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+      renderer="antialias: true; logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true;"
+      embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+    >
+      <a-asset>
+        <audio
+          id="button0"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/%EB%B0%98%EC%95%BC%EC%8B%AC%EA%B2%BD.mp3?v=1693276774799"
+          crossorigin="anonymous"
+        ></audio>
+        <img
+          id="glow"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/glow.png?v=1672756163242"
+        />
+      </a-asset>
+      <a-entity id="rig">
+        <!--a-entity
+          camera
+          wasd-controls
+          look-controls="pointerLockEnabled: true;"
+          position="0 1.6 0"
+        >
+          <a-cursor></a-cursor>
+        </a-entity-->
+        <a-entity
+          camera
+          position="0 1.6 0"
+          look-controls-enabled="false"
+          orbit-controls="target: 0 1.6 -0.5; initialPosition: -5 5 20"
+        ></a-entity>
+      </a-entity>
+      <a-cylinder
+        position="0 1.5 -5"
+        radius="1.5"
+        height="1.5"
+        src="https://cdn.glitch.me/7aef11f6-e1ff-4444-833f-2588de98f4e6/yjd-garo-full-open.png?v=1693482276961"
+        opacity="0.9"
+        shadow="receive: false"
+        animation="startEvents: click; property: rotation; to: 0 360 0; dur: 8000; loop: true"
+        sound="src: #button0; on: click; poolSize: 3"
+        sound__mouseenter="src: #button0; on: mouseenter; poolSize: 2"
+        drag-rotate-component
+      ></a-cylinder>
+
+      <!-- STAGE -->
+      <a-entity
+        id="stage"
+        animation__3="startEvents: click; property: position; to: 0.1 5.57 -0.3; delay: 500; dur: 3000; loop: false"
+      >
+        <a-entity
+          scale="0.15 0.15 0.15"
+          position="0 -8 -0.3"
+          rotation="0 0 0"
+          visible="true"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/8-animated-butterflies.glb?v=1692771856899"
+          shadow="receive: false"
+          animation-mixer
+          animation="property: object3D.rotation.y; to: 180; delay: 5500; dur: 5000; easing: easeInOutQuad; dir: alternate; loop: false;"
+          animation__2="property: position; to: 0 1.4 -0.55; delay: 500; dur: 3000; loop: false"
+        >
+        </a-entity>
+        <a-entity
+          id="glowPulse"
+          position="0 1.6 -5"
+          animation__spin="property: rotation; from: 0 0 0; to: 0 0 0; dur: 4000; loop: false; easing: linear;"
+        >
+          <a-image
+            width="10"
+            height="10"
+            src="#glow"
+            look-at="#player"
+            color="white"
+            material="transparent: true; opacity: 1.0; alphaTest: 0.01;"
+            animation__pulse="property: material.opacity; from: 2.0; to: 0.5; dur: 5000; loop: false; dir: alternate; easing: linear;"
+          ></a-image>
+        </a-entity>
+
+          <a-troika-text
+            id="output1"
+            position="0 2.5 -3.8"
+            color="#fff"
+            max-width="5"
+            curve-radius="40"
+            scale="1 1 1"
+            font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/%ED%96%89%EB%B3%B5%EA%B3%A0%ED%9D%A5B.ttf?v=1658800506733"
+            value="윤장대를 틀릭해서 경전을 들어보세요"
+          ></a-troika-text>
+
+        </a-entity>
+        <a-entity
+          text="value: some text; wrapCount: 20; width: 3"
+          position="0 2 0"
+          my-test-component
+        ></a-entity>
+            <a-entity light="type: ambient; intensity: 1;"></a-entity>
+      <a-light
+        type="directional"
+        light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+        id="light"
+        target="dino"
+        position="-1.8 4 1"
+      ></a-light>
+        <a-entity cursor="rayOrigin:mouse"></a-entity>
+
+ 
+    </a-scene>
+    <!--div class="helmet2-entity">
+      <img id="stampMsg" />
+    </div-->
+    <button
+      class="capturebtn"
+      id="capture"
+      style="vertical-align: middle"
+    ></button>
+    <button class="savebtn" id="save" style="vertical-align: middle"></button>
+    <!-- The Modal -->
+    <div id="myModal" class="modal" align="center">
+      <!-- Modal content -->
+      <div>
+        <img class="modal-content" id="img01" />
+        <span class="closebtn">
+          <img
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/close-white.png?v=1670812239754"
+            width="30px"
+            height="30px"
+          />
+        </span>
+        <div id="caption"></div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="hmodal_active.js"></script>
+    <script type="text/javascript" src="capture-1.js"></script>
+    <script>
+      var move2 = document.querySelector("#move2");
+      var ballanim = document.querySelector("#ballanim");
+      var acy = document.querySelector("a-cylinder");
+      var mybox = document.querySelector("#mybox");
+
+      move2.addEventListener("animationend", function () {
+        console.log("end1");
+        acy.emit("startcyl");
+        // mybox.emit('startbox');
+      });
+      console.log(ballanim);
+      acy.addEventListener("startcyl", function () {
+        console.log("end2");
+        mybox.emit("startbox");
+      });
+    </script>
+
+    <script>
+      $(".btn_popup").click(function () {
+        $(".ly_wrap").show();
+        $(".DecoButton").hide();
+        $(".capturebtn").hide();
+        $(".WriteButton").hide();
+      });
+
+      $(".btn_container").click(function () {
+        $(".container").show();
+        $(".DecoButton").hide();
+        $(".capturebtn").hide();
+        $(".WriteButton").hide();
+      });
+      $("#DecoClose").click(function () {
+        $(".container").hide();
+        var tt = document.getElementById("MsgZone");
+        if (tt.style.display == "none") {
+          $(".DecoButton").show();
+          $(".capturebtn").show();
+          $(".WriteButton").show();
+        } else {
+          $(".DecoButton").hide();
+          $(".capturebtn").hide();
+          $(".WriteButton").hide();
+        }
+      });
+    </script>
+  </body>
+</html>

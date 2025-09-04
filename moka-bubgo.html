@@ -1,0 +1,751 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta
+      name="viewport"
+      content="user-sclable=no, initial-scale=1, maximum-scale=1, minimum-scale-1, width=device-width"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="google" value="notranslate" />
+   
+    
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <style>
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 100px;
+}
+
+.pop-layer .pop-container {
+  padding: 20px 25px;
+}
+
+.pop-layer p.ctxt {
+  color: #666;
+  line-height: 50px;
+    z-index: 99999;
+}
+
+.pop-layer .btn-r {
+  width: 100%;
+  margin: 10px 0 20px;
+  padding-top: 10px;
+  border-top: 1px solid #DDD;
+  text-align: right;
+    z-index: 99999;
+}
+
+.pop-layer {
+  display: none;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 410px;
+  height: auto;
+  background-color: #fff;
+  border: 5px solid #3571B5;
+  z-index: 99999;
+}
+
+.dim-layer {
+  display: none;
+  position: fixed;
+  _position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99999;
+}
+
+.dim-layer .dimBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: .5;
+  filter: alpha(opacity=50);
+
+}
+
+.dim-layer .pop-layer {
+  display: block;
+}
+
+a.btn-layerClose {
+  display: inline-block;
+  height: 25px;
+  padding: 0 14px 0;
+  border: 1px solid #304a8a;
+  background-color: #3f5a9d;
+  font-size: 13px;
+  color: #fff;
+  line-height: 25px;
+}
+
+a.btn-layerClose:hover {
+  border: 1px solid #091940;
+  background-color: #1f326a;
+  color: #fff;
+}
+     
+    </style>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+      body {
+        margin: 0;
+      }
+      .tab-start {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(120, 120, 120, 0.9);
+        z-index: 999999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .tab-start div {
+        text-align: center;
+        font-size: 1.25em;
+        color: white;
+      }
+      .example-container {
+        overflow: hidden;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      .options-panel {
+        position: fixed;
+        left: 60%;
+        top: 10;
+        z-index: 2;
+      }
+      .options-panel img {
+        border: solid 2px;
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        cursor: pointer;     
+        background-color: white;
+      }
+      .options-panel img.selected {
+        border-color: green;
+        background-color: gold;
+      }
+      .ChangeButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/camera-rotate.png?v=1694390587914");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 5%;
+        left: 70%;
+        width: 40px;
+        height: 40px;
+                /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .logoWrapper {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        width: 100%;
+        z-index: -1; /* needs to be in the background so that it doesn't overlay the title (from html) */
+      }
+
+      .logoImage {
+        width: 29%; /* 104px */
+        height: 10%; /*  40px */
+        visibility: visible; /* needs to be added, so that the image is always visible. Otherwise it could flicker during click-events or even be hidden (on iOS (Vers.13.5.1, Safari)) */
+      }
+      .HomeButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/docent-headphone.png?v=1699944250478");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 5%;
+        left: 5%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .ListButton:hover {
+        background-color: Gold;
+      }
+      .ListButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/list-ar.png?v=1699923996680");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 5%;
+        left: 20%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .ListButton:hover {
+        background-color: Gold;
+      }
+            
+      .ReloadButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/camera-flip.png?v=1666830382378");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 5%;
+        left: 85%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .ReloadButton:hover {
+        background-color: Gold;
+      }
+              h3 {
+                position: absolute;
+        top: 55%;
+        left: 20%;
+        width: 50%;
+          color: white;
+ font-family: "AppleSDGothicNeoM";
+        src: url('https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/AppleSDGothicNeoM.ttf?v=1671085239370') format('ttf');
+                font-size: 24px;
+          margin: 18px;  
+      }
+        p {
+                          position: absolute;
+        top: 70%;
+        left: 20%;
+        width: 50%;
+          color: white;
+          font-family: "AppleSDGothicNeoM";
+        src: url('https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/AppleSDGothicNeoM.ttf?v=1671085239370') format('ttf');
+          font-size: 16px;
+          margin: 18px;
+
+        }
+ #blink_effect {
+            color: white;
+            font-size: 20 px;
+            transition: 1.5s;
+        }  
+            .List-pic{
+        width: 100%; /* 104px */
+        height: 60%; /*  40px */
+        visibility: visible; /* needs to be added, so that the image is always visible. Otherwise it could flicker during click-events or even be hidden (on iOS (Vers.13.5.1, Safari)) */
+      }
+
+table {
+	background: #fff;
+}
+table,
+thead,
+tbody,
+tfoot,
+tr,
+td,
+tr {
+	text-align: left;
+	margin: auto;
+	border: 0px solid #dedede;
+	padding: 0.5rem;
+	width: 360px;
+}
+.table {
+	display: table;
+	width: 100%;
+  height: 100%;
+  boder: 0%;
+}
+.tr {
+	display: table-row;
+}
+.thead {
+	display: table-header-group;
+}
+.tbody {
+	display: table-row-group;
+}
+.tfoot {
+	display: table-footer-group;
+}
+.col {
+	display: table-column;
+}
+.colgroup {
+	display: table-column-group;
+}
+.td,
+.th {
+	display: table-cell;
+	width: 10%;
+}
+.caption {
+	display: table-caption;
+}
+
+
+    </style>
+  </head>
+  <body style="margin: 0px; overflow: hidden">
+      <div id="start_area" class="tab-start" align="center">     
+        <input 
+        id="start_btn"     
+        type="image"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/%EB%B2%95%EA%B3%A0_s_start.png?v=1700555304613"
+        style="position: relative; z-index: 999999; display: flex; top: -10%; left: 0%;
+        justify-content: center; align-items: center; height: 200px; width: 50%"/>
+          <p><h3>     
+            법고를 두드려<br>
+            소리를 들어 보세요!
+          </h3>
+          </p> 
+              <p><i  id="blink_effect" class="fa-solid fa-flag" style="font-size:16px;color:red;"></i><br>   
+             증강현실(AR) 사용시,<br>
+            주변 사물과 부딪치지 않도록 주의하세요.
+          
+          </p> 
+      <script>
+        let blinking_text = document.getElementById('blink_effect');
+        setInterval(function() {
+            blinking_text.style.display = (blinking_text.style.display == 'none' ? '' : 'none');
+        }, 1200);
+      </script>
+      </div>
+        <div class="logoWrapper">
+        <input
+          id="logo"
+          type="image"
+          class="logoImage"
+          src="https://cdn.glitch.global/06d05559-0ed0-41b1-938c-c5b9769f244e/mok-a-logo-white-full.png?v=1684124469622"
+        />
+      </div>
+    <button class="ChangeButton" id="flip-btn"></button>
+  
+  <a href="#layer2" class="btn-example">
+        <button
+           class="ListButton"
+           id="list-btn"        
+         ></button></a>
+          <div class="dim-layer">
+            <div class="dimBg"></div>
+              <div id="layer2" class="pop-layer">
+                <div class="pop-container">
+                  <div class="pop-conts">
+                <!--content //-->
+
+            <img
+  class="List-pic"
+  src="https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/moka-ar-map-final.png?v=1700102806657"
+  alt="Moka-museum AR location Map" /> 
+  <table>
+    <tbody>
+      <tr>
+        <td>
+            <ul class="ctxt mb-3"><a href="">①괘불</a></ul>
+            <ul class="ctxt mb20"><a href="">②윤장대</a></ul>
+            <ul class="ctxt mb20"><a href="">③법고</a></ul>
+            <ul class="ctxt mb20"><a href="">④소원지</a></ul>
+            <ul class="ctxt mb-3"><a href="">⑤달-헬멧</a></ul>
+            <ul class="ctxt mb20"><a href="">⑥달-토끼</a></ul>
+            <ul class="ctxt mb-3"><a href="">⑦저승사자</a></ul>
+            <ul class="ctxt mb20"><a href="">⑧진광대왕</a></ul></td>
+        <td><ul class="ctxt mb-3"><a href="">⑨업경대</a></ul>
+            <ul class="ctxt mb20"><a href="">⑩염라대왕</a></ul>
+            <ul class="ctxt mb20"><a href="">⑪태산대왕</a></ul>
+            <ul class="ctxt mb20"><a href="">⑫지장보살</a></ul>
+        <ul class="ctxt mb-3"><a href="">⑬반야둉선</a></ul>
+            <ul class="ctxt mb20"><a href="">⑭고행상</a></ul>
+            <ul class="ctxt mb20"><a href="">ⓢ십이지신</a></ul>
+            <ul class="ctxt mb20"><a href="">ⓐ하늘교회</a></ul></td>
+        <td><ul class="ctxt mb-3"><a href="">ⓒ잉어</a></ul>
+            <ul class="ctxt mb20"><a href="">ⓒ삼존불</a></ul>
+            <ul class="ctxt mb20"><a href="">ⓓ감로수</a></ul>
+            <ul class="ctxt mb20"><a href="">ⓔ백송</a></ul>
+        <ul class="ctxt mb-3"><a href="">ⓕ용</a></ul>
+            <ul class="ctxt mb20"><a href="">ⓖ포토존1</a></ul>
+            <ul class="ctxt mb20"><a href="">ⓗ포토존2</a></ul>
+            <ul class="ctxt mb20"><a href="">ⓘ포토존3</a></ul></td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+           
+            <div class="btn-r">
+              <a href="#" class="btn-layerClose">Close</a>
+            </div>
+          </div>
+                </div>
+            </div>
+        <div id="wrapper">
+    
+        <div class="example-container">
+        <button
+           class="HomeButton"
+           id="home-btn"
+           onclick="window.open('https://imager-ardocent.glitch.me/moon-index1.html','_self');"
+        ></button>
+                
+      
+        <button
+           class="ReloadButton"
+           id="reload-btn"
+           onclick="location.reload(true);"
+        ></button>
+    <a-scene
+      loading-screen="enabled: false"
+      arjs="sourceType: webcam; trackingMethod: best;"
+      cursor="fuse: false; rayOrigin: mouse"
+      raycaster="objects: [clickhandler];"
+      cursor-modifier
+      vr-mode-ui="enabled: false;"
+    >
+      <a-assets>
+        <!-- sound -->
+                  <audio
+             src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/SpaceLaserShot%20PE1095407.mp3?v=1684294410059"
+             type="audio/mp3"
+             id="aud"
+             response-type="arraybuffer"
+             crossorigin="anonymous"
+             webkit-playsinline
+             playsinline
+          ></audio>
+        <audio
+          id="rainforest"
+          src="//cdn.rawgit.com/michaelnebeling/src/master/rainforest_ambience-GlorySunz-1938133500.mp3"
+          crossorigin="anonymous"
+        ></audio>
+        <audio
+          id="button0"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/drum-sound-short.mp3?v=1692924044706"
+          crossorigin="anonymous"
+        ></audio>
+        <audio
+          id="button1"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/bell-sound-short.mp3?v=1692927977574"
+          crossorigin="anonymous"
+        ></audio>
+        <audio
+          id="button2"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/drum-sound-short-strong.mp3?v=1692943387890"
+          crossorigin="anonymous"
+        ></audio>
+        <audio
+          id="button3"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/moktak-sound-short.mp3?v=1692925441526"
+          crossorigin="anonymous"
+        ></audio>
+        <audio
+          id="button4"
+          src="//cdn.rawgit.com/michaelnebeling/src/master/button-4.mp3"
+          crossorigin="anonymous"
+        ></audio>
+
+        <!-- mixins -->
+
+        <a-mixin
+          id="collider"
+          class="collider"
+          opacity="0.99"
+          event-set__mousedown="material.opacity: 1.0"
+          event-set__mouseenter="material.opacity: 0.9"
+          event-set__mouseleave="material.opacity: 0.99"
+          event-set__mouseup="material.opacity: 0.99"
+        ></a-mixin>
+                <img
+          id="glow"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/light.png?v=1694386595898"
+        />
+      </a-assets>
+      <a-entity
+        camera
+        position="0 1.6 0"
+        look-controls-enabled="false"
+        orbit-controls="target: 0 1.6 -0.5; initialPosition: -5 5 20"
+      ></a-entity>
+      <!--a-text value="START CLICK" position="0 2 -3" align="center"></a-text-->
+      <a-circle
+        position="0 3 -5"
+        radius="0.8"
+        scale="2 1.5 2"
+        color="#FFFFFF"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/daebook-1.png?v=1693023340526"
+        shadow
+        animation="startEvents: click; property: scale;
+          from: 2 1.5 2; to: 1 0.7 1; dur: 1000"
+        animation__1="startEvents: click; property: scale;
+          from: 1 0.7 1; to: 2 1.5 2; dur: 1000"
+        shadow1
+        mixin="collider"
+        class="collider"
+        sound="src: #button0; on: click; poolSize: 3"
+        sound__mouseenter="src: #button0; on: mouseenter; poolSize: 2"
+      >
+      </a-circle>
+                  <a-entity
+        id="glowPulse1"
+        position="0 3.5 -10"
+        scale="1.3 1 1"
+        animation__spin="property: rotation; from: 0 0 0; to: 20 20 20; dur: 4000; loop: true; easing: linear;"
+      >
+        <a-image
+          width="10"
+          height="8"
+          src="#glow"
+          look-at="#player"
+          color="white"
+          material="transparent: true; opacity: 1.0; alphaTest: 0.01;"
+          animation__pulse="property: material.opacity; from: 2.0; to: 0.5; dur: 5000; loop: true; dir: alternate; easing: linear;"
+        ></a-image>
+      </a-entity>
+
+      <a-circle
+        position="0 0.6 -5"
+        radius="0.7"
+        scale="2 1.5 2"
+        color="#FFFFFF"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/daebook-1.png?v=1693023340526"
+        shadow
+        animation="startEvents: click; property: scale;
+          from: 2 1.5 2; to: 1 0.7 1; dur: 1000"
+                animation__1="startEvents: click; property: scale;
+          from: 1 0.7 1; to: 2 1.5 2; dur: 1000"
+        shadow1 
+        mixin="collider"
+        class="collider"
+        sound="src: #button2; on: click; poolSize: 3"
+        sound__mouseenter="src: #button2; on: mouseenter; poolSize: 2"
+      >
+      </a-circle>
+            <a-entity
+        id="glowPulse"
+        position="0 -0.5 -10"
+        scale="1.3 1 1"
+        animation__spin="property: rotation; from: 0 0 0; to: 20 20 20; dur: 4000; loop: true; easing: linear;"
+                      
+      >
+        <a-image
+          width="10"
+          height="8"
+          src="#glow"
+          look-at="#player"
+          color="white"
+          material="transparent: true; opacity: 1.0; alphaTest: 0.01;"
+          animation__pulse="property: material.opacity; from: 2.0; to: 0.5; dur: 5000; loop: true; dir: alternate; easing: linear;"
+        ></a-image>
+      </a-entity>
+      <!--a-circle
+        position="0 -0.2 -5"
+        radius="0.8"
+        scale="2 1.5 2"
+        color="#FFFFFF"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/dong-jong-f.png?v=1693023741035"
+        shadow
+        animation="startEvents: click; property: scale;
+          from: 2 1.5 2; to: 1 0.7 1; dur: 1000"
+        animation__1="startEvents: click; property: scale;
+          from: 1 0.7 1; to: 2 1.5 2; dur: 1000"
+        shadow1
+        mixin="collider"
+        class="collider"
+        sound="src: #button1; on: click; poolSize: 3"
+        sound__mouseenter="src: #button1; on: mouseenter; poolSize: 2"
+      >
+      </a-circle>
+      <a-circle
+        position="0 3 -5"
+        radius="0.8"
+        scale="2 1.5 2"
+        color="#FFFFFF"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/moktak-f.png?v=1693023684508"
+        shadow
+        animation="startEvents: click; property: scale;
+          from: 2 1.5 2; to: 1 0.7 1; dur: 1000"
+                animation__1="startEvents: click; property: scale;
+          from: 1 0.7 1; to: 2 1.5 2; dur: 1000"
+        shadow1
+        mixin="collider"
+        class="collider"
+        sound="src: #button3; on: click; poolSize: 3"
+        sound__mouseenter="src: #button3; on: mouseenter; poolSize: 2"
+      >
+      </a-circle-->
+      <!--a-box
+        position="-1 0.5 -3"
+        rotation="0 45 0"
+        color="#4CC3D9"
+        shadow
+        animation="startEvents: click; property: position;
+          from: -1 1.5 -3; to: -1 0.5 -3 dur: 1000"
+        shadow1
+        mixin="collider"
+        class="collider"
+        sound="src: #button1; on: click; poolSize: 3"
+        sound__mouseenter="src: #button1; on: mouseenter; poolSize: 2"
+      >
+      </a-box>
+      <a-sphere
+        position="0 1.25 -5"
+        radius="1.25"
+        color="#EF2D5E"
+        shadow
+        animation="startEvents: click; property: scale;
+          from: 2 2 2; to: 1 1 1; dur: 1000"
+        shadow1
+        mixin="collider"
+        class="collider"
+        sound="src: #button0; on: click; poolSize: 3"
+        sound__mouseenter="src: #button0; on: mouseenter; poolSize: 2"
+      >
+      </a-sphere>
+      <a-cylinder
+        position="1 0.75 -3"
+        radius="0.5"
+        height="1.5"
+        color="#FFC65D"
+        shadow
+        animation__enter="startEvents: mouseenter; property: scale;
+          to: 2 2 2; dur: 1000"
+        animation__leave="startEvents: mouseleave; property: scale;
+          to: 1 1 1; dur: 1000"
+        shadow1
+        mixin="collider"
+        class="collider"
+        sound="src: #button2; on: click; poolSize: 3"
+        sound__mouseenter="src: #button2; on: mouseenter; poolSize: 2"
+      >
+      </a-cylinder>
+      <a-plane
+        position="0 0 -4"
+        rotation="-90 0 0"
+        width="4"
+        height="4"
+        color="#7BC8A4"
+        shadow
+      ></a-plane-->
+      <!--a-sky color="#ECECEC"></a-sky-->
+
+      <a-entity cursor="rayOrigin:mouse"></a-entity>
+    </a-scene>
+    <!--script>
+      document.addEventListener("click", function () {
+        document.querySelector("a-text").setAttribute("visible", false);
+      });
+
+      function playing(index) {
+        console.log("now playing", index);
+        document.querySelector("#player").setAttribute("visible", true);
+      }
+    </script-->
+    <!--script>
+      var move2 = document.querySelector("#move2");
+      var ballanim = document.querySelector("#ballanim");
+      var acy = document.querySelector("a-cylinder");
+      var mybox = document.querySelector("#mybox");
+
+      move2.addEventListener("animationend", function () {
+        console.log("end1");
+        acy.emit("startcyl");
+        // mybox.emit('startbox');
+      });
+      console.log(ballanim);
+      acy.addEventListener("startcyl", function () {
+        console.log("end2");
+        mybox.emit("startbox");
+      });
+    </script-->
+          <script>
+     document.getElementById("start_btn").addEventListener("click", function() {
+      
+        var Start_Area = document.getElementById("start_area");
+        var PlayBtn = document.getElementById("start_btn");
+//        var pln = document.querySelector("#plane1");
+        this.aud = document.querySelector("#aud");
+       
+       
+ //       pln.setAttribute("visible", true);
+         // pln.setAttribute("position",{x:0,y:5,z:-9});
+ /* 
+       pln.setAttribute(
+            "animation",
+            "property: scale; dur: 1000; from: 0 0 0; to: 1 1 1"
+        );
+  */      
+        this.aud.play();        
+          
+        Start_Area.parentNode.removeChild(Start_Area);
+   /*     
+        const rand = Math.floor(Math.random() * 2);
+        const randlist = ["angel", "devil"];
+        const rand_btn = randlist[rand];
+     
+        document.getElementById(rand_btn).click();       
+   */     
+      });
+  </script>
+  </body>
+</html>

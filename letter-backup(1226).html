@@ -1,0 +1,284 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="./css/font-awesome-6.2.0.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>디즈니100 - 나만의 메시지</title>
+
+    <script src="./js/mobile-check.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+
+     <style>
+/*
+  The grid itself needs only 4 CSS declarations:
+*/
+      @media only screen and (max-width: 700px) {
+   .container {
+
+   }
+
+.myGallery {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.myGallery img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/*
+  And here are some declarations for the image caption.
+  Just hover over one of the last 5 images to see it.
+*/
+
+.myGallery .item {
+  position: relative;
+  overflow: hidden;
+}
+
+.myGallery .item img {
+  vertical-align: middle;
+}
+
+.myGallery .caption {
+  margin: 0;
+  padding: 1em;
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  transition: transform 0.5s;
+  transform: translateY(100%);
+  background: rgba(0, 0, 0, 0.7);
+  color: rgb(255, 255, 255);
+}
+
+.myGallery .item:hover .caption {
+  transform: translateY(0%);
+}
+
+/*
+  The rest is only styling for this example page
+*/
+
+@import url("https://fonts.googleapis.com/css2?family=Vollkorn:wght@400;900&display=swap");
+
+body {
+  background-color: #070933;
+    width: 100%;
+  height: 95vh;
+  background-size: contain;
+  background-image: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/BG.png?v=1670560998820");
+  display: flex;
+  justify-content: center;
+  align-items: center;    
+  font: 400 1.5em/1.58 Vollkorn, serif;
+}
+                .box-1 {
+                  margin: 0;
+          width: 100%;
+          height: 10%;
+          background: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/MYmessage1.png?v=1672016886285");
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: contain;
+          justify-content: center;
+          align-items: center;
+        }
+
+        h1{
+          text-align: center;
+  color: white;
+        font-size: 24px;
+        font-family: "SDSamliphopangche_Outline";
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff');
+        font-weight: bold;
+        font-style: normal;margin: 10px 0;
+          
+        }
+p {
+  text-align: center;
+  color: white;
+        font-size: 16px;
+        font-family: "SDSamliphopangche_Outline";
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;margin: 10px 0;
+}
+
+.myGallery {
+  font-size: 1rem;
+}
+        
+
+      .landing_content {
+position: absolute;
+        top: 3%;
+        left: 25%;
+        width: 50%;
+      }
+      .landing_content1 {
+position: absolute;
+        top: 20%;
+        left: 24%;
+        width: 30%;
+
+      }
+   }
+    </style>
+    <style>
+      .fiftyfifty {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .fiftyfifty .basic {
+        flex-basis: 50%;
+      }
+      .fiftyfifty .basic:last-of-type {
+        text-align: right;
+      }
+
+      .js .to_fade_up,
+      .js .to_fade_from_left,
+      .js .to_fade_from_right {
+        visibility: hidden;
+      }
+      .js .fade_up {
+        visibility: visible;
+        -ms-animation: fadeUp 2s; /* Internet Explorer*/
+        animation: fadeUp 2s;
+      }
+      .js .fade_from_left {
+        visibility: visible;
+        -ms-animation: fadeFromLeft 1s; /* Internet Explorer*/
+        animation: fadeFromLeft 1s;
+      }
+      .js .fade_from_right {
+        visibility: visible;
+        -ms-animation: fadeFromRight 1s; /* Internet Explorer*/
+        animation: fadeFromRight 1s;
+      }
+
+      @keyframes fadeUp {
+        0% {
+          filter: alpha(opacity=0);
+          opacity: 0.1;
+          transform: translateY(100px);
+        }
+        100% {
+          filter: alpha(opacity=100);
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fadeFromLeft {
+        0% {
+          filter: alpha(opacity=0);
+          opacity: 0.1;
+          transform: translateX(-100%);
+        }
+        100% {
+          filter: alpha(opacity=100);
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      @keyframes fadeFromRight {
+        0% {
+          filter: alpha(opacity=0);
+          opacity: 0.1;
+          transform: translateX(100%);
+        }
+        100% {
+          filter: alpha(opacity=100);
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+    </style>
+  </head>
+  <body style="margin: 0px; overflow: hidden">
+    <div class="to_fade_up">
+      <div class="container">
+        <div class="box-1"></div>
+
+          <img src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/MYmessage2.png?v=1672016885306" 
+               class="landing_content1"
+                            />
+
+
+
+          <div class="myGallery">
+            <img
+              src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/MYmessage4.png?v=1670640027725"
+              onclick="window.open('https://a-portal.glitch.me/text1-221.html','_self');"
+            />
+            <img
+              src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/MYmessage3.png?v=1670640032921"
+            />
+            <img
+              src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/MYmessage5.png?v=1670640035931"
+            />
+            <img
+              src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/MYmessage6.png?v=1670640039605"
+            />
+            <img
+              src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/MYmessage7.png?v=1670640043339"
+            />
+            <img
+              src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/MYmessage8.png?v=1670640047176"
+            />
+          </div>
+        </div>
+      </div>
+ 
+  </body>
+  <script>
+    var root = document.getElementsByTagName("html")[0]; // '0' to assign the first (and only `HTML` tag)
+    root.setAttribute("class", "js");
+
+    $(".to_fade_up").waypoint(
+      function () {
+        $(this[(0, "element")]).addClass("fade_up");
+      },
+      {
+        triggerOnce: true,
+        offset: "75%",
+      }
+    );
+    $(".to_fade_from_left").waypoint(
+      function () {
+        $(this[(0, "element")]).addClass("fade_from_left");
+      },
+      {
+        triggerOnce: true,
+        offset: "75%",
+      }
+    );
+    $(".to_fade_from_right").waypoint(
+      function () {
+        $(this[(0, "element")]).addClass("fade_from_right");
+      },
+      {
+        triggerOnce: true,
+        offset: "75%",
+      }
+    );
+  </script>
+</html>

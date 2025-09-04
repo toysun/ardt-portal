@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>디즈니 100주년 기념</title>
+    <meta
+      name="description"
+      content="Basic example for troika-text component."
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="aframe-troika-text.js"></script>
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="aframe-spe-particles-component.js"></script>
+    <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+    <!--script src="jquery-3.3.1.js"></script-->
+    <!--script src="font-awesome-5.13.0.js"></script-->
+    <script src="merge-image.js"></script>
+
+    <script type="text/javascript">
+      AFRAME.registerComponent("drag-rotate-component", {
+        schema: { speed: { default: 1 } },
+        init: function () {
+          this.ifMouseDown = false;
+          this.x_cord = 0;
+          this.y_cord = 0;
+          document.addEventListener(
+            "mousedown",
+            this.OnDocumentMouseDown.bind(this)
+          );
+          document.addEventListener(
+            "mouseup",
+            this.OnDocumentMouseUp.bind(this)
+          );
+          document.addEventListener(
+            "mousemove",
+            this.OnDocumentMouseMove.bind(this)
+          );
+        },
+        OnDocumentMouseDown: function (event) {
+          this.ifMouseDown = true;
+          this.x_cord = event.clientX;
+          this.y_cord = event.clientY;
+        },
+        OnDocumentMouseUp: function () {
+          this.ifMouseDown = false;
+        },
+        OnDocumentMouseMove: function (event) {
+          if (this.ifMouseDown) {
+            var temp_x = event.clientX - this.x_cord;
+            var temp_y = event.clientY - this.y_cord;
+            if (Math.abs(temp_y) < Math.abs(temp_x)) {
+              this.el.object3D.rotateY((temp_x * this.data.speed) / 1000);
+            } else {
+              this.el.object3D.rotateX((temp_y * this.data.speed) / 1000);
+            }
+            this.x_cord = event.clientX;
+            this.y_cord = event.clientY;
+          }
+        },
+      });
+    </script>
+    <!--script type="text/javascript">
+    AFRAME.registerComponent('drag-rotate-component',{
+      schema : { speed : {default:1}},
+      init : function(){
+        this.ifTouchStart = false;
+        this.x_cord = 0;
+        this.y_cord = 0;
+        document.addEventListener('touchstart',this.OnDocumentTouchStart.bind(this));
+        document.addEventListener('touchend',this.OnDocumentTouchEnd.bind(this));
+        document.addEventListener('touchmove',this.OnDocumentTouchMove.bind(this));
+      },
+      OnDocumentTouchStart : function(event){
+        this.ifTouchStart = true;
+        this.x_cord = event.clientX;
+        this.y_cord = event.clientY;
+      },
+      OnDocumentTouchEnd : function(){
+        this.ifTouchStart = false;
+      },
+      OnDocumentTouchMove : function(event)
+      {
+        if(this.ifTouchStart)
+        {
+          var temp_x = event.clientX-this.x_cord;
+          var temp_y = event.clientY-this.y_cord;
+          if(Math.abs(temp_y)<Math.abs(temp_x))
+          {
+            this.el.object3D.rotateY(temp_x*this.data.speed/1000);
+          }
+          else
+          {
+            this.el.object3D.rotateX(temp_y*this.data.speed/1000);
+          }
+          this.x_cord = event.clientX;
+          this.y_cord = event.clientY;
+        }
+      }
+    });
+  </script-->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const list = [
+          "glasses1",
+          "glasses2",
+          "hat1",
+          "hat2",
+          "helmet",
+          "helmet2",
+        ];
+        const visibles = [false, false, false, false, false, false];
+        const setVisible = (button, entities, visible) => {
+          if (visible) {
+            button.classList.add("selected");
+          } else {
+            button.classList.remove("selected");
+          }
+          entities.forEach((entity) => {
+            entity.setAttribute("visible", visible);
+          });
+        };
+        list.forEach((item, index) => {
+          const button = document.querySelector("#" + item);
+          const entities = document.querySelectorAll("." + item + "-entity");
+          setVisible(button, entities, visibles[index]);
+          button.addEventListener("click", () => {
+            visibles[index] = !visibles[index];
+            setVisible(button, entities, visibles[index]);
+          });
+        });
+      });
+    </script>
+    <!--script>
+      /*  AFRAME.registerComponent("my-test-component", {
+        tick: function () {
+          var el = this.el;
+          el.setAttribute("text", { value: "" });
+        },
+      }); */
+
+      function ee() {
+        document
+          .getElementById("output")
+          .setAttribute("value", document.getElementById("fname").value);
+        document.getElementById("MsgZone").style.display = "none";
+        $(".DecoButton").show();
+        $(".capturebtn").show();
+        $(".WriteButton").show();
+      }
+    </script-->
+    <script>
+      // You can set the input as you want
+      var inputeditable =
+        '<textarea contenteditable="true" type="text" name="" class="input">';
+
+      // For each DOM element that has .inputeditable, we add a click event, using inputeditableEnabled(). Which can be used anywhere
+      $(".inputeditable").each(function () {
+        inputeditableEnabled($(this));
+      });
+
+      // This function store the HTML, add child with input. When input lose focus, we push back the value of the input,
+      // el is the dom object edited
+      function inputeditableEnabled(el) {
+        var contentWidth = el.width();
+        var contentHeight = el.height();
+        el.click(function () {
+          var content = el.html().replace(/\n/g, "");
+          el.html("").append(inputeditable);
+          el.off("click");
+          el.width(contentWidth).height(contentHeight);
+          el.find(".input").val(content).focus();
+          autosize(el.find(".input"));
+          el.find(".input").focusout(function () {
+            inputeditableDisabled(el, $(this));
+          });
+        });
+      }
+
+      // This function disable the edition of input. It change back the html of .inputeditable to plain text and remove the input
+      // ,el is the editable dom object that need to be disabled
+      // ,elInput is the input of said object
+      function inputeditableDisabled(el, elInput) {
+        if (!elInput) {
+          elInput = el.find(".input");
+        }
+        var inputval = elInput.val();
+        el.html(inputval);
+        el.css({ width: "", height: "auto" });
+        inputeditableEnabled(el);
+      }
+
+      // Every piece of code can be minified, but I chose not to, for editing purposes.
+      // we use autoresize.js but it is not necessary if you have your own textarea resize. You can find the script here https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js
+      // if you want the text to be inline, use an input, no textarea
+    </script>
+    <!--script>
+ var modal = document.querySelector(".modal");
+// var trigger = document.querySelector(".trigger");
+var closeButton = document.querySelector(".close-button");
+
+function toggleModal() {
+    modal.classList.toggle("show-modal");
+}
+
+function windowOnClick(event) {
+    if (event.target === modal) {
+        toggleModal();
+    }
+}
+
+//trigger.addEventListener("click", toggleModal);
+closeButton.addEventListener("click", toggleModal);
+window.addEventListener("click", windowOnClick);
+
+    </script-->
+    <style>
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 100px;
+}
+
+.pop-layer .pop-container {
+  padding: 20px 25px;
+}
+
+.pop-layer p.ctxt {
+  color: #666;
+  line-height: 50px;
+    z-index: 99999;
+}
+
+.pop-layer .btn-r {
+  width: 100%;
+  margin: 10px 0 20px;
+  padding-top: 10px;
+  border-top: 1px solid #DDD;
+  text-align: right;
+    z-index: 99999;
+}
+
+.pop-layer {
+  display: none;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 410px;
+  height: auto;
+  background-color: #fff;
+  border: 5px solid #3571B5;
+  z-index: 99999;
+}
+
+.dim-layer {
+  display: none;
+  position: fixed;
+  _position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99999;
+}
+
+.dim-layer .dimBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: .5;
+  filter: alpha(opacity=50);
+
+}
+
+.dim-layer .pop-layer {
+  display: block;
+}
+
+a.btn-layerClose {
+  display: inline-block;
+  height: 25px;
+  padding: 0 14px 0;
+  border: 1px solid #304a8a;
+  background-color: #3f5a9d;
+  font-size: 13px;
+  color: #fff;
+  line-height: 25px;
+}
+
+a.btn-layerClose:hover {
+  border: 1px solid #091940;
+  background-color: #1f326a;
+  color: #fff;
+}
+     
+    </style>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+      body {
+        margin: 0;
+      }
+      .tab-start {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(120, 120, 120, 0.9);
+        z-index: 999999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .tab-start div {
+        text-align: center;
+        font-size: 1.25em;
+        color: white;
+      }
+      .example-container {
+        overflow: hidden;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      .options-panel {
+        position: fixed;
+        left: 60%;
+        top: 10;
+        z-index: 2;
+      }
+      .options-panel img {
+        border: solid 2px;
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        cursor: pointer;     
+        background-color: white;
+      }
+      .options-panel img.selected {
+        border-color: green;
+        background-color: gold;
+      }
+      .ChangeButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/camera-rotate.png?v=1694390587914");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 5%;
+        left: 70%;
+        width: 40px;
+        height: 40px;
+                /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .logoWrapper {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        width: 100%;
+        z-index: -1; /* needs to be in the background so that it doesn't overlay the title (from html) */
+      }
+
+      .logoImage {
+        width: 29%; /* 104px */
+        height: 10%; /*  40px */
+        visibility: visible; /* needs to be added, so that the image is always visible. Otherwise it could flicker during click-events or even be hidden (on iOS (Vers.13.5.1, Safari)) */
+      }
+      .HomeButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/docent-headphone.png?v=1699944250478");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 5%;
+        left: 5%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .ListButton:hover {
+        background-color: Gold;
+      }
+      .ListButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/list-ar.png?v=1699923996680");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 5%;
+        left: 20%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .ListButton:hover {
+        background-color: Gold;
+      }
+            
+      .ReloadButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/camera-flip.png?v=1666830382378");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 5%;
+        left: 85%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .ReloadButton:hover {
+        background-color: Gold;
+      }
+              h3 {
+                position: absolute;
+        top: 55%;
+        left: 20%;
+        width: 50%;
+          color: white;
+ font-family: "AppleSDGothicNeoM";
+        src: url('https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/AppleSDGothicNeoM.ttf?v=1671085239370') format('ttf');
+                font-size: 24px;
+          margin: 18px;  
+      }
+        p {
+                          position: absolute;
+        top: 70%;
+        left: 20%;
+        width: 50%;
+          color: white;
+          font-family: "AppleSDGothicNeoM";
+        src: url('https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/AppleSDGothicNeoM.ttf?v=1671085239370') format('ttf');
+          font-size: 16px;
+          margin: 18px;
+
+        }
+ #blink_effect {
+            color: white;
+            font-size: 20 px;
+            transition: 1.5s;
+        }  
+            .List-pic{
+        width: 100%; /* 104px */
+        height: 60%; /*  40px */
+        visibility: visible; /* needs to be added, so that the image is always visible. Otherwise it could flicker during click-events or even be hidden (on iOS (Vers.13.5.1, Safari)) */
+      }
+
+table {
+	background: #fff;
+}
+table,
+thead,
+tbody,
+tfoot,
+tr,
+td,
+tr {
+	text-align: left;
+	margin: auto;
+	border: 0px solid #dedede;
+	padding: 0.5rem;
+	width: 360px;
+}
+.table {
+	display: table;
+	width: 100%;
+  height: 100%;
+  boder: 0%;
+}
+.tr {
+	display: table-row;
+}
+.thead {
+	display: table-header-group;
+}
+.tbody {
+	display: table-row-group;
+}
+.tfoot {
+	display: table-footer-group;
+}
+.col {
+	display: table-column;
+}
+.colgroup {
+	display: table-column-group;
+}
+.td,
+.th {
+	display: table-cell;
+	width: 10%;
+}
+.caption {
+	display: table-caption;
+}
+
+
+    </style>
+     <script src="https://unpkg.com/merge-images"></script>
+
+    <link rel="stylesheet" href="style-capture-moka.css" />
+  </head>
+ <body style="margin: 0px; overflow: hidden">
+      <div id="start_area" class="tab-start" align="center">     
+        <input 
+        id="start_btn"     
+        type="image"
+        src="https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/%EC%A0%80%EC%8A%B9%EC%82%AC%EC%9E%90_s_start.png?v=1700033546346"
+        style="position: relative; z-index: 999999; display: flex; top: -10%; left: 0%;
+        justify-content: center; align-items: center; height: 200px; width: 50%"/>
+          <p><h3>     
+            클릭! 번을 눌러서<br>
+            저승사자의 사후세계 길안내를 받으세요!
+          </h3>
+          </p> 
+              <p><i  id="blink_effect" class="fa-solid fa-flag" style="font-size:16px;color:red;"></i><br>   
+             증강현실(AR) 사용시,<br>
+            주변 사물과 부딪치지 않도록 주의하세요.
+          
+          </p> 
+      <script>
+        let blinking_text = document.getElementById('blink_effect');
+        setInterval(function() {
+            blinking_text.style.display = (blinking_text.style.display == 'none' ? '' : 'none');
+        }, 1200);
+      </script>
+      </div> 
+  
+      <div class="logoWrapper">
+        <input
+          id="logo"
+          type="image"
+          class="logoImage"
+          src="https://cdn.glitch.global/06d05559-0ed0-41b1-938c-c5b9769f244e/mok-a-logo-white-full.png?v=1684124469622"
+        />
+      </div>
+  
+      <button class="ChangeButton" id="flip-btn"></button>
+  
+  <a href="#layer2" class="btn-example">
+        <button
+           class="ListButton"
+           id="list-btn"        
+         ></button></a>
+          <div class="dim-layer">
+            <div class="dimBg"></div>
+              <div id="layer2" class="pop-layer">
+                <div class="pop-container">
+                  <div class="pop-conts">
+                <!--content //-->
+                              <p><h3>     
+            클릭! 번을 눌러서<br>
+            저승사자의 사후세계 길안내를 받으세요!
+          </h3>
+          </p>
+            <img
+  class="List-pic"
+  src="https://cdn.glitch.global/cb8cb838-9f19-470f-9aca-6e773483a84f/moka-ar-map-final.png?v=1700102806657"
+  alt="Moka-museum AR location Map" /> 
+  <table>
+    <tbody>
+      <tr>
+        <td>
+            <ul class="ctxt mb-3"><a href="">①괘불</a></ul>
+            <ul class="ctxt mb20"><a href="">②윤장대</a></ul>
+            <ul class="ctxt mb20"><a href="">③법고</a></ul>
+            <ul class="ctxt mb20"><a href="">④소원지</a></ul>
+            <ul class="ctxt mb-3"><a href="">⑤달-헬멧</a></ul>
+            <ul class="ctxt mb20"><a href="">⑥달-토끼</a></ul>
+            <ul class="ctxt mb-3"><a href="">⑦저승사자</a></ul>
+            <ul class="ctxt mb20"><a href="">⑧진광대왕</a></ul></td>
+        <td><ul class="ctxt mb-3"><a href="">⑨업경대</a></ul>
+            <ul class="ctxt mb20"><a href="">⑩염라대왕</a></ul>
+            <ul class="ctxt mb20"><a href="">⑪태산대왕</a></ul>
+            <ul class="ctxt mb20"><a href="">⑫지장보살</a></ul>
+        <ul class="ctxt mb-3"><a href="">⑬반야둉선</a></ul>
+            <ul class="ctxt mb20"><a href="">⑭고행상</a></ul>
+            <ul class="ctxt mb20"><a href="">ⓢ십이지신</a></ul>
+            <ul class="ctxt mb20"><a href="">ⓐ하늘교회</a></ul></td>
+        <td><ul class="ctxt mb-3"><a href="">ⓒ잉어</a></ul>
+            <ul class="ctxt mb20"><a href="">ⓒ삼존불</a></ul>
+            <ul class="ctxt mb20"><a href="">ⓓ감로수</a></ul>
+            <ul class="ctxt mb20"><a href="">ⓔ백송</a></ul>
+        <ul class="ctxt mb-3"><a href="">ⓕ용</a></ul>
+            <ul class="ctxt mb20"><a href="">ⓖ포토존1</a></ul>
+            <ul class="ctxt mb20"><a href="">ⓗ포토존2</a></ul>
+            <ul class="ctxt mb20"><a href="">ⓘ포토존3</a></ul></td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+           
+            <div class="btn-r">
+              <a href="#" class="btn-layerClose">Close</a>
+            </div>
+          </div>
+                </div>
+            </div>
+          
+          
+           <script>
+$('.btn-example').click(function(){
+        var $href = $(this).attr('href');
+        layer_popup($href);
+    });
+    function layer_popup(el){
+
+        var $el = $(el);		//레이어의 id를 $el 변수에 저장
+        var isDim = $el.prev().hasClass('dimBg');	//dimmed 레이어를 감지하기 위한 boolean 변수
+
+        isDim ? $('.dim-layer').fadeIn() : $el.fadeIn();
+
+        var $elWidth = ~~($el.outerWidth()),
+            $elHeight = ~~($el.outerHeight()),
+            docWidth = $(document).width(),
+            docHeight = $(document).height();
+
+        // 화면의 중앙에 레이어를 띄운다.
+        if ($elHeight < docHeight || $elWidth < docWidth) {
+            $el.css({
+                marginTop: -$elHeight /2,
+                marginLeft: -$elWidth/2
+            })
+        } else {
+            $el.css({top: 0, left: 0});
+        }
+
+        $el.find('a.btn-layerClose').click(function(){
+            isDim ? $('.dim-layer').fadeOut() : $el.fadeOut(); // 닫기 버튼을 클릭하면 레이어가 닫힌다.
+            return false;
+        });
+
+        $('.layer .dimBg').click(function(){
+            $('.dim-layer').fadeOut();
+            return false;
+        });
+
+    }
+    </script>
+          
+    
+      <div id="wrapper">
+    
+        <div class="example-container">
+        <button
+           class="HomeButton"
+           id="home-btn"
+           onclick="window.open('https://imager-ardocent.glitch.me/moon-index1.html','_self');"
+        ></button>
+                
+      
+        <button
+           class="ReloadButton"
+           id="reload-btn"
+           onclick="location.reload(true);"
+        ></button>
+    <a-scene
+      vr-mode-ui="enabled: false"
+      loading-screen="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+      renderer="antialias: true; logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true;"
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+    >
+      <!--a-entity camera="active: true" look-controls wasd-controls position="0 0 5" data-aframe-default-camera></a-entity-->
+      <!-- CAMERA -->
+      <a-asset>
+        <audio
+          id="aud"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/%EB%B0%98%EC%95%BC%EC%8B%AC%EA%B2%BD.mp3?v=1693276774799"
+          crossorigin="anonymous"
+        ></audio>
+        <img
+          id="glow"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/glow.png?v=1672756163242"
+        />
+      </a-asset>
+
+      <a-entity id="guebul">
+        <a-entity
+          camera
+          position="0 1.6 0"
+          look-controls-enabled="false"
+          
+        ></a-entity>
+<a-entity 
+          animation="startEvents: click; property: rotation; from: 0 0 0; to: 0 360 0; dur: 8000; loop: true"
+          sound="src: #button0; on: click; poolSize: 3"
+>  </a-entity>
+        <a-cylinder
+          position="0 1.5 -5"
+          radius="1.5"
+          height="1.5"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/yjd-original-c.jpg?v=1694703149068"
+          segments-radial="8"
+          opacity="0.9"
+          shadow="receive: false"
+          animation="startEvents: click; property: rotation; to: 0 360 0; dur: 8000; loop: true"
+          sound="src: #button0; on: click; poolSize: 3"
+
+        >
+        </a-cylinder>
+        <a-cone
+          position="0 2.4 -5"
+          rotation="0 0 180"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/yjd-original-top-c.png?v=1694710284088"
+          height="0.5"
+          segments-radial="8"
+          radius-bottom="2.5"
+          radius-top="0.9"
+        ></a-cone>
+        <a-cone
+          position="0 0.2 -5"
+          rotation="0 0 180"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/yjd-original-bottom-c.jpg?v=1694709847221"
+          segments-radial="8"
+          radius-bottom="1.7"
+          radius-top="0.7"
+        ></a-cone>
+              <a-plane
+          height="2" width="0.2"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/yjd-handy.png?v=1694591454647"
+          position="-1.9 0.5 -4.8"
+          rotation="0 0 90"
+        ></a-plane>
+                      <a-plane
+          height="2" width="0.2"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/yjd-handy.png?v=1694591454647"
+          position="1.9 0.5 -4.8"
+          rotation="0 0 90"
+        ></a-plane>
+  
+                        <a-troika-text
+          id="output"
+          position="0 -0.4 -2.6"
+          color="#fff"
+          max-width="13"
+          max-height="50"
+          curve-radius="0"
+          scale="0.5 0.4 0.4"
+          font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/AppleSDGothicNeoM.ttf?v=1671085239370"
+          value="        
+              윤장대는 경전을 넣은 책장에                     
+축을 달아 회전하도록 만든 것으로,
+이것을 돌리기만 하면 경전을 읽지 않아도                   
+공덕을 쌓을 수 있다고 한다."
+          align="center"
+          animation="property: position; to: 0 1 -2.7; delay: 10000; dur: 7000; easing: linear; loop: false"
+          animation__1="property: scale; to: 0 0 0; delay: 35000; dur: 500; easing: linear; loop: false"
+        >
+        </a-troika-text>
+              <a-image
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/message-thanks-white-r.png?v=1671948199992"
+          position="0 1 -2.8"
+          material="color: #3F2D81; opacity: 0.5; transparent: true"
+          scale="0 0 0"
+          animation="property: scale; to: 2 0.7 0.1; delay: 10000; dur: 1100; easing: linear; loop: false"
+          animation__1="property: scale; to: 0 0 0; delay: 35000; dur: 1000; easing: linear; loop: false"
+        ></a-image>
+        <!-- STAGE -->
+        <a-entity
+          id="stage"
+          animation__3="startEvents: click; property: position; to: 0.1 5.57 -0.3; delay: 500; dur: 3000; loop: false"
+        >
+
+          <!--a-entity
+            scale="0.15 0.15 0.15"
+            position="0 -8 -0.3"
+            rotation="0 0 0"
+            visible="true"
+            gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/8-animated-butterflies.glb?v=1692771856899"
+            shadow="receive: false"
+            animation-mixer
+            animation="property: object3D.rotation.y; to: 180; delay: 5500; dur: 5000; easing: easeInOutQuad; dir: alternate; loop: false;"
+            animation__2="property: position; to: 0 1.4 -0.55; delay: 500; dur: 3000; loop: false"
+          >
+          </a-entity-->
+
+
+          <a-entity>
+            <a-troika-text
+              id="output1"
+              position="0 1.8 -1.8"
+              color="#fff"
+              max-width="5"
+              curve-radius="40"
+              scale="1 1 1"
+              font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/%ED%96%89%EB%B3%B5%EA%B3%A0%ED%9D%A5B.ttf?v=1658800506733"
+              value="윤장대를 터치해서 
+경전을 돌려보세요"
+            ></a-troika-text>
+
+          </a-entity>
+
+
+          <a-entity cursor="rayOrigin:mouse"></a-entity>
+ 
+          <a-light type="ambient" intensity="1"></a-light>
+        </a-entity>
+      </a-entity>
+      <button class="button" id="mybutton"></button> 
+    </a-scene>
+    <!--div class="helmet2-entity">
+      <img id="stampMsg" />
+    </div-->
+    <button
+      class="capturebtn"
+      id="capture"
+      style="vertical-align: middle"
+    ></button>
+    <button class="savebtn" id="save" style="vertical-align: middle"></button>
+    <!-- The Modal -->
+    <div id="myModal" class="modal" align="center">
+      <!-- Modal content -->
+      <div>
+        <img class="modal-content" id="img01" />
+        <span class="closebtn">
+          <img
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/close-white.png?v=1670812239754"
+            width="30px"
+            height="30px"
+          />
+        </span>
+        <div id="caption"></div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="hmodal_active.js"></script>
+    <script type="text/javascript" src="capture-1.js"></script>
+    <script>
+      var move2 = document.querySelector("#move2");
+      var ballanim = document.querySelector("#ballanim");
+      var acy = document.querySelector("a-cylinder");
+      var mybox = document.querySelector("#mybox");
+
+      move2.addEventListener("animationend", function () {
+        console.log("end1");
+        acy.emit("startcyl");
+        // mybox.emit('startbox');
+      });
+      console.log(ballanim);
+      acy.addEventListener("startcyl", function () {
+        console.log("end2");
+        mybox.emit("startbox");
+      });
+    </script>
+              <script>
+    AFRAME.components["look-controls"].Component.prototype.onTouchMove = function (t) {
+                        var PI_2 = Math.PI/2,
+                        e,
+                        o = this.el.sceneEl.canvas,
+                        i = this.yawObject,
+                        j = this.pitchObject;
+                        this.touchStarted && this.data.touchEnabled && (e = 2 * Math.PI * (t.touches[0].pageX - this.touchStart.x) / o.clientWidth, f = 2 * Math.PI * (t.touches[0].pageY - this.touchStart.y) / o.clientHeight, j.rotation.x += .3 * f, i.rotation.y += .5 * e, j.rotation.x = Math.max(-PI_2, Math.min(PI_2, j.rotation.x)), this.touchStart = {
+                                x: t.touches[0].pageX,
+                                y: t.touches[0].pageY
+                            })
+                        }
+    </script>
+   <script>
+    var currentEvent;
+    
+    window.addEventListener('load', function() {
+                // you can access the THREE.Light object from the shadow-light element
+      var lightEl = document.querySelector('a-shadow-light');
+  //    console.log(lightEl.shadowLight);
+      currentEvent = "null";
+    });
+    
+    
+     document.getElementById("start_btn").addEventListener("click", function() {
+      
+        var Start_Area = document.getElementById("start_area");
+        var PlayBtn = document.getElementById("start_btn");
+        this.aud = document.querySelector("#aud");
+ 
+        this.aud.play();   
+       
+        currentEvent = "click";
+        document.getElementById("guebul").dispatchEvent(new CustomEvent(currentEvent));
+          
+        Start_Area.parentNode.removeChild(Start_Area);
+  
+      });
+  </script>
+    <!--script>
+      $(".btn_popup").click(function () {
+        $(".ly_wrap").show();
+        $(".DecoButton").hide();
+        $(".capturebtn").hide();
+        $(".WriteButton").hide();
+      });
+
+      $(".btn_container").click(function () {
+        $(".container").show();
+        $(".DecoButton").hide();
+        $(".capturebtn").hide();
+        $(".WriteButton").hide();
+      });
+      $("#DecoClose").click(function () {
+        $(".container").hide();
+        var tt = document.getElementById("MsgZone");
+        if (tt.style.display == "none") {
+          $(".DecoButton").show();
+          $(".capturebtn").show();
+          $(".WriteButton").show();
+        } else {
+          $(".DecoButton").hide();
+          $(".capturebtn").hide();
+          $(".WriteButton").hide();
+        }
+      });
+    </script-->
+        </div>
+     </div>
+  </body>
+</html>

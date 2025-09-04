@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image.prod.js"></script>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image-aframe.prod.js"></script>
+  </head>
+  <body>
+    <a-scene
+      mindar-image="imageTargetSrc: https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/dragon.mind?v=1695651796314;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+    >
+      <a-assets>
+        <a-asset-item
+          id="bearModel"
+          src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/examples/image-tracking/assets/band-example/bear/scene.gltf"
+        ></a-asset-item>
+        <a-asset-item
+          id="raccoonModel"
+          src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/examples/image-tracking/assets/band-example/raccoon/scene.gltf"
+        ></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 0">
+                                       <a-gltf-model
+                  position="0 -5.8 -22"
+        rotation="0 0 0"
+        scale="0.01 0.01 0.01"
+          src="https://cdn.glitch.me/7aef11f6-e1ff-4444-833f-2588de98f4e6/chinese_dragon-1.glb?v=1688084463153"
+          class="glasses2-entity"
+          id="dragon"
+          animation-mixer="startAt: 2000; loop: true;"
+          
+                                                sound="src: #button3; on: click; poolSize: 3"
+          sound__mouseenter="src: #button3; on: mouseenter; poolSize: 2"
+        >
+        </a-gltf-model>
+                                          <a-gltf-model
+          rotation="0 -150 0"
+          position="0 2 -27"
+          scale="0.15 0.15 0.15"
+          src="https://cdn.glitch.global/06d05559-0ed0-41b1-938c-c5b9769f244e/dragon_ver2.glb?v=1695260828829"
+          class="glasses2-entity"
+          id="dragon1"
+          animation-mixer
+          animation="startEvents: click; property: rotation; to: 40 360 -20; dur: 20000; loop: true;"
+          animation__2="startEvents: click; property: position; to: 0.5 1.4 -7; delay: 1000; dur: 2000; loop: false;"
+          animation__3="startEvents: click; property: position; to: 0 1.2 -3; delay: 20000; dur: 500; loop: false; easing: linear;"           
+          animation__4="startEvents: click; property: position; to: 0 1.4 -6; delay: 30000; dur: 500; loop: false; easing: linear;" 
+                                                sound="src: #button3; on: click; poolSize: 3"
+          sound__mouseenter="src: #button3; on: mouseenter; poolSize: 2"
+        >
+        </a-gltf-model>
+      <a-entity mindar-image-target="targetIndex: 1">
+        <a-gltf-model
+          rotation="0 0 0 "
+          position="0 -0.25 0"
+          scale="0.05 0.05 0.05"
+          src="#bearModel"
+          animation-mixer
+        >
+      </a-entity>
+    </a-scene>
+  </body>
+</html>

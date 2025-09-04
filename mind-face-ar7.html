@@ -1,0 +1,666 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-face.prod.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-face-aframe.prod.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.rawgit.com/tizzle/aframe-orbit-controls-component/master/dist/aframe-orbit-controls-component.min.js"></script>
+    <script src="aframe-troika-text.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const list = [
+          "glasses1",
+          "glasses2",
+          "hat1",
+          "hat2",
+          "earring",
+          "helmet",
+          "helmet2",
+        ];
+        const visibles = [true, false, false, true, true, false, false];
+        const setVisible = (button, entities, visible) => {
+          if (visible) {
+            button.classList.add("selected");
+          } else {
+            button.classList.remove("selected");
+          }
+          entities.forEach((entity) => {
+            entity.setAttribute("visible", visible);
+          });
+        };
+        list.forEach((item, index) => {
+          const button = document.querySelector("#" + item);
+          const entities = document.querySelectorAll("." + item + "-entity");
+          setVisible(button, entities, visibles[index]);
+          button.addEventListener("click", () => {
+            visibles[index] = !visibles[index];
+            setVisible(button, entities, visibles[index]);
+          });
+        });
+      });
+    </script>
+    <style>
+      body {
+        margin: 0;
+      }
+      .example-container {
+        overflow: hidden;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      .options-panel {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 2;
+      }
+      .options-panel img {
+        border: solid 2px;
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        cursor: pointer;
+      }
+      .options-panel img.selected {
+        border-color: green;
+      }
+    </style>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500&display=swap");
+      body {
+        font-family: "Chakra Petch", sans-serif;
+      }
+      .carousel__wrapper {
+        padding: 5px;
+        overflow: hidden;
+        width: 100%;
+        height: 20%;
+        position: fixed;
+        bottom: 0;
+        z-index: 2;
+      }
+      .carousel__content {
+        max-height: 100px;
+        max-width: 500px;
+        margin: 0 auto;
+        position: relative;
+      }
+      .carousel__container {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        display: flex;
+        align-items: center;
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+      }
+      .carousel__container::-webkit-scrollbar {
+        display: none;
+      }
+      .carousel__slide {
+        min-width: 40%;
+      }
+      .card__description {
+        display: flex;
+        column-gap: 10px;
+        align-items: center;
+      }
+      .card__description img {
+        width: 10px;
+      }
+      .card__description span {
+        padding: 5px 15px;
+        border-radius: 5px;
+        color: #fff;
+      }
+      .card__description span.fire {
+        background-color: orange;
+      }
+      .card__description span.psychic {
+        background-color: rgb(146, 100, 108);
+      }
+      .card__description span.electric {
+        background-color: rgb(231, 210, 88);
+      }
+      .card__description span.rock {
+        background-color: rgb(114, 102, 32);
+      }
+      .card__description span.grass {
+        background-color: rgb(32, 114, 69);
+      }
+
+      .card__inner {
+        box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 1px;
+        flex-direction: column;
+        row-gap: 0.5rem;
+        height: 20px;
+        width: 20px;
+        border-radius: 5px;
+        background-color: #fff;
+        padding: 2rem 4rem;
+      }
+      .card__inner h4 {
+        font-size: 1rem;
+        margin: 0;
+        color: rgb(170, 155, 155);
+      }
+      .card__image img {
+        max-height: 50px;
+        margin-bottom: 1rem;
+        object-fit: cover;
+        cursor: pointer;
+      }
+      .card__image img.selected  {
+        max-height: 40px;
+        margin-bottom: 1rem;
+        border-color: green;
+      }
+      .arrow {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        top: calc(50% - 10px);
+        background-color: rgba(3, 101, 214, 0.664);
+        padding: 5px;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .arrow i {
+        font-size: 1.5rem;
+        color: #fff;
+      }
+      .arrow.arrow--right {
+        right: 5%;
+      }
+      .arrow.arrow--left {
+        left: 5%;
+      }
+
+      @media screen and (min-width: 480px) {
+        .carousel__wrapper {
+          padding: 10px;
+        }
+        .carousel__slide {
+          min-width: 33.33%;
+          scroll-snap-align: center;
+          position: relative;
+        }
+        .arrow {
+          display: flex;
+        }
+      }
+    </style>
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <section class="carousel" id="carousel">
+      <div class="carousel__wrapper">
+        <div>
+          <div class="carousel__content">
+            <div class="carousel__container">
+              <div class="carousel__slide">
+                <div class="card">
+                  <div class="card__inner">
+                    <div class="card__image">
+                      <img id="glasses1"
+                        src="https://i.imgur.com/p3FfEL6.png"
+                        alt="Charmander"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="carousel__slide">
+                <div class="card">
+                  <div class="card__inner">
+                    <div class="card__image">
+                      <img id="glasses2"
+                        src="https://i.imgur.com/pGKpAlb.png"
+                        alt="Psyduck"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="carousel__slide">
+                <div class="card">
+                  <div class="card__inner">
+                    <div class="card__image">
+                      <img id="hat1"
+                        src="https://i.imgur.com/KQ4FREg.png"
+                        alt="Pikachu"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="carousel__slide">
+                <div class="card">
+                  <div class="card__inner">
+                    <div class="card__image">
+                      <img id="hat2"
+                        src="https://i.imgur.com/JpHWJa4.png"
+                        alt="Sandshrew"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel__slide">
+                <div class="card">
+                  <div class="card__inner">
+                    <div class="card__image">
+                      <img id="earring"
+                        src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/walts-sharks.png?v=1658124253472"
+                        alt="Sandshrew"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel__slide">
+                <div class="card">
+                  <div class="card__inner">
+                    <div class="card__image">
+                      <img id="helmet"
+                        src="https://i.imgur.com/vJZ4agX.png"
+                        alt="Caterpie"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="prev-slide" class="arrow arrow--left">
+              <i class="bx bx-chevron-left"></i>
+            </div>
+            <div id="next-slide" class="arrow arrow--right">
+              <i class="bx bx-chevron-right"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </head>
+  <body>
+    <!--div class="example-container">
+      <div class="options-panel">
+        <img
+          id="hat1"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/covid-mask.png?v=1659046294369"
+        />
+        <img
+          id="hat2"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/s-mask.png?v=1659047506925"
+        />
+        <img
+          id="glasses1"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/glasses-b-w.png?v=1657235824233"
+        />
+        <img
+          id="glasses2"
+          src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/examples/face-tracking/assets/glasses2/thumbnail.png"
+        />
+        <!--img
+          id="earring"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/blue-earing-w.png?v=1657338247696"
+        /-->
+        <!--img
+          id="helmet"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/garden-baseballcap-w.png?v=1657512280439"
+        />
+        <img
+          id="helmet2"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/black-bucket-hat-w.png?v=1657461593225"
+        />
+      </div-->
+      <a-scene
+        mindar-face
+        embedded
+        color-space="sRGB"
+        renderer="colorManagement: true, physicallyCorrectLights"
+        vr-mode-ui="enabled: false"
+        device-orientation-permission-ui="enabled: false"
+      >
+        <a-assets>
+          <a-asset-item
+            id="headModel"
+            src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/examples/face-tracking/assets/sparkar/headOccluder.glb"
+          ></a-asset-item>
+          <!--a-asset-item
+            id="glassesModel"
+            src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/examples/face-tracking/assets/glasses/scene.gltf"
+          ></a-asset-item-->
+          <a-asset-item
+            id="glassesModel"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/goggle.glb?v=1661394414512"
+          ></a-asset-item>
+          <a-asset-item
+            id="glassesModel2"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/hammer-sledge.glb?v=1661399410519"
+          ></a-asset-item>
+          <!--a-asset-item
+            id="hatModel"
+            src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/examples/face-tracking/assets/hat/scene.gltf"
+          ></a-asset-item-->
+          <a-asset-item
+            id="hatModel"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/rain.glb?v=1661396891522"
+          ></a-asset-item>
+          <!--a-asset-item
+            id="hatModel2"
+            src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/examples/face-tracking/assets/hat2/scene.gltf"
+          ></a-asset-item-->
+          <!--a-asset-item
+            id="hatModel2"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/hat.gltf?v=1657192863279"
+          ></a-asset-item-->
+          <a-asset-item
+            id="hatModel2"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/steam-train.glb?v=1661394866981"
+          ></a-asset-item>
+          <a-asset-item
+            id="earringModel"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/chaos_flame_time_arch_glyph.glb?v=1661419048308"
+          ></a-asset-item>
+          <a-asset-item
+            id="helmetModel"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/big-tree.glb?v=1661399881813"
+          ></a-asset-item>
+          <a-asset-item
+            id="helmetModel2"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/big-tree.glb?v=1661399881813"
+          ></a-asset-item>
+        </a-assets>
+        <a-camera active="false" position="0 0 0"></a-camera>
+        <!-- head occluder -->
+        <a-entity mindar-face-target="anchorIndex: 168">
+          <a-gltf-model
+            mindar-face-occluder
+            position="0 -0.35 0.15"
+            rotation="0 0 0"
+            scale="0.065 0.065 0.065"
+            src="#headModel"
+          ></a-gltf-model>
+        </a-entity>
+        <!--a-entity mindar-face-target="anchorIndex: 10">
+          <a-gltf-model
+            rotation="0 -0 0"
+            position="0 1.0 -0.5"
+            scale="0.35 0.35 0.35"
+            src="#hatModel"
+            class="hat1-entity"
+            visible="false"
+          ></a-gltf-model>
+        </a-entity-->
+        <!--a-entity mindar-face-target="anchorIndex: 10">
+          <a-gltf-model
+            rotation="0 -0 0"
+            position="0.7 -0.15 -0.6"
+            scale="0.65 0.65 0.65"
+            src="#hatModel"
+            class="hat1-entity"
+            visible="false"
+          ></a-gltf-model>
+        </a-entity-->
+        <a-entity mindar-face-target="anchorIndex: 9">
+          <a-gltf-model
+            rotation="0 0 0"
+            position="-3 -9.53 -10.3"
+            scale="0.028 0.028 0.028"
+            src="#hatModel"
+            class="hat1-entity"
+            visible="false"
+            animation-mixer
+          ></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-face-target="anchorIndex: 9">
+              <a-troika-text
+        position="-0.6 1.2 -1.5"
+        font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/wt028.ttf?v=1661410962739"
+        color="#3F66DA"
+        scale="5 5 5"
+        value="風伯"
+        material="shader: standard; metalness: 0.8; roughness: 0.4;"
+      ></a-troika-text>
+          </a-entity>
+        <!--a-entity mindar-face-target="anchorIndex: 10">
+          <a-gltf-model
+            rotation="0 0 0"
+            position="0 -0.75 -0.16"
+            scale="0.52 0.52 0.52"
+            src="#hatModel2"
+            class="hat2-entity"
+            visible="false"
+          ></a-gltf-model>
+         </a-entity-->
+        <a-entity mindar-face-target="anchorIndex: 10">
+          <a-gltf-model
+            rotation="0 0 0"
+            position="-17 5.53 -10.3"
+            scale="0.5 0.5 0.5"
+            src="#hatModel2"
+            class="hat2-entity"
+            visible="false"
+            animation="property: rotation; to: 0 -360 0; loop: true; dur: 10000"
+          ></a-gltf-model>
+        </a-entity>
+        <!--a-entity mindar-face-target="anchorIndex: 10">
+          <a-gltf-model
+            rotation="0 -0 0"
+            position="0 -0.2 -0.5"
+            scale="0.008 0.008 0.008"
+            src="#hatModel2"
+            class="hat2-entity"
+            visible="false"
+          ></a-gltf-model>
+        </a-entity-->
+        <!--a-entity mindar-face-target="anchorIndex: 10">
+          <a-gltf-model
+            rotation="0 -0 0"
+            position="0 0.7 -0.65"
+            scale="0.65 0.65 0.65"
+            src="#hatModel2"
+            class="hat2-entity"
+            visible="false"
+          ></a-gltf-model>
+        </a-entity-->
+        <!--a-entity mindar-face-target="anchorIndex: 168">
+          <a-gltf-model
+            rotation="0 -0 0"
+            position="0 0 0"
+            scale="0.01 0.01 0.01"
+            src="#glassesModel"
+            class="glasses1-entity"
+            visible="false"
+          ></a-gltf-model>
+        </a-entity-->
+        <a-entity mindar-face-target="anchorIndex: 168">
+          <a-gltf-model
+            rotation="0 0 0"
+            position="0 -0.15 -0.15"
+            scale="0.0008 0.0008 0.0008"
+            src="#glassesModel"
+            class="glasses1-entity"
+            visible="false"
+          ></a-gltf-model>
+        </a-entity>
+        <!--a-entity mindar-face-target="anchorIndex: 168">
+          <a-gltf-model
+            rotation="0 -90 0"
+            position="0 -0.4 -0.1"
+            scale="0.55 0.55 0.55"
+            src="#glassesModel2"
+            class="glasses2-entity"
+            visible="false"
+          ></a-gltf-model>
+        </a-entity-->
+        <a-entity mindar-face-target="anchorIndex: 168">
+          <a-gltf-model
+            rotation="180 0 -180"
+            position="-4 -3.5 -5"
+            scale="0.038 0.038 0.038"
+            src="#glassesModel2"
+            class="glasses2-entity"
+            visible="false"
+            animation="property: rotation; to: 0 -360 0; loop: true; dur: 10000"
+          ></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-face-target="anchorIndex: 127">
+          <a-gltf-model
+            rotation="0 0 0"
+            position="-4 -3.5 -30"
+            scale="2 2 2"
+            src="#earringModel"
+            class="earring-entity"
+            visible="false"
+            animation-mixer
+          ></a-gltf-model>
+        </a-entity>
+        <!--a-entity mindar-face-target="anchorIndex: 356">
+          <a-gltf-model
+            rotation="0.1 -0 0"
+            position="0 -0.5 -0.3"
+            scale="0.05 0.05 0.05"
+            src="#earringModel"
+            class="earring-entity"
+            visible="false"
+          ></a-gltf-model>
+        </a-entity-->
+        <a-entity mindar-face-target="anchorIndex: 168">
+          <a-gltf-model
+            rotation="0 0 0"
+            position="-7 -10 -10"
+            scale="0.1 0.1 0.1"
+            src="#helmetModel"
+            class="helmet-entity"
+            visible="false"
+            animation ="property: scale; to: 5.5 5.5 5.5; dur: 30000;"
+          ></a-gltf-model>
+        </a-entity>
+
+        <a-entity mindar-face-target="anchorIndex: 170">
+          <a-gltf-model
+            rotation="0 -90 0"
+            position="0 1.5 -5"
+            scale="0.02 0.02 0.02"
+            src="#helmetModel2"
+            class="helmet2-entity"
+            visible="false"
+          ></a-gltf-model>
+        </a-entity>
+      </a-scene>
+
+    <script>
+      /*--------------------------------------------------------
+    Set carousel config here
+
+    @autoload : true / false
+    @itemsToBeVisible: Defines how many items should be visible
+    @speed: Speed at which items will be passed in milliseconds
+    ----------------------------------------------------------*/
+      const config = {
+        autoload: true,
+        itemsToBeVisible: 3,
+        speed: 8000,
+      };
+
+      /*-------------------
+  Entry point 
+  ---------------------*/
+      function start() {
+        window.onload = function () {
+          setSlidersStyle(config);
+
+          const prevSlideButton = document.getElementById("prev-slide");
+          const nextSlideButton = document.getElementById("next-slide");
+
+          prevSlideButton.addEventListener("click", () => {
+            navigate("backward", config);
+          });
+
+          nextSlideButton.addEventListener("click", () => {
+            navigate("forward", config);
+          });
+
+          if (config.autoload) {
+            playCarousel(nextSlideButton, config);
+          }
+        };
+      }
+
+      /*--------------------------------------------------------------
+    Sets the style of slides based on the number of visible items.
+  ---------------------------------------------------------------*/
+      function setSlidersStyle(config) {
+        document.querySelector(
+          "style"
+        ).textContent += `@media screen and (min-width:1180px) { .carousel__slide{ min-width: ${
+          100 / config.itemsToBeVisible
+        }% } }`;
+      }
+
+      /*----------------------------------------
+   Performs the sliding behavior of items.
+  ----------------------------------------*/
+      function navigate(position, config) {
+        const carouselEl = document.getElementById("carousel");
+        const slideContainerEl = carouselEl.querySelector(
+          ".carousel__container"
+        );
+        const slideEl = carouselEl.querySelector(".carousel__slide");
+        let slideWidth = slideEl.offsetWidth;
+        slideContainerEl.scrollLeft = this.getNewScrollPosition(
+          position,
+          slideContainerEl,
+          slideWidth,
+          config
+        );
+      }
+
+      /*-------------------------------
+   Get the new scroll position.
+  ---------------------------------*/
+      function getNewScrollPosition(
+        position,
+        slideContainerEl,
+        slideWidth,
+        config
+      ) {
+        const maxScrollLeft =
+          slideContainerEl.scrollWidth - slideWidth * config.itemsToBeVisible;
+        if (position === "forward") {
+          const x = slideContainerEl.scrollLeft + slideWidth;
+          return x <= maxScrollLeft ? x : 0;
+        } else {
+          const x = slideContainerEl.scrollLeft - slideWidth;
+          return x >= 0 ? x : maxScrollLeft;
+        }
+      }
+
+      /*-------------------------------
+  Autoplay
+  ---------------------------------*/
+      function playCarousel(nextButton, config) {
+        const play = () => {
+          nextButton.click();
+          setTimeout(play, config.speed);
+        };
+        play();
+      }
+
+      start();
+    </script>
+  </body>
+</html>

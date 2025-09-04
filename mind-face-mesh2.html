@@ -1,0 +1,347 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadow Plane Example</title>
+    <style></style>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+    <script src="aframe-troika-text.js"></script>
+    <script src="https://cdn.rawgit.com/zcanter/aframe-gradient-sky/master/dist/gradientsky.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-particle-system-component@master/dist/aframe-particle-system-component.min.js"></script>
+            <script src="
+https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.2/dist/aframe-physics-system.min.js
+"></script>
+    <script async src="https://unpkg.com/es-module-shims@1.7.3/dist/es-module-shims.js"></script>
+    <script type="importmap">
+    {
+      "imports": {
+	"three": "https://unpkg.com/three@0.153.0/build/three.module.js",
+	"three/addons/": "https://unpkg.com/three@0.153.0/examples/jsm/",
+	"mindar-face-three":"https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-face-three.prod.js"
+      }
+    }
+    </script>
+    <script type="module">
+      import * as THREE from 'three';
+      import { MindARThree } from 'mindar-face-three';
+      const mindarThree = new MindARThree({
+	container: document.querySelector("#container"),
+      });
+      const {renderer, scene, camera} = mindarThree;
+      const light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 1 );
+      scene.add(light);
+      const faceMesh = mindarThree.addFaceMesh();
+      const texture = new THREE.TextureLoader().load('https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/unko-1024x1024.png?v=1697066606828');
+      faceMesh.material.map = texture;
+      faceMesh.material.transparent = true;
+      faceMesh.material.needsUpdate = true;
+      scene.add(faceMesh);
+      const start = async() => {
+	await mindarThree.start();
+	renderer.setAnimationLoop(() => {
+	  renderer.render(scene, camera);
+	});
+      }
+      start();
+    </script>
+     <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const sceneEl = document.querySelector("a-scene");
+        const arSystem = sceneEl.systems["mindar-face-system"];
+
+
+        const switchCameraButton = document.querySelector(
+          "#flip-btn"
+        );
+
+        // arReady event triggered when ready
+        sceneEl.addEventListener("arReady", (event) => {
+          console.log("ar ready");
+        });
+
+        // detect target found
+        sceneEl.addEventListener("targetFound", (event) => {
+          console.log("target found");
+        });
+
+        // detect target lost
+        sceneEl.addEventListener("targetLost", (event) => {
+          console.log("target lost");
+        });
+
+        // arError event triggered when something went wrong. Mostly browser compatbility issue
+        sceneEl.addEventListener("arError", (event) => {
+          console.log("ar error");
+        });
+
+
+        switchCameraButton.addEventListener("click", function () {
+          arSystem.switchCamera();
+        });
+      });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+    <script src="https://unpkg.com/merge-images"></script>
+    
+    <link rel="stylesheet" href="style-capture-m.css" />
+    <link type="text/css" rel="stylesheet" href="style-mesh1.css" />
+
+    <style>
+      body {
+	margin: 0;
+      }
+      #container {
+	width: 100vw;
+	height: 100vh;
+	position: relative;
+	overflow: hidden;
+      }
+    </style>
+        
+    <style>
+ 
+      .options-panel {
+        position: fixed;
+        left: 60%;
+        top: 10;
+        z-index: 2;
+      }
+      .options-panel img {
+        border: solid 2px;
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        cursor: pointer;     
+        background-color: white;
+      }
+      .options-panel img.selected {
+        border-color: green;
+        background-color: gold;
+      }
+      .ChangeButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/camera-rotate.png?v=1694390587914");
+        background-size: cover;
+        background-position: center;
+                border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 3%;
+        left: 80%;
+        width: 40px;
+        height: 40px;
+                /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .logoWrapper {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        width: 100%;
+        z-index: -1; /* needs to be in the background so that it doesn't overlay the title (from html) */
+      }
+
+      .logoImage {
+        width: 29%; /* 104px */
+        height: 10%; /*  40px */
+        visibility: visible; /* needs to be added, so that the image is always visible. Otherwise it could flicker during click-events or even be hidden (on iOS (Vers.13.5.1, Safari)) */
+      }
+      .HomeButton {
+        background-color: White;
+        background-image: url("https://ardocent.com/aframe/wonder/image/home.png");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 5%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .HomeButton:hover {
+        background-color: Gold;
+      }
+      
+      #angel {
+        display: none;
+      }
+      #devil {
+        display: none;
+      }
+      .ReloadButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/camera-flip.png?v=1666830382378");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 90%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .ReloadButton:hover {
+        background-color: Gold;
+      }
+
+    </style>
+
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+    
+  <body>
+        <div id="wrapper">
+    
+    <div class="example-container">
+                    <div id="container">
+                             
+        <div class="options-panel">
+           <button type="button" id="angel">
+              <img src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/future-helmet-800.png?v=1684129768789" />
+           </button>
+           <button type="button" id="devil">
+              <img src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/buddha-mask.png?v=1684129770659" />
+           </button>
+        </div>
+    
+         <button
+           class="HomeButton"
+           id="home-btn"
+           onclick="window.open('https://imager-ardocent.glitch.me/moon-index1.html','_self');"
+         ></button>
+      
+        <button
+           class="ReloadButton"
+           id="reload-btn"
+           onclick="location.reload(true);"
+        ></button>
+        <button class="capturebtn" id="capture" style="vertical-align:middle"></button>
+        <button class="savebtn" id="save" style="vertical-align:middle"></button>
+                      <!--a-scene
+      vr-mode-ui="enabled: false"
+      loading-screen="dotsColor: white; backgroundColor: #grey"
+      device-orientation-permission-ui="enabled: false"
+      ar-session-notifier
+      renderer="alpha:true; physicallyCorrectLights:true; colorManagement:true; exposure:1; toneMapping:ACESFilmic; antialias: true; logarithmicDepthBuffer: true; sortObjects: true;"
+      arjs="sourceType: webcam; debugUIEnabled: false;"
+      light="defaultLightsEnabled: false"
+      physics
+    >
+
+              <!--a-entity
+        scale="0.4 0.4 0.4"
+        position="-15 5 -10"
+        rotation="0 -170 0"
+        visible="true"
+        gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/cartoon_airplane_bait.glb?v=1669735063075"
+        shadow="receive: true"
+        animation-mixer
+        animation="property: position; to: 15 5 -10; dur: 50000; easing: linear; loop: true"
+        event-set__click="_target: a-entity; visible: true;"
+      >
+      </a-entity>
+                  <a-entity
+        id="selector4"
+        gltf-model="https://cdn.glitch.global/06d05559-0ed0-41b1-938c-c5b9769f244e/snow-flake.glb?v=1684358891890"
+        scale="0.07 0.07 0.07"
+        rotation="0 0 0"
+        position="0 -1 -15"
+        visible="true"
+        animation-mixer
+        shadow="receive: false"
+        animation="property: position; to: 1 -1.5 -7; delay: 1500; dur: 10000; loop: false"
+        animation__1="property: position; from: 1 -1.8 -7; to: -2 -2 -9; delay: 11500; dur: 10000; loop: false"
+        animation__2="property: position; from: -2 -2 -9; to: 2 -3 -10; delay: 21500; dur: 10000; loop: false"
+      ></a-entity>
+                          <a-entity 
+                position="0 25 -25" 
+                rotation="0 0 0"
+                particle-system="preset: snow; 
+                                 texture: https://cdn.glitch.global/06d05559-0ed0-41b1-938c-c5b9769f244e/blossom1.png?v=1696513240302;
+                                 color: #FFF; 
+                                 direction: 0; 
+                                 maxAge: 10;
+                                 particleCount: 300;
+                                 size: 1;
+                                 positionSpread: 20 20 10;
+                                 velocityValue: 0 2 -1;"
+                 ></a-entity>
+              <a-light type="ambient" intensity="0.9" castshadow="false"></a-light>
+      <a-shadow-light
+        type="spot"
+        far="18"
+        target="0 0 -5"
+        mapsize="4096 4096"
+        position="0 16 -5"
+      >
+      </a-shadow-light>
+
+
+
+    </div>
+            
+                        
+            </a-scene-->
+     
+       <!-- The Modal -->
+      <div id="myModal" class="modal" align="center">
+      <!-- Modal content -->
+      <div>
+        <img class="modal-content" id="img01" />
+        <span
+          class="closebtn">
+          <img
+            src="https://cdn.glitch.global/be340911-435f-4b68-b71f-00337c3212ac/close-white.png?v=1661493491151"
+            width="30px"
+            height="30px"
+          />
+        </span>
+        <div id="caption"></div>
+        
+    </div>
+    </div>
+
+    </div>  
+    </div>
+    </div>
+    
+    <script type="text/javascript" src="hmodal_active.js"></script>
+    <script type="text/javascript" src="capture-3.js"></script>
+  </body>
+</html>

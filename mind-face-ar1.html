@@ -1,0 +1,217 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-face.prod.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-face-aframe.prod.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const list = ["glasses1", "glasses2", "hat1", "hat2", "helmet", "helmet2"];
+        const visibles = [true, false, false, true, false, false];
+        const setVisible = (button, entities, visible) => {
+          if (visible) {
+            button.classList.add("selected");
+          } else {
+            button.classList.remove("selected");
+          }
+          entities.forEach((entity) => {
+            entity.setAttribute("visible", visible);
+          });
+        };
+        list.forEach((item, index) => {
+          const button = document.querySelector("#" + item);
+          const entities = document.querySelectorAll("." + item + "-entity");
+          setVisible(button, entities, visibles[index]);
+          button.addEventListener("click", () => {
+            visibles[index] = !visibles[index];
+            setVisible(button, entities, visibles[index]);
+          });
+        });
+      });
+    </script>
+    <style>
+      body {
+        margin: 0;
+      }
+      .example-container {
+        overflow: hidden;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      .options-panel {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 2;
+      }
+      .options-panel img {
+        border: solid 2px;
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        cursor: pointer;
+      }
+      .options-panel img.selected {
+        border-color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="example-container">
+      <div class="options-panel">
+        <img
+          id="hat1"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/dipper-cap-w.png?v=1657235824191"
+        />
+        <img
+          id="hat2"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/pokemon-cap-w.png?v=1657235824142"
+        />
+        <img
+          id="glasses1"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/glasses-b-w.png?v=1657235824233"
+        />
+        <img
+          id="glasses2"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/classic-glasses-w.png?v=1657353266175"
+        />
+
+       <img
+          id="helmet"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/helmet-ani.png?v=1657341017940"
+        />
+        <img
+          id="helmet2"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/astro-helmet.png?v=1657445036170"
+        />
+      </div>
+      <a-scene
+        mindar-face
+        embedded
+        color-space="sRGB"
+        renderer="colorManagement: true, physicallyCorrectLights"
+        vr-mode-ui="enabled: false"
+        device-orientation-permission-ui="enabled: false"
+      >
+        <a-assets>
+          <a-asset-item
+            id="headModel"
+            src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/examples/face-tracking/assets/sparkar/headOccluder.glb"
+          ></a-asset-item>
+
+          <a-asset-item
+            id="glassesModel"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/glasses-b.glb?v=1657204915816"
+          ></a-asset-item>
+          <a-asset-item
+            id="glassesModel2"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/classic-glasses.glb?v=1657206461475"
+          ></a-asset-item>
+
+          <a-asset-item
+            id="hatModel"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/dippen-cap.glb?v=1657205568784"
+          ></a-asset-item>
+
+          <a-asset-item
+            id="hatModel2"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/pokemon-cap.glb?v=1657206542166"
+          ></a-asset-item>
+          <a-asset-item
+            id="earringModel"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/blue-earing.glb?v=1657333040420"
+          ></a-asset-item>
+          <a-asset-item
+            id="helmetModel"
+            src="https://cdn.glitch.me/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/helmet-ani.glb?v=1657336675521"
+          ></a-asset-item>
+                    <a-asset-item
+            id="helmetModel2"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/astro-helmet.glb?v=1657376318897"
+          ></a-asset-item>
+        </a-assets>
+        <a-camera active="false" position="0 0 0"></a-camera>
+        <!-- head occluder -->
+        <a-entity mindar-face-target="anchorIndex: 168">
+          <a-gltf-model
+            mindar-face-occluder
+            position="0 -0.3 0.15"
+            rotation="0 0 0"
+            scale="0.065 0.065 0.065"
+            src="#headModel"
+          ></a-gltf-model>
+        </a-entity>
+ 
+        <a-entity mindar-face-target="anchorIndex: 10">
+          <a-gltf-model
+            rotation="0 -180 0"
+            position="0 -0.35 -0.6"
+            scale="0.00073 0.00073 0.00073"
+            src="#hatModel"
+            class="hat1-entity"
+            visible="false"
+          ></a-gltf-model>
+        </a-entity>
+        <a-entity mindar-face-target="anchorIndex: 10">
+          <a-gltf-model
+            rotation="0 -180 0"
+            position="0 -0.35 -0.6"
+            scale="0.00073 0.00073 0.00073"
+            src="#hatModel2"
+            class="hat2-entity"
+            visible="false"
+          ></a-gltf-model>
+         </a-entity>
+
+        <a-entity mindar-face-target="anchorIndex: 168">
+                  <a-gltf-model
+            rotation="0 -0 0"
+            position="0 -0.1 0"
+            scale="0.8 0.8 0.8"
+            src="#glassesModel"
+            class="glasses1-entity"
+            visible="false"
+          ></a-gltf-model>
+        </a-entity>
+
+                <a-entity mindar-face-target="anchorIndex: 168">
+          <a-gltf-model
+            rotation="0 -0 0"
+            position="0 -0.25 -0"
+            scale="0.22 0.22 0.22"
+            src="#glassesModel2"
+            class="glasses2-entity"
+            visible="false"
+          ></a-gltf-model>
+        </a-entity>
+
+        <a-entity mindar-face-target="anchorIndex: 168">
+          <a-gltf-model
+            rotation="0 -0 0"
+            position="0 -0.6 -0.7"
+            scale="4.7 4.7 4.7"
+            src="#helmetModel"
+            class="helmet-entity"
+            visible="false"
+            animation-mixer
+          ></a-gltf-model>
+        </a-entity>
+        
+        <a-entity mindar-face-target="anchorIndex: 170">
+          <a-gltf-model
+            rotation="0 0 0"
+            position="0.2 -0.4 -0.5"
+            scale="0.065 0.065 0.065"
+            src="#helmetModel2"
+            class="helmet2-entity"
+            visible="false"
+            animation-mixer
+          ></a-gltf-model>
+        </a-entity>
+
+      </a-scene>
+    </div>
+  </body>
+</html>

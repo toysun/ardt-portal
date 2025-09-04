@@ -1,0 +1,312 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-face.prod.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-face-aframe.prod.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="aframe-troika-text.js"></script>
+    <script src="https://cdn.rawgit.com/tizzle/aframe-orbit-controls-component/master/dist/aframe-orbit-controls-component.min.js"></script>
+    
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const list = ["glasses1", "glasses2", "hat1", "hat2", "helmet", "helmet2"];
+        const visibles = [false, true, false, true, false, false];
+        const setVisible = (button, entities, visible) => {
+          if (visible) {
+            button.classList.add("selected");
+          } else {
+            button.classList.remove("selected");
+          }
+          entities.forEach((entity) => {
+            entity.setAttribute("visible", visible);
+          });
+        };
+        list.forEach((item, index) => {
+          const button = document.querySelector("#" + item);
+          const entities = document.querySelectorAll("." + item + "-entity");
+          setVisible(button, entities, visibles[index]);
+          button.addEventListener("click", () => {
+            visibles[index] = !visibles[index];
+            setVisible(button, entities, visibles[index]);
+          });
+        });
+      });
+    </script>
+        <script>
+      AFRAME.registerComponent("my-test-component", {
+        tick: function () {
+          var el = this.el;
+          el.setAttribute("text", { value: "" });
+        },
+      });
+
+      function ee() {
+        document
+          .querySelector("a-troika-text")
+          .setAttribute("value", document.getElementById("fname").value);
+      }
+    </script>
+    <style>
+      body {
+        margin: 0;
+      }
+      .example-container {
+        overflow: hidden;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      .options-panel {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 2;
+      }
+      .options-panel img {
+        border: solid 2px;
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        cursor: pointer;
+      }
+      .options-panel img.selected {
+        border-color: green;
+      }
+    </style>
+        <style>
+      #wrapper {
+        height: 100%;
+        width: 100%;
+      }
+      form {
+        position: absolute;
+        height: 3%;
+        left: 0%;
+        top: 8%;
+        width: 80%;
+        z-index: 1;
+        padding: 1em;
+      }
+      button {
+        position: absolute;
+        top: 10%;
+        left: 80%;
+        z-index: 1;
+      }
+      body {
+        color: white;
+      }
+    </style>
+  </head>
+  <body><form name="myForm">
+      사연적기: <input type="text" value="" name="fname" id="fname" />
+    </form>
+    <button onclick="ee()">글쓰기</button>
+
+    <div id="wrapper">
+    <div class="example-container">
+      <div class="options-panel">
+        <img
+          id="hat1"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/walts-sharks.png?v=1658124253472"
+        />
+        <img
+          id="hat2"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/fishes-particles.png?v=1658124200148"
+        />
+        <img
+          id="glasses1"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/tropical-fishes.png?v=1658124254092"
+        />
+        <img
+          id="glasses2"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/skin-diver-goggle.png?v=1658124254164"
+        />
+
+       <img
+          id="helmet"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/classic-diver-helmet.png?v=1658124253878"
+        />
+        <img
+          id="helmet2"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/diver-helmet-w.png?v=1657338247750"
+        />
+      </div>
+      <a-scene
+        mindar-face
+        embedded
+        color-space="sRGB"
+        renderer="colorManagement: true, physicallyCorrectLights"
+        vr-mode-ui="enabled: false"
+        device-orientation-permission-ui="enabled: false"
+      >
+        <a-assets>
+          <a-asset-item
+            id="headModel"
+            src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/examples/face-tracking/assets/sparkar/headOccluder.glb"
+          ></a-asset-item>
+
+          <a-asset-item
+            id="glassesModel"
+            src="https://cdn.glitch.me/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/tropical-fishes.glb?v=1658122336365"
+          ></a-asset-item>
+          <a-asset-item
+            id="glassesModel2"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/scuba-mask.glb?v=1658114195726"
+          ></a-asset-item>
+
+          <a-asset-item
+            id="hatModel"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/waltz-of-sharks.glb?v=1658113686658"
+          ></a-asset-item>
+
+          <a-asset-item
+            id="hatModel2"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/fish-particles.glb?v=1658112398358"
+          ></a-asset-item>
+          <a-asset-item
+            id="whale"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/blue-whale.glb?v=1661216831738"
+          ></a-asset-item>
+          <a-asset-item
+            id="helmetModel"
+            src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/blue-whale.glb?v=1661216831738"
+          ></a-asset-item>
+                    <a-asset-item
+            id="helmetModel2"
+            src="https://cdn.glitch.me/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/diver-helmet.glb?v=1657330875910"
+          ></a-asset-item>
+        </a-assets>
+        <a-camera active="false" position="0 1.6 -3"></a-camera>
+        <!-- head occluder -->
+        <a-entity mindar-face-target="anchorIndex: 168">
+          <a-gltf-model
+            mindar-face-occluder
+            position="0 -0.3 0.15"
+            rotation="0 0 0"
+            scale="0.065 0.065 0.065"
+            src="#headModel"
+          ></a-gltf-model>
+        </a-entity>
+ 
+        <!--a-entity mindar-face-target="anchorIndex: 10">
+          <a-gltf-model
+            rotation="0 -180 0"
+            position="0 -0.35 -0.6"
+            scale="0.00073 0.00073 0.00073"
+            src="#hatModel"
+            class="hat1-entity"
+            visible="false"
+          ></a-gltf-model>
+        </a-entity-->
+                <a-entity mindar-face-target="anchorIndex: 10">
+          <a-gltf-model
+            rotation="0 0 0"
+            position="0 -0.35 -0.6"
+            scale="0.7 0.7 0.7"
+            src="#hatModel"
+            class="hat1-entity"
+            visible="false"
+            animation-mixer
+          ></a-gltf-model>
+        </a-entity>
+        <!--a-entity mindar-face-target="anchorIndex: 10">
+          <a-gltf-model
+            rotation="0 -180 0"
+            position="0 -0.35 -0.6"
+            scale="0.00073 0.00073 0.00073"
+            src="#hatModel2"
+            class="hat2-entity"
+            visible="false"
+          ></a-gltf-model>
+         </a-entity-->
+                <a-entity mindar-face-target="anchorIndex: 10">
+          <a-gltf-model
+            rotation="0 0 0"
+            position="0 -0.35 -0.6"
+            scale="7 7 7"
+            src="#hatModel2"
+            class="hat2-entity"
+            visible="false"
+            animation-mixer
+          ></a-gltf-model>
+         </a-entity>
+
+        <a-entity mindar-face-target="anchorIndex: 168">
+                  <a-gltf-model
+            rotation="0 -0 0"
+            position="0 -0.1 -0.1"
+            scale="0.75 0.75 0.75"
+            src="#glassesModel"
+            class="glasses1-entity"
+            visible="false"
+            animation-mixer
+          ></a-gltf-model>
+        </a-entity>
+
+                <a-entity mindar-face-target="anchorIndex: 168">
+          <a-gltf-model
+            rotation="0 -0 0"
+            position="0 -0.35 0.2"
+            scale="0.03 0.03 0.03"
+            src="#glassesModel2"
+            class="glasses2-entity"
+            visible="false"
+          ></a-gltf-model>
+        </a-entity>
+
+        <a-entity mindar-face-target="anchorIndex: 168">
+          <a-gltf-model
+            rotation="0 0 0"  
+            position="0 1.1 -0.72" 
+            scale="0.006 0.006 0.006"
+            src="#helmetModel"
+            class="helmet-entity"
+            visible="false"
+            animation-mixer
+          ></a-gltf-model>
+        </a-entity>
+        
+        <a-entity mindar-face-target="anchorIndex: 170">
+          <a-gltf-model
+            rotation="0 -90 0"
+            position="0.2 -0.6 -0.5"
+            scale="0.009 0.009 0.009"
+            src="#helmetModel2"
+            class="helmet2-entity"
+            visible="false"
+          ></a-gltf-model>
+        </a-entity>
+ 
+         <a-entity mindar-face-target="anchorIndex: 170">
+        <!--a-text
+          rotation="0 0 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"
+          id="output1"
+          text="value: 바다 보러 갈래?; align: center;"
+          position="0 1.5 -0.5"
+          scale="1 1 1"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/myso-kr/aframe-fonts-korean/master/fonts/ofl/nanumpenscript/NanumPenScript-Regular.json"
+        ></a-text-->
+        <a-troika-text
+        id="output"
+        position="0 1.2 0.2"
+        color="#fff"
+        max-width="5"
+        curve-radius="3"
+        font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/Ghanachocolate.ttf?v=1658802278705"
+        value="바다속 탐험"
+     ></a-troika-text>
+             </a-entity>
+        <!--a-entity
+          text="value: some text; wrapCount: 20; width: 3"
+          position="0 2 0"
+          my-test-component
+        ></a-entity-->
+
+      </a-scene>
+    </div>
+    </div>
+  </body>
+</html>

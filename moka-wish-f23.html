@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>디즈니 100주년 기념</title>
+    <meta
+      name="description"
+      content="Basic example for troika-text component."
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="aframe-troika-text.js"></script>
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+     <script src="aframe-spe-particles-component.js"></script>
+    
+    <!--script src="jquery-3.3.1.js"></script-->
+    <!--script src="font-awesome-5.13.0.js"></script-->
+    <script src="merge-image.js"></script>
+    <link rel="stylesheet" href="style-capture-t.css" />
+<script type="text/javascript">
+    AFRAME.registerComponent('drag-rotate-component',{
+      schema : { speed : {default:1}},
+      init : function(){
+        this.ifMouseDown = false;
+        this.x_cord = 0;
+        this.y_cord = 0;
+        document.addEventListener('mousedown',this.OnDocumentMouseDown.bind(this));
+        document.addEventListener('mouseup',this.OnDocumentMouseUp.bind(this));
+        document.addEventListener('mousemove',this.OnDocumentMouseMove.bind(this));
+      },
+      OnDocumentMouseDown : function(event){
+        this.ifMouseDown = true;
+        this.x_cord = event.clientX;
+        this.y_cord = event.clientY;
+      },
+      OnDocumentMouseUp : function(){
+        this.ifMouseDown = false;
+      },
+      OnDocumentMouseMove : function(event)
+      {
+        if(this.ifMouseDown)
+        {
+          var temp_x = event.clientX-this.x_cord;
+          var temp_y = event.clientY-this.y_cord;
+          if(Math.abs(temp_y)<Math.abs(temp_x))
+          {
+            this.el.object3D.rotateY(temp_x*this.data.speed/1000);
+          }
+          else
+          {
+            this.el.object3D.rotateX(temp_y*this.data.speed/1000);
+          }
+          this.x_cord = event.clientX;
+          this.y_cord = event.clientY;
+        }
+      }
+    });
+  </script>
+    <!--script type="text/javascript">
+    AFRAME.registerComponent('drag-rotate-component',{
+      schema : { speed : {default:1}},
+      init : function(){
+        this.ifTouchStart = false;
+        this.x_cord = 0;
+        this.y_cord = 0;
+        document.addEventListener('touchstart',this.OnDocumentTouchStart.bind(this));
+        document.addEventListener('touchend',this.OnDocumentTouchEnd.bind(this));
+        document.addEventListener('touchmove',this.OnDocumentTouchMove.bind(this));
+      },
+      OnDocumentTouchStart : function(event){
+        this.ifTouchStart = true;
+        this.x_cord = event.clientX;
+        this.y_cord = event.clientY;
+      },
+      OnDocumentTouchEnd : function(){
+        this.ifTouchStart = false;
+      },
+      OnDocumentTouchMove : function(event)
+      {
+        if(this.ifTouchStart)
+        {
+          var temp_x = event.clientX-this.x_cord;
+          var temp_y = event.clientY-this.y_cord;
+          if(Math.abs(temp_y)<Math.abs(temp_x))
+          {
+            this.el.object3D.rotateY(temp_x*this.data.speed/1000);
+          }
+          else
+          {
+            this.el.object3D.rotateX(temp_y*this.data.speed/1000);
+          }
+          this.x_cord = event.clientX;
+          this.y_cord = event.clientY;
+        }
+      }
+    });
+  </script-->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const list = [
+          "glasses1",
+          "glasses2",
+          "hat1",
+          "hat2",
+          "helmet",
+          "helmet2",
+        ];
+        const visibles = [false, false, false, false, false, false];
+        const setVisible = (button, entities, visible) => {
+          if (visible) {
+            button.classList.add("selected");
+          } else {
+            button.classList.remove("selected");
+          }
+          entities.forEach((entity) => {
+            entity.setAttribute("visible", visible);
+          });
+        };
+        list.forEach((item, index) => {
+          const button = document.querySelector("#" + item);
+          const entities = document.querySelectorAll("." + item + "-entity");
+          setVisible(button, entities, visibles[index]);
+          button.addEventListener("click", () => {
+            visibles[index] = !visibles[index];
+            setVisible(button, entities, visibles[index]);
+          });
+        });
+      });
+    </script>
+    <script>
+    /*  AFRAME.registerComponent("my-test-component", {
+        tick: function () {
+          var el = this.el;
+          el.setAttribute("text", { value: "" });
+        },
+      }); */
+
+      function ee() {
+        document
+          .getElementById("output")
+          .setAttribute("value", document.getElementById("fname").value);
+         document
+          .getElementById("MsgZone").style.display="none";
+        $('.DecoButton').show();
+        $('.capturebtn').show();    
+        $('.WriteButton').show(); 
+      }
+    </script>
+    <script>
+      // You can set the input as you want
+      var inputeditable =
+        '<textarea contenteditable="true" type="text" name="" class="input">';
+
+      // For each DOM element that has .inputeditable, we add a click event, using inputeditableEnabled(). Which can be used anywhere
+      $(".inputeditable").each(function () {
+        inputeditableEnabled($(this));
+      });
+
+      // This function store the HTML, add child with input. When input lose focus, we push back the value of the input,
+      // el is the dom object edited
+      function inputeditableEnabled(el) {
+        var contentWidth = el.width();
+        var contentHeight = el.height();
+        el.click(function () {
+          var content = el.html().replace(/\n/g, "");
+          el.html("").append(inputeditable);
+          el.off("click");
+          el.width(contentWidth).height(contentHeight);
+          el.find(".input").val(content).focus();
+          autosize(el.find(".input"));
+          el.find(".input").focusout(function () {
+            inputeditableDisabled(el, $(this));
+          });
+        });
+      }
+
+      // This function disable the edition of input. It change back the html of .inputeditable to plain text and remove the input
+      // ,el is the editable dom object that need to be disabled
+      // ,elInput is the input of said object
+      function inputeditableDisabled(el, elInput) {
+        if (!elInput) {
+          elInput = el.find(".input");
+        }
+        var inputval = elInput.val();
+        el.html(inputval);
+        el.css({ width: "", height: "auto" });
+        inputeditableEnabled(el);
+      }
+
+      // Every piece of code can be minified, but I chose not to, for editing purposes.
+      // we use autoresize.js but it is not necessary if you have your own textarea resize. You can find the script here https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js
+      // if you want the text to be inline, use an input, no textarea
+    </script>
+    <!--script>
+ var modal = document.querySelector(".modal");
+// var trigger = document.querySelector(".trigger");
+var closeButton = document.querySelector(".close-button");
+
+function toggleModal() {
+    modal.classList.toggle("show-modal");
+}
+
+function windowOnClick(event) {
+    if (event.target === modal) {
+        toggleModal();
+    }
+}
+
+//trigger.addEventListener("click", toggleModal);
+closeButton.addEventListener("click", toggleModal);
+window.addEventListener("click", windowOnClick);
+
+    </script-->
+
+    <style>
+/* reset */
+body,p,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select{margin:0;padding:0} 
+body,input,textarea,select,button,table{font-family:ng,'Malgun Gothic','맑은고딕','Apple SD Gothic Neo',Dotum,'돋음',sans-serif;font-size:14px;color:#282828;line-height:1;letter-spacing:-.5px;word-break:break-all} 
+img,fieldset{border:0} 
+ul,ol{list-style:none} 
+em,address{font-style:normal} 
+a{text-decoration:none} 
+a:hover,a:active,a:focus{text-decoration:none}
+table{width:100%;/*border-collapse:collapse;*/border-spacing:0}
+label{vertical-align:middle}
+textarea{resize:none}
+fieldset,li,img{border:0;vertical-align:top}
+address,caption,em{font-style:normal}
+h1,h2,h3,h4,h5,h6{font-weight:normal}
+button{
+  overflow:visible;
+  border:0;
+  /*outline:none;*/background-color:transparent;cursor:pointer}
+button::-moz-focus-inner{padding:0;border:0}
+.blind,legend{overflow:hidden;position:absolute;top:0;left:0;width:1px;height:1px;font-size:1px;
+line-height:100px;white-space:nowrap}
+/* reset */
+
+.btn_com {  
+  background-color:#1C2087;
+  color:#fff;
+  border-radius: 6px 6px 6px 6px;
+  }
+.ly_wrap {
+  z-index:50;
+  position:fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  background-color:rgba(0,0,0,0.8);
+ }
+#layoutimg {
+   position: absolute;
+   width: 100%;
+   height: 100%;
+   top: 0;
+   left: 0;
+   z-index:-10;
+ }
+.ly_box{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:81%;
+  height: 70%;
+  padding:50px 20px 20px;
+  background-color:#fff;
+  background-size: auto 100%;
+  background-repeat: no-repeat;
+  /*
+  background-image: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/MYmessage10-1.png?v=1670487397403");
+  */
+  transform:translate(-50%,-50%);
+  text-align:center;
+}
+
+.ly_box p{font-size:20px;}
+.ly_box .btn_close
+      {
+        position: absolute;
+        width:35%;
+        height:50px;
+        margin-top:20px;
+        background-color:#1C2087;
+        top: 80%;
+        left: 53%;
+      }
+      
+ .ly_box .DecoButton_1
+      {
+        position: absolute;
+        color: white;
+        width: 35%;
+        height:50px;
+        margin-top:20px;
+        background-color:#1C2087;
+        top: 80%;
+        left: 15%;
+      }
+
+.btn_popup{
+  position: absolute;
+  padding:20px;
+  left: 50%;
+  height: 8%;
+  width: 20%;
+  top: 80%;
+  z-index: 99999;
+  }
+ .container .btn_close
+      {
+        position: absolute;
+        width:100px;
+        height:50px;
+        margin-top:30px;
+        background-color:#1C2087;
+        top: 85%;
+        left: 40%;
+      } 
+
+
+      
+.btn_container{
+  position: absolute;
+  padding:20px;
+  width: 20%;
+  height: 8%;
+  left: 25%;
+  top: 80%;
+  z-index: 99999;
+  }
+      
+textarea {
+  margin-top: 10%;
+  margin-left: 0;
+  width: 70%;
+  height: 70%;
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0.07);
+  border-color: -moz-use-text-color #FFFFFF #FFFFFF -moz-use-text-color;
+  border-image: none;
+  border-radius: 6px 6px 6px 6px;
+  border-style: none solid solid none;
+  border-width: medium 1px 1px medium;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12) inset;
+  color: #555555;
+  font-family: "AppleSDGothicNeoM";
+  font-size: 2em;
+  line-height: 1.4em;
+  padding: 5px 8px;
+  transition: background-color 0.2s ease 0s;
+  white-space: pre-wrap !important;
+}
+
+
+textarea:focus {
+    background: none repeat scroll 0 0 #FFFFFF;
+    outline-width: 0;
+}
+      
+ .container {
+          
+     z-index:50;
+  position:fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  background-color:rgba(0,0,0,0.8);     
+          
+        }     
+      
+    </style>
+    <style>
+       /*
+  The grid itself needs only 4 CSS declarations:
+*/
+      @media only screen and (max-width: 700px) {
+        
+/*
+        .myGallery {
+          display: grid;
+          grid-gap: 20px;
+          grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        }
+
+        .myGallery img {
+          width: 100%;
+          height: 150px;
+          border-radius: 10px;
+        }
+        */
+
+        /*
+  And here are some declarations for the image caption.
+  Just hover over one of the last 5 images to see it.
+*/
+
+        .myGallery .item {
+          position: relative;
+          overflow: hidden;
+        }
+
+        .myGallery .item img {
+          vertical-align: middle;
+          border-radius: 10px;
+        }
+
+        .myGallery .caption {
+          margin: 0;
+          padding: 1em;
+          position: absolute;
+          z-index: 1;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          max-height: 100%;
+          overflow: auto;
+          box-sizing: border-box;
+          transition: transform 0.5s;
+          transform: translateY(100%);
+          background: rgba(0, 0, 0, 0.7);
+          color: rgb(255, 255, 255);
+        }
+
+        .myGallery .item:hover .caption {
+          transform: translateY(0%);
+        }
+       
+         .box-1 {
+          margin: 0;
+          width: 100%;
+          height: 10%;
+          background: url("https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/%EB%84%9D%EC%BF%A8%EB%AC%B4%EB%8A%AC%EC%A0%84%EB%8F%8C.png?v=1692611017011");
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: contain;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+      
+     .myGallery {
+          display: grid;
+          grid-gap: 20px;
+          grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      }
+      .myGallery img {
+         border: solid 10px;
+          width: 100%;
+          height: 120px;
+          border-radius: 10px;
+        object-fit: cover;
+        cursor: pointer;
+      }
+      .myGallery img.selected {
+        border-color: green;
+      } 
+      
+            .HomeButton {
+        background-color: transparent;
+        background-image: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/%EB%92%A4%EB%A1%9C%EA%B0%80%EA%B8%B0.png?v=1672667294936");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 1%;
+        left: 1%;
+        width: 65px;
+        height: 65px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .HomeButton:hover {
+        background-color: Gold;
+      }
+      .WriteButton {
+        background-color: transparent;
+        background-image: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/%ED%8E%B8%EC%A7%80%EC%93%B0%EA%B8%B0.png?v=1672667303909");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 90%;
+        left: 82%;
+        width: 65px;
+        height: 65px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+        display: none;
+      }
+      .WriteButton:hover {
+        background-color: Gold;
+      }
+      .DecoButton {
+        background-color: transparent;
+        background-image: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/%EC%8A%A4%ED%8B%B0%EC%BB%A4.png?v=1672667296489");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 90%;
+        left: 65%;
+        width: 65px;
+        height: 65px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+        display: none;
+      }
+      .DecoButton:hover {
+        background-color: Gold;
+      }
+      
+      .DecoButton_container{
+  position: absolute;
+  padding:20px;
+  width: 20%;
+  height: 8%;
+  left: 25%;
+  top: 80%;
+  z-index: 99999;
+  }
+      
+
+      .is-visible .bts-popup-container {
+  -webkit-transform: translateY(0);
+  -moz-transform: translateY(0);
+  -ms-transform: translateY(0);
+  -o-transform: translateY(0);
+  transform: translateY(0);
+}
+ /*   
+      .myGallery {
+        position: fixed;
+        left: 0px;
+        top: 150px;
+        z-index: 2;
+      }
+      .myGallery img {
+        border: solid 2px;
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        cursor: pointer;
+      }
+      .myGallery img.selected {
+        border-color: green;
+      }
+      */
+       #stampMsg {
+        position: absolute;
+
+        left: 20%;
+        top: 20%;
+        width: 55%;
+
+        display: none;
+      }
+    </style>
+    
+    <style>
+
+
+table, th, td {
+  border: solid 0px #000;
+  padding: 10px;
+}
+
+table {
+    border-collapse:collapse;
+}
+
+    </style>
+    <style>
+    .material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+header {
+  padding: 15px;  
+}
+section {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tooltip-container {
+  position: relative;
+  &:hover {
+    .tooltip-content {
+      visibility: visible;
+      opacity: 1;
+      transition: .25s all ease;
+      transition-delay: 0s;
+      top: -125px;
+    }
+  }
+}
+.tooltip-content {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  background: #000000;
+  left: -38px;
+  top: -130px;
+  padding: 0 15px;
+  margin: 16px;
+  font-size: 15px;  
+  width: 250px;
+  transition: .25s all ease;
+  transition-delay: .25s;
+  z-index: 2;
+  color: #FFFFFF;
+    .align-right {
+      text-align: right;
+      a {
+        color: red;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  &:after {
+      
+  }
+}
+    </style>
+        
+  </head>
+  <body>
+
+<section>
+  <div class="tooltip-container">
+    <i class="info-icon material-icons">info</i>
+    <div class="tooltip-content">
+      <p>This panel displays a summary of relevant information.</p>
+      <p class="align-right"> <a href="https://google.com" target="_blank">Read More</a></p>
+    </div>
+  </div>
+</section>
+        <!--button
+      class="HomeButton"
+      id="home-btn"
+      onclick="window.open('https://abc-portal.glitch.me/letter-1.html','_self');"
+    ></button>
+<button id="w-popup" type="button" class="WriteButton btn_popup" role="alert"></button>
+<button type="button" class="DecoButton btn_container"></button-->
+    
+<!--div class="ly_wrap" id="MsgZone">
+  <div class="ly_box" id="ly_box">
+  <img id="layoutimg" src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/%EB%84%9D%EC%BF%A8%EB%AC%B4%EB%8A%AC%EC%A0%84%EB%8F%8C.png?v=1692611017011">
+      <!--textarea placeholder="여기에 사연을 적으세요." rows="20" name="comment[text]" id="fname" cols="40" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea-->
+     <!--textarea placeholder="여기에 소원을 적으세요" maxlength="150" rows="15" name="comment[text]" id="fname" row="3" cols="20" wrap="hard" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea>
+
+   
+    <table>
+	<tbody>
+      <tr>
+        <th><button type="button" onclick="$('.container').show();" class="DecoButton_1 btn_com"><h3>편지지 꾸미기</h3></button></th>
+        <th><button type="button" onclick="ee()" class="btn_close btn_com" id="Close"><h3>작성완료</h3></button></th>     
+      </tr>
+  </tbody>
+</table>
+  </div>
+  </div-->
+
+   
+<!--div class="container" id="sticker" style="display:none">
+   <p>&nbsp</p>
+      <div class="box-1"></div>
+      <p>나만의 스티커를 골라 소원지를 꾸미세요.</p>
+      <h1>스티커 고르기</h1>
+      <div class="myGallery">
+          <img
+            id="hat1"
+            src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/yhm.png?v=1692627402752"
+          />
+          <img
+            id="hat2"
+            src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/sumakse.png?v=1692627408734"
+          />
+          <img
+            id="glasses1"
+            src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/bitjub.png?v=1692627405215"
+          />
+          <img
+            id="glasses2"
+            src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/yhm-c.png?v=1692627404225"
+          />
+
+          <img
+            id="helmet"
+            src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/yhm-a.png?v=1692627407791"
+          />
+          <img
+            id="helmet2"
+            src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/yhm-b.gif?v=1692627406560"
+          />
+        <p> <button type="button" class="btn_close btn_com" id="DecoClose"><h3>선택완료</h3></button></p>   
+      </div>
+        
+    </div-->
+    <a-scene
+      vr-mode-ui="enabled: false"
+      loading-screen="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+      renderer="antialias: true; logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true;"
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+    >
+    
+      <!--a-entity camera="active: true" look-controls wasd-controls position="0 0 5" data-aframe-default-camera></a-entity-->
+            <!-- CAMERA -->
+    <a-asset>
+              <audio
+          id="button0"
+          src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/%EB%B0%98%EC%95%BC%EC%8B%AC%EA%B2%BD.mp3?v=1693276774799"
+          crossorigin="anonymous"
+        ></audio>
+              <img
+          id="glow"
+          src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/glow.png?v=1672756163242"
+        />
+      </a-asset>
+  
+      <a-entity id="rig">
+        <!--a-entity
+          camera
+          wasd-controls
+          look-controls="pointerLockEnabled: true;"
+          position="0 1.6 0"
+        >
+          <a-cursor></a-cursor>
+        </a-entity-->
+       <a-entity camera position="0 1.6 0" look-controls-enabled="false" orbit-controls="target: 0 1.6 -0.5; initialPosition: -5 5 20"></a-entity>
+
+      <a-cylinder
+        position="0 1.5 -5"
+        radius="1.5"
+        height="1.5"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/%EB%B0%98%EC%95%BC%EC%8B%AC%EA%B2%BD.jpg?v=1693749567783"
+
+        opacity="0.9"
+        shadow="receive: false"
+        animation="startEvents: click; property: rotation; to: 0 360 0; dur: 8000; loop: true"
+        sound="src: #button0; on: click; poolSize: 3"
+ 
+      ></a-cylinder>
+
+           <!-- STAGE -->
+      <a-entity id="stage"
+                animation__3="startEvents: click; property: position; to: 0.1 5.57 -0.3; delay: 500; dur: 3000; loop: false">
+         <a-sphere
+      radius="0.5"
+      position="0 1.2 -7"
+      color="#FFFFFF">
+      <a-entity 
+        spe-particles="
+          texture: https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/sparkle.png?v=1672751728536;
+          color: #FFFFFF, #FFFF00; 
+          size: 100, 100;
+          distribution: SPHERE;
+          radius: 0.001;
+          velocity: 0.001;
+          velocity-spread: 1.2; 
+          angle: 0, 8.28;
+          particle-count: 100;
+          blending: additive;
+          maxAge: 3; ">
+      </a-entity> 
+      </a-sphere>
+        <!-- CARD -->
+        <!--a-entity id="first-card" position="0 1.6 -0.5" rotation="0 0 -90" scale="0 0 0" animation="property: scale; to: 1 1 1; delay: 3000; dur: 1000; easing: linear; loop: false">
+          <a-entity
+            id="first-card-left"
+            rotation="0 0 0"
+            animation="property: object3D.rotation.y; to: 120; delay: 3000; dur: 5000; easing: easeInOutQuad; dir: alternate; loop: false;"
+            animation__1="property: object3D.rotation.y; from: 120; to: 110; delay: 6100; dur: 100; easing: easeInOutQuad; dir: alternate; loop: false;"
+            animation__2="property: object3D.rotation.y; from: 110; to: 120; delay: 6200; dur: 150; easing: easeInOutQuad; dir: alternate; loop: false;"
+            animation__3="property: object3D.rotation.y; from: 120; to: 115; delay: 6350; dur: 200; easing: easeInOutQuad; dir: alternate; loop: false;"
+            animation__4="property: object3D.rotation.y; from: 115; to: 120; delay: 6500; dur: 250; easing: easeInOutQuad; dir: alternate; loop: false;"      
+          >
+            <a-entity
+              position="-0.0635 0 0"
+              rotation="0 0 0"
+              geometry="primitive: plane; height: 0.3032; width: 0.227; opacity: 0.1;"
+              material="src: https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/yhm-a.png?v=1692627407791; side: front;"
+            ></a-entity>
+
+            <a-entity
+              position="-0.0635 0 0"
+              geometry="primitive: plane; height: 0.3032; width: 0.227; opacity: 0.6;"
+              material="src: https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/wish-paper-12.png?v=1692769509557; side: back;"
+            ></a-entity>
+          </a-entity>
+          <a-entity
+            id="first-card-right' rotation='0 0 -90' position='0.12701 0 0"
+            loop="false"
+          >
+            <a-entity
+              position="-0.0635 0 0"
+              geometry="primitive: plane; height: 0.3032; width: 0.227; opacity: 0.1;"
+              material="src: https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/yhm-a.png?v=1692627407791;  side: front;"
+            ></a-entity>
+
+            <a-entity
+              position="-0.0635 0 0"
+              geometry="primitive: plane; height: 0.3032; width: 0.227; opacity: 0.1;"
+              material="src: https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/wish-paper-top2.png?v=1692769771125; side: side: back;"
+            ></a-entity>
+          </a-entity>
+        </a-entity>
+        <a-troika-text
+          id="output"
+          position="0 1.65 -0.4"
+          color="#000"
+          max-width="13"
+          max-height="50"
+          curve-radius="0"
+          scale="0 0 0"
+          font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/%ED%96%89%EB%B3%B5%EA%B3%A0%ED%9D%A5B.ttf?v=1658800506733"
+          value="        
+                  
+OOO님을 초대 합니다.
+감사합니다.
+즐거운 시간 보내세요."
+          align="center"
+          animation="property: scale; to: 0.15 0.15 0.15; delay: 5000; dur: 100; easing: linear; loop: false"
+        >
+        </a-troika-text>
+
+
+
+                <a-entity
+          scale="0.0001 0.0001 0.0001"
+          position="0.1 1.57 -0.3"
+          rotation="0 0 0"
+          visible="true"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/c-lamp.glb?v=1692768326484"
+          shadow="receive: false"
+          animation-mixer
+          animation="property: rotation; to: 0 360 0; dur: 12000; delay: 5500; loop: true"
+          animation__2="property: scale; to: 0.0003 0.0003 0.0003; delay: 5500; dur: 3000; loop: false"
+          animation__3="startEvents: click; property: position; to: 0.1 5.57 -0.3; delay: 500; dur: 3000; loop: false"
+          event-set__click="_target: a-entity; visible: true;"
+          mixin="orbit"
+                          >
+
+        </a-entity>
+
+      <a-entity light="type: ambient; intensity: 1;"></a-entity>
+
+      <a-light
+        type="directional"
+        light="castShadow: true; shadowCameraAutomatic:#object;"
+        intensity="0.5"
+        id="real-light"
+        target="selector"
+        position="-5 3.6 10"
+      >
+      </a-light>
+      </a-entity-->
+              <a-entity
+          scale="0.15 0.15 0.15"
+          position="0 -8 -0.3"
+          rotation="0 0 0"
+          visible="true"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/8-animated-butterflies.glb?v=1692771856899"
+          shadow="receive: false"
+          animation-mixer
+          animation="property: object3D.rotation.y; to: 180; delay: 5500; dur: 5000; easing: easeInOutQuad; dir: alternate; loop: false;"
+          animation__2="property: position; to: 0 1.4 -0.55; delay: 500; dur: 3000; loop: false"
+                  > 
+      </a-entity>
+                 <!--a-plane
+        material="shader:gif; src: url(https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/yhm.gif?v=1692612860975); opacity: 1; alphaTest: 0.5; side: double;"
+        position="-1.1 1 -3"
+        color="white"
+        scale="0.7 0.4 0.7"
+        curve-radius="40"             
+        class="hat1-entity"
+        visible="false"
+      ></a-plane>
+
+      <a-plane
+        material="shader:gif; src: url(https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/sumakse.gif?v=1692634065518); opacity: 1; alphaTest: 0.5; side: double;"
+        position="1.1 1 -3"
+        color="white"
+        scale="0.7 0.4 0.7"
+        curve-radius="40"       
+        class="hat2-entity"
+        visible="false"
+      ></a-plane>
+            <a-plane
+        material="shader:gif; src: url(https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/bitjub.gif?v=1692626918184); opacity: 1; alphaTest: 0.5; side: double;"
+        position="0 1 -3"
+        rotation="0 0 0"
+        color="white"
+        scale="0.7 0.4 0.7"
+        curve-radius="40"                         
+        class="glasses1-entity"
+        visible="false"
+      ></a-plane>
+            <a-plane
+        material="shader:gif; src: url(https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/yhm-a.gif?v=1692626928834); opacity: 1; alphaTest: 0.5; side: double;"
+        position="1 -1 -3"
+        color="white"
+        scale="0.7 0.4 0.7"
+        curve-radius="40"             
+        class="helmet-entity"
+        visible="false"
+      ></a-plane-->
+                  <!--a-image 
+              material="shader:gif; src: url(https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/m-thank-you.gif?v=1671504580622); opacity: 1; alphaTest: 0.5; side: double;"
+              position="-1 -0.5 -3"
+              scale="-0.5 -0.5 0.5"
+                           rotation="180 0 0"
+                           class="helmet2-entity"
+                     ></a-image-->
+      <!--a-plane
+        material="shader:gif; src: url(https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/yhm-b.gif?v=1692626926153); opacity: 1; alphaTest: 0.5; side: double;"
+        position="-1 -1 -3"
+        rotation="0 0 0"
+        color="white"
+        scale="0.7 0.4 0.7"
+        curve-radius="40"                   
+        class="helmet2-entity"
+        visible="false"
+      ></a-plane>
+
+                        <a-plane
+        material="shader:gif; src: url(https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/yhm-c.gif?v=1692626916867); opacity: 1; alphaTest: 0.5; side: double;"
+        position="0 -1 -3"
+        rotation="0 0 0"
+        color="white"
+        scale="0.7 0.4 0.7"
+        curve-radius="40"
+        class="glasses2-entity"
+        visible="false"
+      ></a-plane-->
+      
+      <a-entity>
+        <a-troika-text
+          id="output1"
+          position="0 2 -1.8"
+          color="#000"
+          max-width="5"
+          curve-radius="40"
+          scale="1 1 1"
+          font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/%ED%96%89%EB%B3%B5%EA%B3%A0%ED%9D%A5B.ttf?v=1658800506733"
+          value="윤장대를 터치해서 경전을 들어보세요"
+        ></a-troika-text>
+
+        <!--a-plane
+          position="0 -0.2 -3.9"
+          height="2.1"
+          width="3.3"
+          curve-radius="40"
+  
+          material="src: https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/mickeymoon-100.png?v=1670561714724; color: #ffffff; roughness: 1; metalness: 0"
+          animation="property: scale; to: 0 0 0; delay: 4000; dur: 4000; easing: linear; loop: false"
+        ></a-plane-->
+                          <!--a-image 
+              src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/mickeymoon-100.png?v=1670561714724" 
+              position="0 -0.2 -3.9"
+              scale="0.3 0.2 0.3"
+              material="opacity: 0.3; transparent: true"
+              animation="property: scale; to: 0 0 0; delay: 4000; dur: 4000; easing: linear; loop: false"
+                     ></a-image-->
+        <!--a-plane
+          position="0 -0.2 -4"
+          height="2"
+          width="3.15"
+          curve-radius="40"
+          color="#E64C3C"
+
+          material="opacity: 0.3; transparent: true; src: https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/MYmessage10-1.png?v=1670487397403; color: #ffffff; roughness: 1; metalness: 0"
+          animation="property: postion; to: 0 0 0; delay: 2000; dur: 2000; easing: linear; loop: false"
+        ></a-plane-->
+          <!--a-image 
+              position="0 -0.1 -4"
+              height="2.1"
+              width="3.15"
+              material="opacity: 0.4; transparent: true"
+              src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/MYmessage10-5.png?v=1673256070517"
+                     ></a-image-->
+      
+      </a-entity>
+
+ <a-entity cursor="rayOrigin:mouse"></a-entity>
+      <!--<a-text
+        position="0 1.1 -2"
+        value="Hello a-text for comparison!"
+      ></a-text>
+<a-camera active="false" position="0 1.6 -3"></a-camera>
+          <!--a-light type="ambient" intensity="3.3"></a-light-->
+      </a-entity>
+      </a-entity>
+    </a-scene>
+    <!--div class="helmet2-entity">
+      <img id="stampMsg" />
+    </div-->
+   <button
+          class="capturebtn"
+          id="capture"
+          style="vertical-align: middle"
+        ></button>
+        <button
+          class="savebtn"
+          id="save"
+          style="vertical-align: middle"
+        ></button>
+        <!-- The Modal -->
+        <div id="myModal" class="modal" align="center">
+          <!-- Modal content -->
+          <div>
+            <img class="modal-content" id="img01" />
+            <span class="closebtn">
+              <img
+                src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/close-white.png?v=1670812239754"
+                width="30px"
+                height="30px"
+              />
+            </span>
+            <div id="caption"></div>
+          </div>
+        </div>
+     
+
+    <script type="text/javascript" src="hmodal_active.js"></script>
+    <script type="text/javascript" src="capture-1.js"></script>
+      <script>
+    var move2 = document.querySelector('#move2');
+var ballanim = document.querySelector('#ballanim');
+var acy = document.querySelector('a-cylinder');
+var mybox = document.querySelector('#mybox');
+
+move2.addEventListener('animationend', function(){
+  console.log('end1');
+  acy.emit('startcyl');
+  // mybox.emit('startbox');
+});
+console.log(ballanim);
+acy.addEventListener('startcyl', function(){
+  console.log('end2');
+  mybox.emit('startbox');
+})
+
+
+    </script>
+       
+    
+<script>
+    $('.btn_popup').click(function(){      
+      $('.ly_wrap').show();
+       $('.DecoButton').hide();
+        $('.capturebtn').hide();    
+        $('.WriteButton').hide(); 
+      
+})
+      
+ $('.btn_container').click(function(){
+  $('.container').show(); 
+   $('.DecoButton').hide();
+        $('.capturebtn').hide();    
+        $('.WriteButton').hide(); 
+})     
+ $('#DecoClose').click(function(){
+  $('.container').hide(); 
+  var tt = document.getElementById("MsgZone");
+   if (tt.style.display == "none") {
+   $('.DecoButton').show();
+        $('.capturebtn').show();    
+        $('.WriteButton').show(); 
+   }
+   else {
+     $('.DecoButton').hide();
+        $('.capturebtn').hide();    
+        $('.WriteButton').hide(); 
+   }
+})
+</script>
+
+  </body>
+</html>

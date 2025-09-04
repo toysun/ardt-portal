@@ -1,0 +1,1104 @@
+  <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>목아박물관 소원지</title>
+    <meta
+      name="description"
+      content="Basic example for troika-text component."
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="aframe-troika-text.js"></script>
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.2/dist/aframe-physics-system.min.js"></script>
+
+    
+    <!--script src="jquery-3.3.1.js"></script-->
+    <!--script src="font-awesome-5.13.0.js"></script-->
+    <script src="merge-image.js"></script>
+    <link rel="stylesheet" href="style-capture-t.css" />
+
+    <script>    
+      var secondEvent;
+    /*  
+      window.addEventListener('load', function() {
+         secondEvent = "null";
+      });
+     */ 
+      function ee() {
+        document
+          .getElementById("output")
+          .setAttribute("value", document.getElementById("fname").value);
+         document
+          .getElementById("MsgZone").style.display="none";
+        $('.capturebtn').show();    
+        $('.WriteButton').show(); 
+        
+        document
+          .getElementById("stage").setAttribute("visible", "true");
+        
+        secondEvent = "rotation";
+        
+        document.getElementById("first-card-left").dispatchEvent(new CustomEvent(secondEvent));
+        document.getElementById("first-card-right").dispatchEvent(new CustomEvent(secondEvent));        
+      }
+    </script>
+    
+    <script>
+      // You can set the input as you want
+      var inputeditable =
+        '<textarea contenteditable="true" type="text" name="" class="input">';
+
+      // For each DOM element that has .inputeditable, we add a click event, using inputeditableEnabled(). Which can be used anywhere
+      $(".inputeditable").each(function () {
+        inputeditableEnabled($(this));
+      });
+
+      // This function store the HTML, add child with input. When input lose focus, we push back the value of the input,
+      // el is the dom object edited
+      function inputeditableEnabled(el) {
+        var contentWidth = el.width();
+        var contentHeight = el.height();
+        el.click(function () {
+          var content = el.html().replace(/\n/g, "");
+          el.html("").append(inputeditable);
+          el.off("click");
+          el.width(contentWidth).height(contentHeight);
+          el.find(".input").val(content).focus();
+          autosize(el.find(".input"));
+          el.find(".input").focusout(function () {
+            inputeditableDisabled(el, $(this));
+          });
+        });
+      }
+
+      // This function disable the edition of input. It change back the html of .inputeditable to plain text and remove the input
+      // ,el is the editable dom object that need to be disabled
+      // ,elInput is the input of said object
+      function inputeditableDisabled(el, elInput) {
+        if (!elInput) {
+          elInput = el.find(".input");
+        }
+        var inputval = elInput.val();
+        el.html(inputval);
+        el.css({ width: "", height: "auto" });
+        inputeditableEnabled(el);
+      }
+    </script>
+    
+    <style>
+/* reset */
+body,p,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select{margin:0;padding:0} 
+body,input,textarea,select,button,table{font-family:ng,'Malgun Gothic','맑은고딕','Apple SD Gothic Neo',Dotum,'돋음',sans-serif;font-size:14px;color:#282828;line-height:1;letter-spacing:-.5px;word-break:break-all} 
+img,fieldset{border:0} 
+ul,ol{list-style:none} 
+em,address{font-style:normal} 
+a{text-decoration:none} 
+a:hover,a:active,a:focus{text-decoration:none}
+table{width:100%;/*border-collapse:collapse;*/border-spacing:0}
+label{vertical-align:middle}
+textarea{resize:none}
+fieldset,li,img{border:0;vertical-align:top}
+address,caption,em{font-style:normal}
+h1,h2,h3,h4,h5,h6{font-weight:normal}
+button{
+  overflow:visible;
+  border:0;
+  /*outline:none;*/background-color:transparent;cursor:pointer}
+button::-moz-focus-inner{padding:0;border:0}
+.blind,legend{overflow:hidden;position:absolute;top:0;left:0;width:1px;height:1px;font-size:1px;
+line-height:100px;white-space:nowrap}
+/* reset */
+
+.btn_com {  
+  background-color:#1C2087;
+  color:#fff;
+  border-radius: 6px 6px 6px 6px;
+  }
+.ly_wrap {
+  z-index:50;
+  position:fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  background-color:rgba(0,0,0,0.8);
+ }
+#layoutimg {
+   position: absolute;
+   width: 100%;
+   height: 100%;
+   top: 0;
+   left: 0;
+   z-index:-10;
+ }
+.ly_box{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:81%;
+  height: 70%;
+  padding:50px 20px 20px;
+  background-color:#fff;
+  background-size: auto 100%;
+  background-repeat: no-repeat;
+  /*
+  background-image: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/MYmessage10-1.png?v=1670487397403");
+  */
+  transform:translate(-50%,-50%);
+  text-align:center;
+}
+
+.ly_box p{font-size:20px;}
+.ly_box .btn_close
+      {
+        position: absolute;
+        width:35%;
+        height:50px;
+        margin-top:20px;
+        background-color:#1C2087;
+        top: 80%;
+        left: 33%;
+      }
+      
+ 
+.btn_popup{
+  position: absolute;
+  padding:20px;
+  left: 50%;
+  height: 8%;
+  width: 20%;
+  top: 80%;
+  z-index: 99999;
+  }
+      
+      
+textarea {
+  margin-top: 10%;
+  margin-left: 0;
+  width: 70%;
+  height: 70%;
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0.07);
+  border-color: -moz-use-text-color #FFFFFF #FFFFFF -moz-use-text-color;
+  border-image: none;
+  border-radius: 6px 6px 6px 6px;
+  border-style: none solid solid none;
+  border-width: medium 1px 1px medium;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12) inset;
+  color: #555555;
+  font-family: "AppleSDGothicNeoM";
+  font-size: 2em;
+  line-height: 1.4em;
+  padding: 5px 8px;
+  transition: background-color 0.2s ease 0s;
+  white-space: pre-wrap !important;
+}
+
+
+textarea:focus {
+    background: none repeat scroll 0 0 #FFFFFF;
+    outline-width: 0;
+}
+</style>
+
+<style>
+       /*
+  The grid itself needs only 4 CSS declarations:
+*/
+      @media only screen and (max-width: 700px) {
+       
+      .box-1 {
+          margin: 0;
+          width: 100%;
+          height: 10%;
+          background: url("https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/%EB%84%9D%EC%BF%A8%EB%AC%B4%EB%8A%AC%EC%A0%84%EB%8F%8C.png?v=1692611017011");
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: contain;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+      
+      .HomeButton {
+        background-color: transparent;
+        background-image: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/%EB%92%A4%EB%A1%9C%EA%B0%80%EA%B8%B0.png?v=1672667294936");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 5%;
+        left: 1%;
+        width: 65px;
+        height: 65px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .HomeButton:hover {
+        background-color: Gold;
+      }
+      .WriteButton {
+        background-color: transparent;
+        background-image: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/%ED%8E%B8%EC%A7%80%EC%93%B0%EA%B8%B0.png?v=1672667303909");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 90%;
+        left: 82%;
+        width: 65px;
+        height: 65px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+        display: none;
+      }
+      .WriteButton:hover {
+        background-color: Gold;
+      }
+
+
+  .is-visible .bts-popup-container {
+  -webkit-transform: translateY(0);
+  -moz-transform: translateY(0);
+  -ms-transform: translateY(0);
+  -o-transform: translateY(0);
+  transform: translateY(0);
+}
+    </style>
+    <style>
+
+
+table, th, td {
+  border: solid 0px #000;
+  padding: 10px;
+}
+
+table {
+    border-collapse:collapse;
+}
+
+    </style>
+     <style>
+      body {
+        margin: 0;
+      }
+      .tab-start {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(120, 120, 120, 1);
+        z-index: 999999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .tab-start div {
+        text-align: center;
+        font-size: 1.25em;
+        color: white;
+      }
+      .example-container {
+        overflow: hidden;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      .options-panel {
+        position: fixed;
+        left: 60%;
+        top: 10;
+        z-index: 2;
+      }
+      .options-panel img {
+        border: solid 2px;
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        cursor: pointer;     
+        background-color: white;
+      }
+      .options-panel img.selected {
+        border-color: green;
+        background-color: gold;
+      }
+      .ChangeButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/camera-rotate.png?v=1694390587914");
+        background-size: cover;
+        background-position: center;
+                border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 3%;
+        left: 80%;
+        width: 40px;
+        height: 40px;
+                /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .logoWrapper {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        width: 100%;
+        z-index: -1; /* needs to be in the background so that it doesn't overlay the title (from html) */
+      }
+
+      .logoImage {
+        width: 29%; /* 104px */
+        height: 10%; /*  40px */
+        visibility: visible; /* needs to be added, so that the image is always visible. Otherwise it could flicker during click-events or even be hidden (on iOS (Vers.13.5.1, Safari)) */
+      }
+      .HomeButton {
+        background-color: White;
+        background-image: url("https://ardocent.com/aframe/wonder/image/home.png");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 5%;
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .HomeButton:hover {
+        background-color: Gold;
+      }
+      
+           
+      .ReloadButton {
+        background-color: White;
+        background-image: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/camera-flip.png?v=1666830382378");
+        background-size: cover;
+        background-position: center;
+        border: none;
+        padding: 5px;
+        display: inline-block;
+        margin: 1px 1px;
+        cursor: pointer;
+        border-radius: 50%;
+        position: fixed;
+        top: 5%;
+        left: 90%;
+        width: 40px;
+        height: 40px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+      .ReloadButton:hover {
+        background-color: Gold;
+      }
+
+    </style>
+    
+    <style>
+      /* Cookie */
+.fc {
+   background: transparent;
+   display: block;
+   margin: 4.5em auto 0 auto;
+   position: relative;
+   width: 20em;
+   height: 17em;
+}
+.fc:focus {
+   outline: transparent;
+}
+.fc-part, .fc-crumbs, .fc-crumb, .fc-fortune {
+   position: absolute;
+   top: 30;
+}
+.fc-part, .fc-crumb {
+   background: currentColor;
+   color: #efaa5d;
+}
+.fc-part {
+   width: 8em;
+   height: 18em;
+   z-index: 2;
+}
+.left {
+   border-radius: 7em 1em 1em 7em / 50%;
+   box-shadow:
+      0.5em 0 0 inset,
+      0.5em 0.2em 0 inset,
+      1em 0.2em 0 #fff6 inset,
+      -0.75em 0 0 #0002 inset;
+   clip-path: polygon(0% 0%, 68% 0%, 100% 30%, 100% 100%, 0% 100%);
+   -webkit-clip-path: polygon(0% 0%, 68% 0%, 100% 30%, 100% 100%, 0% 100%);
+   left: calc(50% - 5.4em);
+   transform: rotate(25deg);
+   transform-origin: 68% 0;
+}
+.right {
+   border-radius: 1em 7em 7em 1em / 50%;
+   box-shadow:
+      -0.5em 0 0 inset,
+      -0.5em 0.2em 0 inset,
+      -1em 0.2em 0 #fff6 inset,
+      0.75em 0 0 #0002 inset;
+   clip-path: polygon(0% 30%, 32% 0%, 100% 0, 100% 100%, 0% 100%);
+   -webkit-clip-path: polygon(0% 30%, 32% 0%, 100% 0, 100% 100%, 0% 100%);
+   right: calc(50% - 5.4em);
+   transform: rotate(-25deg);
+   transform-origin: 32% 0;
+}
+.fc-crumbs {
+   left: calc(50% - 0.4em);
+   width: 0.8em;
+   height: 6em;
+   z-index: 1;
+}
+.fc-crumb {
+   border-radius: 50%;
+   width: 0.5em;
+   height: 0.5em;
+}
+.fc-crumb:nth-child(1) {
+   top: 4%;
+   left: 15%;
+}
+.fc-crumb:nth-child(2) {
+   top: 20%;
+   right: 15%;
+}
+.fc-crumb:nth-child(3) {
+   top: 30%;
+   left: 25%;
+}
+.fc-crumb:nth-child(4) {
+   top: 45%;
+   right: 25%;
+}
+.fc-crumb:nth-child(5) {
+   top: 55%;
+   left: 5%;
+}
+.fc-crumb:nth-child(6) {
+   top: 65%;
+   right: 5%;
+}
+.fc-crumb:nth-child(7) {
+   top: 75%;
+   left: 30%;
+}
+.fc-crumb:nth-child(8) {
+   top: 90%;
+   right: 35%;
+}
+
+/* Fortune */
+.fc-fortune {
+   background-color: white;
+   color: #00c;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   padding: 0.75em 1em 0.75em 1em;
+   text-align: center;
+   width: 120%;
+   height: 80%;
+   left: 0;
+   transform: scale(0,1);
+   transform-origin: 50% 32%;
+   line-height: 210%;
+   border-top-left-radius: 10px;
+   border-top-right-radius: 10px;
+   border-bottom-left-radius: 10px;
+   border-bottom-right-radius: 10px;
+}
+.fc-fortune-text {
+   font-family: Georgia, "맑은 고딕", serif;
+}
+
+/* Animation States */
+.spawned {
+   animation: popIn 0.3s linear;
+}
+.opened {
+   width: 26em;
+   height: 6em;
+}
+.opened .left {
+   animation: breakLeft 0.7s ease-in forwards;
+}
+.opened .right {
+   animation: breakRight 0.7s ease-in forwards;
+}
+.opened .fc-crumbs {
+   animation: fallOut 0.7s ease-in forwards;
+}
+.opened .fc-fortune {
+   animation: foldOut 0.7s ease-in forwards;
+}
+      
+      /* Animations */
+@keyframes popIn {
+   from {
+      transform: scale(0);
+   }
+   75% {
+      transform: scale(1.1);
+   }
+   to {
+      transform: scale(1);
+   }
+}
+@keyframes breakLeft {
+   from {
+      transform: translateX(0) rotate(25deg);
+   }
+   30%, 40% {
+      transform: translateX(0) rotate(55deg);
+   }
+   70%, 80% {
+      opacity: 1;
+      transform: translateX(-14em) rotate(50deg);
+   }
+   to {
+      opacity: 0;
+      transform: translateX(-14em) rotate(50deg);
+   }
+}
+@keyframes breakRight {
+   from {
+      transform: translateX(0) rotate(-25deg);
+   }
+   30%, 40% {
+      transform: translateX(0) rotate(-55deg);
+   }
+   70%, 80% {
+      opacity: 1;
+      transform: translateX(14em) rotate(-50deg);
+   }
+   to {
+      opacity: 0;
+      transform: translateX(14em) rotate(-50deg);
+   }
+}
+@keyframes fallOut {
+   from {
+      left: calc(50% - 0.4em);
+      width: 0.8em;
+      transform: translateY(0);
+   }
+   30% {
+      opacity: 1;
+   }
+   60%, to {
+      opacity: 0;
+      left: calc(50% - 3em);
+      width: 6em;
+      transform: translateY(24em);
+   }
+}
+@keyframes foldOut {
+   from {
+      transform: scale(0.23,0.7);
+   }
+   30%, 40% {
+      transform: scale(0.5,0.7);
+   }
+   69% {
+      transform: scale(1,0.7);
+   }
+   74%, to {
+      transform: scale(1,1);
+   }
+}
+      
+#cookie {
+   display: none;
+}
+#fortune-text {
+   display: none;
+}
+   </style>
+    
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />   
+  </head>
+  <body>
+    <div id="start_area" class="tab-start" align="center">     
+      <input 
+        id="start_btn"     
+        type="image"
+        src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/%EC%86%8C%EC%9B%90%EC%A7%80-%EC%97%B0%EB%93%B1%EA%B1%B8%EA%B8%B0-start.png?v=1694489359382"
+        style="positon: relative; z-index: 999999; display: flex; top: 0; left: 0;
+        justify-content: center; align-items: center; height: 450px; width: 50%"/>
+   
+    </div>  
+    <div class="logoWrapper">
+      <input
+        id="logo"
+        type="image"
+        class="logoImage"
+        src="https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/moka-logo.png?v=1694794158040"
+      />
+    </div>
+     
+    <button
+      class="HomeButton"
+      id="home-btn"
+      onclick="window.open('https://abc-portal.glitch.me/letter-1.html','_self');"
+    ></button>
+    <button
+           class="ReloadButton"
+           id="reload-btn"
+           onclick="location.reload(true);"
+    ></button>
+    
+<button id="w-popup" type="button" class="WriteButton btn_popup" role="alert"></button>
+<!--button type="button" class="DecoButton btn_container"></button-->
+    
+<div class="ly_wrap" id="MsgZone">
+  <div class="ly_box" id="ly_box">
+  <img id="layoutimg" src="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/%EB%84%9D%EC%BF%A8%EB%AC%B4%EB%8A%AC%EC%A0%84%EB%8F%8C.png?v=1692611017011">
+      <!--textarea placeholder="여기에 사연을 적으세요." rows="20" name="comment[text]" id="fname" cols="40" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea-->
+     <textarea placeholder="여기에 소원을 적으세요" maxlength="100" rows="5" name="comment[text]" id="fname" row="3" cols="20" wrap="hard" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea>
+    <table>
+     <tbody>
+       <tr>
+         <th><button type="button" onclick="ee()" class="btn_close btn_com" id="Close"><h3>작성완료</h3></button></th>     
+       </tr>
+     </tbody>
+    </table>
+  </div>
+</div>
+
+    <div id="cookie">    
+<button class="fc spawned" id="fc_btn" type="button">
+   <div class="fc-part left"></div>
+   <div class="fc-part right"></div>
+   <div class="fc-crumbs">
+      <div class="fc-crumb"></div>
+      <div class="fc-crumb"></div>
+      <div class="fc-crumb"></div>
+      <div class="fc-crumb"></div>
+      <div class="fc-crumb"></div>
+      <div class="fc-crumb"></div>
+      <div class="fc-crumb"></div>
+      <div class="fc-crumb"></div>
+   </div>
+   <div class="fc-fortune" id="fortune-text">
+      <p class="fc-fortune-text">모든 일은 마음이 근본이다 마음에서 나와 마음으로 이루어진다 나쁜 마음을 가지고 말하거나 행동하면 괴로움이 그를 따른다 수레바퀴가 소의 발자국을 따르듯이</p>
+      <!--p class="fc-lucky-numbers">행운 번호 :   <span>?, ?, ?, ?, ?, ?</span></p-->
+   </div>
+</button>
+ </div>   
+    <a-scene
+      vr-mode-ui="enabled: false"
+      loading-screen="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+      renderer="antialias: true; logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true;"
+      arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+    >
+    <a-assets>
+          <audio
+             src="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/SpaceLaserShot%20PE1095407.mp3?v=1684294410059"
+             type="audio/mp3"
+             id="aud"
+             response-type="arraybuffer"
+             crossorigin="anonymous"
+             webkit-playsinline
+             playsinline
+          ></audio>
+      </a-assets>
+      <!--a-entity camera="active: true" look-controls wasd-controls position="0 0 5" data-aframe-default-camera></a-entity-->
+            <!-- CAMERA -->
+
+      <a-entity id="rig">
+        
+       <a-entity camera position="0 1.6 0" look-controls-enabled="false" orbit-controls="target: 0 1.6 -0.5; initialPosition: -5 5 20"></a-entity>
+      </a-entity>
+
+
+           <!-- STAGE -->
+      <a-entity id="stage"
+                animation__3="startEvents: click; property: position; to: 0.1 6.7 -0.3; delay: 500; dur: 3000; loop: false"
+                visible = "false"
+                disappear>
+        <!-- CARD -->
+        <a-entity id="first-card" position="0 1.58 -0.5" rotation="0 0 -90" scale="0 0 0" animation="property: scale; to: 0.9 1 1; delay: 1000; dur: 1000; easing: linear; loop: false">
+          <a-entity
+            id="first-card-left"
+            rotation="0 0 0"
+            position="-0.00005 0 0"
+            animation="startEvents: rotation; property: object3D.rotation.y; to: 130; delay: 1000; dur: 5000; easing: easeInOutQuad; dir: alternate; loop: false;"
+            animation__1="startEvents: rotation; property: object3D.rotation.y; from: 130; to: 120; delay: 6100; dur: 100; easing: easeInOutQuad; dir: alternate; loop: false;"
+            animation__2="startEvents: rotation; property: object3D.rotation.y; from: 120; to: 130; delay: 6200; dur: 150; easing: easeInOutQuad; dir: alternate; loop: false;"
+            animation__3="startEvents: rotation; property: object3D.rotation.y; from: 130; to: 125; delay: 6350; dur: 200; easing: easeInOutQuad; dir: alternate; loop: false;"
+            animation__4="startEvents: rotation; property: object3D.rotation.y; from: 125; to: 130; delay: 6500; dur: 250; easing: easeInOutQuad; dir: alternate; loop: false;"      
+          >
+            <a-entity
+              position="-0.0635 0 0"
+              rotation="0 0 0"
+              geometry="primitive: plane; height: 0.3032; width: 0.207; opacity: 0.1;"
+              material="src: https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/wish-cover.png?v=1694793870718; side: front;"
+            ></a-entity>
+
+            <a-entity
+              position="-0.0635 0 0"
+              geometry="primitive: plane; height: 0.3032; width: 0.207; opacity: 0.6;"
+              material="src: https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/wish-paper-12.png?v=1692769509557; side: back;"
+            ></a-entity>
+          </a-entity>
+          <a-entity
+            id="first-card-right"
+            position="-0.08.5 0 -0.009"                     
+            rotation="0 0 0" 
+            animation="startEvents: rotation; delay: 3000; dur: 1000; easing: linear; loop: false"
+            loop="false"
+          >
+            <a-entity
+              position="-0.03 0 -0.009"
+              geometry="primitive: plane; height: 0.3032; width: 0.227; opacity: 0.1;"
+              material="src: https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/wish-paper-top3.png?v=1694794484970;  side: front;"
+            ></a-entity>
+
+            <a-entity
+              position="-0.03 0 -0.009"
+              geometry="primitive: plane; height: 0.3032; width: 0.227; opacity: 0.1;"
+              material="src: https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/wish-paper-top2.png?v=1692769771125; side: side: back;"
+            ></a-entity>
+            <a-troika-text
+             id="output"
+             rotation="0 0 90" 
+             position="-0.02 0 -0.009"
+             color="#000"
+             max-width="2"
+             max-height="10"
+             curve-radius="0"
+             scale="0 0 0"
+             font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/%ED%96%89%EB%B3%B5%EA%B3%A0%ED%9D%A5B.ttf?v=1658800506733"
+             value=""
+             
+             animation="property: scale; to: 0.13 0.13 0.13; delay: 5000; dur: 100; easing: linear; loop: false"
+           >
+        </a-troika-text>
+          </a-entity>
+        </a-entity>
+                <a-entity
+              id="lantern"
+              color="white"
+              position="0 2.8 -5"
+              rotation="0 0 0"
+              geometry="primitive: plane; height: 2; width: 6; opacity: 0.9;"
+              material="src: https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/wish-lotus-lanturns-top.png?v=1694788628864; opacity: 0.9; transparent: true; side: double;"
+       ></a-entity>
+        <!--a-troika-text
+          id="output"
+          position="0 1.65 -0.4"
+          color="#000"
+          max-width="13"
+          max-height="50"
+          curve-radius="0"
+          scale="0 0 0"
+          font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/%ED%96%89%EB%B3%B5%EA%B3%A0%ED%9D%A5B.ttf?v=1658800506733"
+          value=""
+          align="center"
+          animation="property: scale; to: 0.15 0.15 0.15; delay: 5000; dur: 100; easing: linear; loop: false"
+        >
+        </a-troika-text-->
+        
+        <a-entity
+          scale="0.0001 0.0001 0.0001"
+          position="0.1 1.57 -0.3"
+          rotation="0 0 0"
+          visible="true"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/c-lamp.glb?v=1692768326484"
+          shadow="receive: false"
+          animation-mixer
+          animation="property: rotation; to: 0 360 0; dur: 12000; delay: 5500; loop: true"
+          animation__2="property: scale; to: 0.0003 0.0003 0.0003; delay: 5500; dur: 3000; loop: false"
+          animation__3="property: position; to: 0.1 5.57 -0.3; delay: 500; dur: 3000; loop: false"
+          event-set__click="_target: a-entity; visible: true;"
+          mixin="orbit"
+        >
+        </a-entity>
+
+      <a-entity light="type: ambient; intensity: 1;"></a-entity>
+
+      <a-light
+        type="directional"
+        light="castShadow: true; shadowCameraAutomatic:#object;"
+        intensity="0.5"
+        id="real-light"
+        target="selector"
+        position="-5 3.6 10"
+      >
+      </a-light>
+      </a-entity>
+      
+      <!--a-entity
+          scale="0.15 0.15 0.15"
+          position="0 -8 -0.3"
+          rotation="0 0 0"
+          visible="true"
+          gltf-model="https://cdn.glitch.global/7aef11f6-e1ff-4444-833f-2588de98f4e6/8-animated-butterflies.glb?v=1692771856899"
+          shadow="receive: false"
+          animation-mixer
+          animation="property: object3D.rotation.y; to: 180; delay: 5500; dur: 5000; easing: easeInOutQuad; dir: alternate; loop: false;"
+          animation__2="property: position; to: 0 1.4 -0.55; delay: 500; dur: 3000; loop: false"
+                  > 
+      </a-entity-->
+      
+      <a-entity
+        gltf-model="https://cdn.glitch.global/84219226-bfa8-4881-9a68-88e43606a2ce/confetti_fbx.glb?v=1668304614536"
+        id="cookie_1"
+        position="-0.2 7.6 -35.35"
+        rotation="0 45 0"
+        scale="3 3 3"
+        animation-mixer
+        animation="startEvents: rotate; delay: 1000; dur: 3000; loop: false"
+        shadow="receive: true"
+        visible="false"
+      >
+      </a-entity>
+      
+      <a-entity>
+      </a-entity>
+      <a-entity
+        text="value: some text; wrapCount: 20; width: 3"
+        position="0 2 0"
+        my-test-component
+      ></a-entity>
+    <a-entity cursor="rayOrigin:mouse"></a-entity>
+      
+    </a-scene>
+      
+    <button
+          class="capturebtn"
+          id="capture"
+          style="vertical-align: middle"
+        ></button>
+        <button
+          class="savebtn"
+          id="save"
+          style="vertical-align: middle"
+        ></button>
+        <!-- The Modal -->
+        <div id="myModal" class="modal" align="center">
+          <!-- Modal content -->
+          <div>
+            <img class="modal-content" id="img01" />
+            <span class="closebtn">
+              <img
+                src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/close-white.png?v=1670812239754"
+                width="30px"
+                height="30px"
+              />
+            </span>
+            <div id="caption"></div>
+          </div>
+        </div>
+     
+
+    <script type="text/javascript" src="hmodal_active.js"></script>
+    <script type="text/javascript" src="capture-1.js"></script>
+        
+<script>
+    $('.btn_popup').click(function(){      
+      $('.ly_wrap').show();
+      $('.capturebtn').hide();    
+      $('.WriteButton').hide(); 
+      
+})
+ 
+</script>
+    
+<script>
+    var currentEvent;
+    
+    window.addEventListener('load', function() {
+                // you can access the THREE.Light object from the shadow-light element
+      var lightEl = document.querySelector('a-shadow-light');
+ //     console.log(lightEl.shadowLight);
+      currentEvent = "null";
+    });
+    
+    
+     document.getElementById("start_btn").addEventListener("click", function() {
+      
+        var Start_Area = document.getElementById("start_area");
+        var PlayBtn = document.getElementById("start_btn");
+        this.aud = document.querySelector("#aud");
+ 
+        this.aud.play();   
+   /*    
+        currentEvent = "click";
+        document.getElementById("guebul").dispatchEvent(new CustomEvent(currentEvent));
+ */         
+        Start_Area.parentNode.removeChild(Start_Area);
+  
+      });
+  
+      AFRAME.registerComponent("disappear", {
+              
+         init() {
+            
+          var el = this.el;
+ 
+          el.addEventListener("click", function() {
+            setTimeout(function() {
+              document
+                .getElementById("cookie").style.display="block";
+              document
+                .getElementById("cookie_1").setAttribute("visible", "true");
+              document
+                .getElementById("cookie").dispatchEvent(new CustomEvent(secondEvent));
+            }, 2000);            
+          });
+        }
+      });  
+    </script>
+    <script>
+ addEventListener("load",app);
+ function app() {
+   class Fortune {
+      constructor(fortuneList) {
+         this.text = !fortuneList ? "No fortune" : fortuneList[~~(Math.random() * fortuneList.length)];
+   //      this.luckyNumbers = [];
+   //      this.drawLuckyNumbers();
+      }
+      drawLuckyNumbers() {
+         let maxDraws = 6,
+            draws = maxDraws,
+            maxNumber = 99,
+            numberPool = [];
+
+         // create number pool
+         while (maxNumber--) {
+            numberPool.unshift(maxNumber + 1);
+         }
+         // draw from pool, populate the lucky numbers
+         while (draws--) {
+            let drawn = ~~(Math.random() * numberPool.length);
+            this.luckyNumbers.push(numberPool[drawn]);
+            numberPool.splice(drawn,1);
+         }
+      }
+   }
+    var fcBtn = document.getElementById("fc_btn"),
+      fortuneText = document.querySelector(".fc-fortune-text"),
+  //    fortuneLuckyNumbers = document.querySelector(".fc-lucky-numbers span"),
+      fortuneList = [
+         "모든 일은 마음이 근본이다 마음에서 나와 마음으로 이루어진다 나쁜 마음을 가지고 말하거나 행동하면 괴로움이 그를 따른다 수레바퀴가 소의 발자국을 따르듯이",
+         "부지런함은 생명의 길이요 게으름은 죽음의 길이다 부지런한 사람은 죽지 않지만 게으른 사람은 죽은것과 마찬가지다",
+         "마음은 들떠 흔들리기 쉽고 지키기 어렵고 억제하기 어렵다 지혜로운 사람은 마음 갖기를 활 만드는 사람이 화살을 곧게 하듯 한다.",
+         "꽃을 꺾는 일에만 팔려 마음에 끈질긴 집착을 가지고 욕망에 빠져 허덕이는 사람은 마침내 죽음의 악마에게 정복당한다",
+         "'내 자식이다' '내 재산이다' 하면서 어리석은 사람은 괴로워한다 제 몸도 자기 것이 아닌데 어찌 자식과 재산이 제 것일까",
+         "많은 사람 가운데 생의 저쪽 기슭에 이른 이는 아주 드물다 대개의 사람들은 이쪽 기슭에서 갈팡질팡 헤매고 있을 뿐이다.",
+         "이미 이 세상의 여행을 마치고 근심과 걱정을 떠나 모든 속박을 끊고 자유를 얻은 사람 그에게는 털끝만한 고뇌도 없다.",
+         "쓸모 없는 말을 엮어 늘어놓는 천 마디보다 들으면 마음이 가라앉는 한 마디가 훨씬 뛰어난 말이다",
+         "선한 일은 서둘러 행하고 악한 일에는 마음을 멀리하라 선한 일을 하는데 게으르면 그의 마음은 벌써 악을 즐기고 있다.",
+         "거친 말을 하지말라 가는 말이 고와야 오는 말이 곱다 분노의 말은 고통이된다 그 보복이 네 몸에 돌아온다.",
+         "무엇을 웃고 무엇을 기뻐하랴 세상은 끊임없이 불타고 있는데 그대는 암흑에 둘러싸인 채 어찌하여 등불을 찾지 않는가",
+         "악한 일은 자신에게 해를 끼치지만 그 일은 저지르기 쉽다 착한 일은 자신에게 평화를 가져오지만 그 일은 행하기가 어렵다.",
+         "떳떳한 행동을 하라 나쁜 행동을 하지 말라 진리에 따라 행동하는 사람은 이 세상과 저 세상에서 편히 잠든다.",
+         "황금이 소나기처럼 쏟아질지라도 사람의 욕망을 다 채울 수는 없다 욕망에는 짧은 쾌락에 많은 고통이 따른다",
+         "승리는 원한을 낳고 패자는 괴로워 누워 있다 마음의 고요를 얻은 사람은 승패를 버리고 즐겁게 산다.",
+         "사랑하는 사람과 만나지 말라 미운 사람과도 만나지 말라 사랑하는 사람은 못 만나 괴롭고 미운 사람은 만나서 괴롭다.",
+         "부드러운 마음으로 성냄을 이기라 착한 일로 악을 이기라 베푸는 일로써 인색함을 이기라 진실로써 거짓을 이기라.",
+         "그대의 생애는 종점에 다다랐다 그대는 이미 염라왕 앞에 와 있다 도중에 쉴 곳도 없는데 그대에게는 노자마저 없구나",
+         "일을 잘 처리한다고 해서 공정한 사람은 아니다 옳음과 그름 이 두 가지를 잘 분별하는 이가 현명하다.",
+         "장마철에는 여기서 살고 겨울철에는 저기서 살자고 어리석은 자는 생각하지만 죽음이 가까운 줄 깨닫지 못한다.",
+         "해야 할 일을 소홀히 여기고 해서는 안 될 일을 하면서 교만과 방종에 빠진 사람에게 번뇌는 점점 늘어만 간다.",
+         "거짓말하는 자 지옥에 떨어진다 거짓말을 했으면서 `나는 하지 않았다고 '고 말하는 자도 지옥에 떨어진다.",
+         "싸움터에서 화살을 맞고도 참고 견디는 코끼리처럼 나도 비난을 견디리라 사람들 중에는 질이 나쁜 무리도 있으니까",
+         "방탕한 자의 욕망은 칡덩굴처럼 무성하게 자란다 숲 속에서 열매를 찾아 나선 원숭이처럼 이승에서 저승으로 끝없이 헤맨다.",
+         "눈을 자제 하는것은 착한 일이고 귀를 자제하는 것은 착한 일이다 코를 자제하는 것도 착한 일이고 혀를 자제하는 것도 착한 일이다",
+         "태양은 한낮에 빛나고 달은 한밤에 빛나며 무사들은 갑옷에서 빛나고 수행자는 명상에서 빛난다 그러나 부처는 자비스런 광명으로 항상 빛난다"
+      ],
+      fortune = new Fortune(),
+
+      getFortune = function(){
+         fortune = new Fortune(fortuneList);
+         fortuneText.innerHTML = fortune.text;
+    //     fortuneLuckyNumbers.innerHTML = fortune.luckyNumbers.join(", ");
+      },
+      nextState = function(){
+        document.getElementById("fortune-text").style.display="block";
+         let elClass = this.classList,
+            spawned = "spawned",
+            opened = "opened";
+
+         // open cookie
+         if (elClass.contains(spawned)) {
+            elClass.remove(spawned);
+            elClass.add(opened);
+
+         // new cookie
+         } else {
+            elClass.remove(opened);
+            elClass.add(spawned);
+            getFortune();
+         }
+      };
+   
+   getFortune();
+   fcBtn.addEventListener("click",nextState);
+ }
+  </script>
+   
+    
+  </body>
+</html>

@@ -1,0 +1,152 @@
+@import url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff");
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :colors {
+        color: hsl(212, 21%, 14%);
+        color: hsl(212, 21%, 14%);
+        color: hsl(212, 21%, 14%);
+      }
+      .container {
+        width: 100%;
+        height: 100%;
+        background-size: contain;
+        background-image: url("https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/BG.png?v=1670560998820");
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .card {
+        margin-top: 30px;
+        width: 95%;
+        height: 100px;
+        display: flex;
+        border-radius: 10px;
+        background-size: contain;
+      }
+      .box-1 {
+        margin-top: 30px;
+        width: 100%;
+        height: 100%;
+       
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .box-2 {
+        margin-top: 30px;
+        width: 50%;
+        height: 100%;
+        margin: 20px;
+        background-size: contain;
+      }
+      p {
+        color: white;
+        font-size: 14px;
+        font-family: "SDSamliphopangche_Outline";
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;margin: 20px 0;
+      }
+      #letter {
+        letter-spacing: 0.5em;
+      }
+      h2 {
+        color: white;
+        font-size: 40px;
+         font-family: "SDSamliphopangche_Outline";
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;margin: 20px 0;
+      }
+      .Price {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-bottom: 50px;
+         font-family: "SDSamliphopangche_Outline";
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;margin: 20px 0;
+      }
+      h4 {
+        color: black;
+        font-size: 50px;
+         font-family: "SDSamliphopangche_Outline";
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;margin: 20px 0;
+      }
+      button {
+        font-size: 50px;
+        background-color: hsl(0, 100, 100);
+        color: black;
+        padding: 20px 0px;
+        text-align: center;
+        width: 100%;
+        font-weight: 700;
+        border: none;
+        outline: none;
+        border-radius: 10px;
+        font-family: "SDSamliphopangche_Outline";
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;margin: 10px 0;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: grey;
+      }
+      i {
+        margin-right: 10px;
+      }
+      @media only screen and (max-width: 700px) {
+        .card {
+          flex-direction: column;
+          margin: 30px;
+          width: 100%;
+          height: 100%;
+          border-radius: 10px;
+          background-size: contain;
+          justify-content: center;
+          align-items: center;
+        }
+        .box-1 {
+          top-margin: 30px;
+          margin: 10px;
+          width: 100%;
+          height: 100%;
+          
+          background-position: center;
+          background-repeat: no-repeat;
+          border-radius: 10px 10px 0 0;
+          background-size: contain;
+          justify-content: center;
+          align-items: center;
+        }
+        .box-2 {
+          width: 100%;
+          padding: 10px;
+          margin: 10px;
+          position: relative;
+          background-size: contain;
+
+        }
+        h2 {
+          font-size: 30px;
+        }
+
+        h3 {
+          color: black;
+          font-family: "Montserrat", sans-serif;
+          font-size: 16px;
+        }
+        p {
+          margin: 10px;
+        }
+      }

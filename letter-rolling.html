@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--link
+      rel="stylesheet"
+      href="./css/font-awesome-6.2.0.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    /-->
+    <title>디즈니100주년</title>   
+    
+    <meta
+      name="description"
+      content="디즈니100주년 기념"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="aframe-troika-text.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
+    <script src="jquery-3.3.1.js"></script>
+    <script src="font-awesome-5.13.0.js"></script>
+    <script src="merge-image.js"></script>
+    <link rel="stylesheet" href="style-capture.css" />
+    
+    <link rel="stylesheet" href="letter.css"/>
+    
+    <script>
+      AFRAME.registerComponent("my-test-component", {
+        tick: function () {
+          var el = this.el;
+          el.setAttribute("text", { value: "" });
+        },
+      });    
+      
+      function DisplayScene() {
+        var Start = document.getElementById("LetterImg"); 
+        var Container = document.getElementById("container"); 
+        var Rolling = document.getElementById("rolling"); 
+        var Btn = document.getElementById("capture"); 
+        
+        const el1 = document.querySelector("#gltf1");
+        const el2 = document.querySelector("#gltf2");
+        
+        Start.addEventListener("click", function() {
+          Container.style.display = "none";
+          Rolling.style.visible = "tue";
+          Btn.style.display = "inline-block";
+          el1.visible = true;
+          el2.visible = true;
+        });
+      }
+      
+      
+    </script>
+
+        
+  </head>
+  
+  <body>
+    <div class="container" id="container" display="none">
+      <div class="card">
+        <p>&nbsp</p>
+        <div class="box-1" align="center"><img id="LetterImg" onclick="DisplayScene();" src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/message12.png?v=1670749422733" width="50%" z-index="999"></div>
+        <div align="center" class="box-2">
+          <h2>메시지가 도착했어요!</h2>
+          <p>
+            함께 꿈꿔온 지난 100년,<br>
+            감사한 마음을 담은<br>
+            디즈니의 메시지를 확인해 보세요.
+          </p>
+           &nbsp
+          
+          <!--button type="button" class="button-1" onclick="window.open('./wonder-image.html','_self');">
+
+           <h3>
+             미키 찾으러 가기
+            </h3>
+          </button-->
+  
+        </div>
+      </div>
+    </div>
+    <div id="rolling" visibility="true">
+        
+        <a-scene
+          vr-mode-ui="enabled: false"
+          loading-screen="enabled: false"
+          device-orientation-permission-ui="enabled: false"
+          embedded
+          arjs="sourceType: webcam; debugUIEnabled: false;"
+        >
+
+          <a-assets>
+            
+            <a-asset-item
+              id="Mickey"
+              src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/MickeyMoon_.glb?v=1670667532695"
+            ></a-asset-item>
+            
+            <a-asset-item
+              id="Firework"
+              src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/firework.glb?v=1663132402330"
+            ></a-asset-item>
+            
+            <audio id="intro" 
+                   src="https://cdn.glitch.global/9b4e3877-21ac-4e94-b55a-c8b576c5b670/disney-intro-1.mp3?v=1666075254104"></audio>
+          </a-assets>
+          <a-camera active="false" position="0 1.6 -3"></a-camera>
+          
+                   
+          <a-entity id="entity1">
+            <a-gltf-model
+                          id="gltf1"
+              rotation="0 0 0"
+              position="0 0.35 -3.6"
+              scale="0.1 0.1 0.1"
+              src="#Firework"
+              class="hat2-entity"
+              visible="false"
+              animation-mixer
+            ></a-gltf-model>
+          </a-entity>
+
+          <a-entity id="entity2">
+            <a-gltf-model
+                          id="gltf2"
+              rotation="0 0 0"
+              position="0 1.85 -3.5"
+              scale="0.008 0.008 0.008"
+              src="#Mickey"
+              class="glasses2-entity"
+              visible="false"
+              animation="property: position; to: 0 2.5 -3.9; dur: 8000; easing: linear; loop: false"
+              animation__2="property: rotation; to: 0 360 0; delay: 8000; dur: 8000; easing: linear; loop: false"
+              animation__3="property: position; to: 0 1.5 -2.5; delay: 16000; dur: 8000; easing: linear; loop: false"
+              foo
+              ></a-gltf-model>
+          </a-entity>
+
+          <a-entity>
+            <a-troika-text
+              id="output"
+              position="0 0 -1"
+              color="#fff"
+              max-width="15"
+              curve-radius="0"
+              scale="0.3 0.3 0.3"
+              font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/KNPSKkomi.otf?v=1670685355751"
+              value="100년 동안 여러분의 일상을
+디즈니와 함께해 주셔서 감사합니다.
+                     
+다가오는 2023년에도
+디즈니의 가슴 뛰는 감동의 순간을
+함께해 주세요!
+                     
+100 YEARS of WONDER
+100년의 가슴 뛰는 감동!"
+              align="left"
+              material="shader: standard; metalness: 0.8; roughness: 0.4;"
+              outline-width="5%"
+              outline-color="blue"
+              stroke-width="2%"
+              stroke-color="yellow"
+              sound="src: #intro; autoplay: false; loop: true; volume: 1"
+              animation="property: position; to: 0 3 -2.2; delay:3000; dur: 20000; easing: linear; loop: false"
+            ></a-troika-text>
+            </a-entity>
+            <a-image 
+              src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/disney100-%EA%B0%80%EB%A1%9C.png?v=1670639834306" 
+              position="0 2.5 -2.9"
+                     scale="1 0.8 1"
+              animation="property: position; to: 0 1.5 -1.8; dur: 20000; easing: linear; loop: false"
+              animation__2="property: position; to: 0 2 -1.8; delay:2000; dur: 20000; easing: linear; loop: false" 
+            ></a-image>
+            <a-plane
+              color="#1C2087"
+              position="0 0 -0.9"
+              height="0.07"
+              width="0.3"
+              curve-radius="0"
+              rotation="0 0 0"
+              animation="property: position; to: 0 1.38 -0.9; dur: 20000; easing: linear; loop: false" 
+            ></a-plane>
+            <a-troika-text
+              id="output1"
+              position="0 1.39 -0.85"
+              color="#fff"
+              max-width="15"
+              curve-radius="0"
+              scale="0 0 0"
+              font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/KimjungchulGothic-Bold.ttf?v=1670805599222"
+              value="나만의 메시지"
+              align="left"
+              material="shader: standard; metalness: 0.8; roughness: 0.4;"
+              outline-width="5%"
+              outline-color="blue"
+              stroke-width="2%"
+              stroke-color="yellow"
+              animation="property: scale; to: 0.1 0.1 0.1; delay: 20000; dur: 2000; easing: linear; loop: false" 
+            ></a-troika-text>
+            <a-plane
+              color="#1C2087"
+              position="0 0.08 -0.9"
+              height="0.07"
+              width="0.3"
+              curve-radius="1"
+              rotation="0 0 0"
+              animation="property: position; to: 0 1.3 -0.9; dur: 20000; easing: linear; loop: false" 
+            ></a-plane>
+            <a-troika-text
+              id="output2"
+              position="0 1.32 -0.85"
+              color="#fff"
+              max-width="15"
+              curve-radius="0"
+              scale="0 0 0"
+              font="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/KimjungchulGothic-Bold.ttf?v=1670805599222"
+              value="미키 찾으러 가기"
+              align="left"
+              material="shader: standard; metalness: 0.8; roughness: 0.4;"
+              outline-width="5%"
+              outline-color="blue"
+              stroke-width="2%"
+              stroke-color="yellow"
+              animation="property: scale; to: 0.1 0.1 0.1; delay: 20000; dur: 2000; easing: linear; loop: false" 
+            ></a-troika-text>
+                    
+          <a-entity
+            text="value: some text; wrapCount: 20; width: 3"
+            position="0 2 0"
+            my-test-component
+          ></a-entity>
+                <a-light
+        type="directional"
+        light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+        id="light"
+        target="balloon"
+        position="0 0 160"
+      >
+      </a-light>
+
+        </a-scene>
+     
+
+       <button
+          class="capturebtn"
+          id="capture"
+          style="vertical-align: middle; display: none;"
+        ></button>
+        <button
+          class="savebtn"
+          id="save"
+          style="vertical-align: middle"
+        ></button>
+        <!-- The Modal -->
+        <div id="myModal" class="modal" align="center">
+          <!-- Modal content -->
+          <div>
+            <img class="modal-content" id="img01" />
+            <span class="closebtn">
+              <img
+                src="https://cdn.glitch.global/3d3ecbaf-67a2-4d22-b8ec-ad23b8be5288/close-white.png?v=1670812239754"
+                width="30px"
+                height="30px"
+              />
+            </span>
+            <div id="caption"></div>
+          </div>
+        </div>
+      </div>
+
+    <script type="text/javascript" src="hmodal_active.js"></script>
+    <script type="text/javascript" src="capture-1.js"></script>
+  
+
+  </body>
+</html>
